@@ -83,6 +83,11 @@ class BaseController(object):
 
             last_time = new_time
 
+        self.onExit()
+
+    def onExit(self):
+        raise NotImplementedError("Please Implement this method")
+
     def showFrame(self):
         raise NotImplementedError("Please Implement this method")
 
@@ -93,21 +98,37 @@ class Application(object):
         self.pause = False
         self.finished = False
 
+    # This function is called once, after the application has been added
+    # to the application stack.
     def initialize(self):
         raise NotImplementedError("Please Implement this method")
 
+    # This function is called for each frame, before "draw" is called
+    # controller: Reference to the controller object to get time e.g.
+    # key_list: List of keys that are currently pressed (see BaseInput)
+    # delta_time: Time that has passed since the last call
     def processInput(self, controller, key_list, delta_time):
         raise NotImplementedError("Please Implement this method")
 
-    def draw(self, controller, frame, draw, delta):
+    # This function is called for each frame, after "processInput" is called
+    # controller: Reference to the controller object to clear the frame buffer
+    # frame: Reference to the frame buffer (Pillow Image)
+    # draw: Reference to the draw object, that is used to draw the image (ImageDraw)
+    # delta_time: Time that has passed since the last call
+    def draw(self, controller, frame, draw, delta_time):
         raise NotImplementedError("Please Implement this method")
 
+    # Returns true if the application has finished processing.
+    # Afterwards the application is removed from the stack
     def hasFinished(self):
         return self.finished
 
+    # Is called if the app now running and the previous application has been stopped
     def continueApp(self, controller):
         self.pause = False
 
+    # This is called if the app has launched a new app and the current app is now longer
+    # the active one
     def pauseApp(self, controller):
         self.pause = True
 

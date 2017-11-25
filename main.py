@@ -19,13 +19,13 @@ if __name__ == '__main__':
     menu2.setMenuItemsAndApps(
         [("Entry1",0)])
 
-    menu = Menu(DISPLAY_WIDTH,DISPLAY_HEIGHT,isClosable=False)
+    menu = Menu(DISPLAY_WIDTH,DISPLAY_HEIGHT,isClosable=True)
     menu.setMenuItemsAndApps(
         [("Test Pattern",test),
          ("Snake",snake),
          ("Submenu",menu2)])
 
-    input = DesktopInput()
+    input = DesktopInput(debouncedInput = True)
     r.setInputHandler(input)
     r.addApplication(menu)
 

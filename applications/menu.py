@@ -45,7 +45,7 @@ class Menu(Application):
                 self.currScrollPixels = 0
             self.redraw_frame = True
 
-        if controller.getTime() - self.last_step_time >= 100.0:
+        if controller.getTime() - self.last_step_time >=0:
             self.last_step_time = controller.getTime()
 
             menuChanged = False
