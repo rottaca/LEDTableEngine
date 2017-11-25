@@ -34,6 +34,9 @@ class Snake(Application):
                 newDir = (-1, 0)
             elif i.name is "right":
                 newDir = (1, 0)
+            elif i.name is "quit":
+                self.finished = True
+                return True
             else:
                 continue
 

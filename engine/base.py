@@ -98,8 +98,7 @@ class Application(object):
         self.pause = False
         self.finished = False
 
-    # This function is called once, after the application has been added
-    # to the application stack.
+    # This function is called once, for each time, the application has been launched.
     def initialize(self):
         raise NotImplementedError("Please Implement this method")
 
@@ -133,8 +132,6 @@ class Application(object):
         self.pause = True
 
 class BaseInput(object):
-    def __init__(self):
-        self.supportedKeys = ["up", "left", "right", "down", "enter"]
 
     def setController(self, controller):
         self.controller = controller
@@ -142,7 +139,7 @@ class BaseInput(object):
     def pollKeys():
         raise NotImplementedError("Please Implement this method")
 
-class KeyEvents(object):
+class KeyEvent(object):
     def __init__(self, name, state=""):
         self.name = name
         self.state = state

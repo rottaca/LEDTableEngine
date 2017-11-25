@@ -9,7 +9,7 @@ from engine.base import Application
 
 class BubbleShooter(Application):
 
-    
+
 
     def __init__(self, width, height):
         super(BubbleShooter, self).__init__(width, height)
@@ -46,10 +46,10 @@ class BubbleShooter(Application):
                 blue = 0
             draw.point([bubble[0],bubble[1]],fill=(red,green,blue))
 
-        
+
         # Draw canon pipe
         for point in self.wall:
-            draw.point([point[0], point[1]],fill=(139,105,0)) 
+            draw.point([point[0], point[1]],fill=(139,105,0))
         # Draw canon
         for point in self.cannon:
             draw.point([point[0], point[1]],fill=(105,105,105))
@@ -57,7 +57,7 @@ class BubbleShooter(Application):
         for point in self.pipe:
             draw.point([point[0], point[1]],fill=(238,238,0))
 
-            
+
         return True
 
     def createField(self):

@@ -21,15 +21,14 @@ class TestPattern(Application):
         self.finished = False
 
     def processInput(self, controller, inputs, delta_time):
-        if any("enter" == x.name for x in inputs):
+        if any("quit" == x.name for x in inputs):
             self.finished = True
             return True
 
-        if any("up" == x.name for x in inputs):
+        if any("enter" == x.name for x in inputs):
             self.modeIdx = self.modeIdx + 1
             if self.modeIdx >= len(self.modes):
                 self.modeIdx = 0
-            print "New Mode: ", self.modeIdx
 
         if controller.getTime() - self.last_step_time < 100:
             return True

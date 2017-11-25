@@ -4,7 +4,7 @@ import threading
 from thread import start_new_thread
 
 from base import BaseController
-from base import BaseInput, KeyEvents
+from base import BaseInput, KeyEvent
 from pynput import keyboard
 
 import time
@@ -80,6 +80,12 @@ class DesktopInput(BaseInput):
         start_new_thread(self.processKeyboard,())
         self.keys = {}
         self.debounce = debouncedInput
+        self.keyMapping = {"w":"up",
+                           "a":"left",
+                           "s":"down",
+                           "d":"right",
+                           "q":"quit",
+                           "e":"enter"}
 
     def processKeyboard(self):
         with keyboard.Listener(
@@ -108,15 +114,7 @@ class DesktopInput(BaseInput):
                 else:
                     continue
 
-            if k == "w":
-                tmp.append(KeyEvents("up"))
-            elif k == "a":
-                tmp.append(KeyEvents("left"))
-            elif k == "s":
-                tmp.append(KeyEvents("down"))
-            elif k == "d":
-                tmp.append(KeyEvents("right"))
-            elif k == "b":
-                tmp.append(KeyEvents("enter"))
+            if k in self.keyMapping:
+                tmp.append(KeyEvent(self.keyMapping[k]))
 
         return tmp
