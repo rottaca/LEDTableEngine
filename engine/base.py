@@ -10,6 +10,10 @@ class BaseController(object):
         self.appStack = []
         self.queuedInsertions = []
 
+    def setInputHandler(self, input):
+        self.input = input
+        self.input.setController(self)
+
     def createFrame(self):
         self.frame = Image.new('RGB', [self.width, self.height], (0,0,0));
         self.draw = ImageDraw.Draw(self.frame)
@@ -110,6 +114,9 @@ class Application(object):
 class BaseInput(object):
     def __init__(self):
         self.supportedKeys = ["up", "left", "right", "down", "enter"]
+
+    def setController(self, controller):
+        self.controller = controller
 
     def pollKeys():
         raise NotImplementedError("Please Implement this method")

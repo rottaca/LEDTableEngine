@@ -37,8 +37,8 @@ class Menu(Application):
 
     def processInput(self, controller, inputs, delta_time):
 
-        if ((self.currScrollPixels > 0 and controller.getTime() - self.time_text_wrap_start >= self.time_text_wrap_per_char) or
-            (self.currScrollPixels == 0 and controller.getTime() - self.time_text_wrap_start >= self.time_text_wrap_per_char + self.time_text_wrap_initial_wait)):
+        if ((self.currScrollPixels not in [0,self.scrollPixels-1] and controller.getTime() - self.time_text_wrap_start >= self.time_text_wrap_per_char) or
+            (self.currScrollPixels in [0,self.scrollPixels-1]  and controller.getTime() - self.time_text_wrap_start >= self.time_text_wrap_per_char + self.time_text_wrap_initial_wait)):
             self.time_text_wrap_start = controller.getTime()
             self.currScrollPixels = self.currScrollPixels + 1
             if self.currScrollPixels >= self.scrollPixels:

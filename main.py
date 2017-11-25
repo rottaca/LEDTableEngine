@@ -1,6 +1,6 @@
 
 
-from engine.desktop import DesktopController
+from engine.desktop import DesktopController, DesktopInput
 
 from applications.testpattern import TestPattern
 from applications.snake import Snake
@@ -25,5 +25,8 @@ if __name__ == '__main__':
          ("Snake",snake),
          ("Submenu",menu2)])
 
+    input = DesktopInput()
+    r.setInputHandler(input)
     r.addApplication(menu)
+
     r.run(FPS=40)

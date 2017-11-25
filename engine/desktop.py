@@ -6,7 +6,7 @@ from base import BaseInput, KeyEvents
 
 class DesktopController(BaseController):
 
-    def __init__(self, width, height, upscale=10):
+    def __init__(self, width, height,  upscale=10):
         super(DesktopController, self).__init__(width, height)
         self.root = tk.Tk()
         self.root.resizable(width=False, height=False)
@@ -17,8 +17,6 @@ class DesktopController(BaseController):
         self.root.update_idletasks()
         self.root.update()
 
-        self.input = DesktopInput()
-        self.input.setRenderer(self)
 
     def showFrame(self):
         resized = self.frame.resize((self.root.winfo_width(),self.root.winfo_height()),Image.NEAREST)
@@ -42,11 +40,15 @@ class DesktopController(BaseController):
 
 class DesktopInput(BaseInput):
 
-    def setRenderer(self,desktopController):
+    def __init__(self):
+        super(DesktopInput, self).__init__()
         self.keys = set()
-        self.desktopController = desktopController
-        self.desktopController.root.bind_all("<KeyPress>", self.callbackPress)
-        self.desktopController.root.bind_all("<KeyRelease>", self.callbackRelease)
+
+    def setController(self, controller):
+        super(DesktopInput, self).setController(controller)
+        self.controller = controller
+        self.controller.root.bind_all("<KeyPress>", self.callbackPress)
+        self.controller.root.bind_all("<KeyRelease>", self.callbackRelease)
 
     def callbackPress(self,event):
         k = str(event.char)
