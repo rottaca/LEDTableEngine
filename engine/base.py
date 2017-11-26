@@ -105,10 +105,7 @@ class BaseController(object):
                 time.sleep((FPS_ms - (new_time - last_time))/1000.0)
                 new_time = self.getTime()
 
-
-        self.onExit()
-
-    def onExit(self):
+    def shutdown(self):
         raise NotImplementedError("Please Implement this method")
 
     def showFrame(self):

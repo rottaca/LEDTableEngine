@@ -1,6 +1,7 @@
 
 
 from engine.desktop import DesktopController, DesktopInput
+from engine.ledTable import LEDTableController, LEDTableInput, TPM2
 
 from applications.testpattern import TestPattern
 from applications.snake import Snake
@@ -33,3 +34,13 @@ if __name__ == '__main__':
     r.addApplication(menu)
 
     r.run(FPS=40)
+    r.shutdown()
+    exit()
+
+    r = LEDTableController(DISPLAY_WIDTH,DISPLAY_HEIGHT,serialPort="/dev/pts/18", debugMode=True)
+
+    t = TPM2()
+    p = t.createCmdPacket("saveCfg", [])
+    print "SaveCfg: ", [int(i) for i in p]
+    p = t.createDataPacket([0,1,2,3,4,5,6,7,8,9])
+    print "Data: ", [int(i) for i in p]

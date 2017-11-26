@@ -24,9 +24,9 @@ class DesktopController(BaseController):
         self.label = tk.Label(self.root)
         self.label.pack(fill=tk.BOTH, expand=1)
 
-    def onExit(self):
-        pass
-
+    def shutdown(self):
+        self.root.quit()
+        
     def showFrame(self):
         resized = self.frame.resize((self.gui_width,self.gui_height),Image.NEAREST)
 
