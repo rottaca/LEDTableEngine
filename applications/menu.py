@@ -8,10 +8,13 @@ from engine.base import Application
 
 class Menu(Application):
 
-    def __init__(self, width, height, isClosable):
-        super(Menu, self).__init__(width, height)
-        self.menu = None
+    def __init__(self, isClosable):
+        super(Menu, self).__init__()
         self.isClosable = isClosable
+        self.menu = None
+
+    def initialize(self, controller,  width, height):
+        super(Menu,self).initialize(controller,  width, height)
         self.last_step_time = 0
         self.time_text_wrap_initial_wait = 1000
         self.time_text_wrap_start = 0
@@ -21,11 +24,8 @@ class Menu(Application):
         self.textsize = (0,0)
         self.scrollPixels = 0
         self.currScrollPixels = 0
-        self.initialize()
-
-    def initialize(self):
-        self.finished = False
         self.redraw_frame = True
+
         if self.menu:
             self.updateText()
 
@@ -33,20 +33,20 @@ class Menu(Application):
         self.menu = menuMap
         if self.isClosable:
             self.menu.insert(len(self.menu),("Back",None))
-        self.updateText()
 
-    def processInput(self, controller, inputs, delta_time):
+    def processInput(self, inputs, delta_time):
+        t = self.controller.getTime()
 
-        if ((self.currScrollPixels not in [0,self.scrollPixels-1] and controller.getTime() - self.time_text_wrap_start >= self.time_text_wrap_per_char) or
-            (self.currScrollPixels in [0,self.scrollPixels-1]  and controller.getTime() - self.time_text_wrap_start >= self.time_text_wrap_per_char + self.time_text_wrap_initial_wait)):
-            self.time_text_wrap_start = controller.getTime()
+        if ((self.currScrollPixels not in [0,self.scrollPixels-1] and t - self.time_text_wrap_start >= self.time_text_wrap_per_char) or
+            (self.currScrollPixels in [0,self.scrollPixels-1]  and t - self.time_text_wrap_start >= self.time_text_wrap_per_char + self.time_text_wrap_initial_wait)):
+            self.time_text_wrap_start = t
             self.currScrollPixels = self.currScrollPixels + 1
             if self.currScrollPixels >= self.scrollPixels:
                 self.currScrollPixels = 0
             self.redraw_frame = True
 
-        if controller.getTime() - self.last_step_time >=0:
-            self.last_step_time = controller.getTime()
+        if t - self.last_step_time >=0:
+            self.last_step_time = t
 
             menuChanged = False
             for i in inputs:
@@ -70,11 +70,11 @@ class Menu(Application):
                         self.finished = True
                     # Otherwise append new application to application stack
                     elif self.menu[self.itemIdx][1] != 0:
-                        controller.addApplication(self.menu[self.itemIdx][1])
+                        self.controller.addApplication(self.menu[self.itemIdx][1])
 
             if menuChanged:
                 self.updateText()
-                self.time_text_wrap_start = controller.getTime()
+                self.time_text_wrap_start = t
 
         return True
 
@@ -85,10 +85,10 @@ class Menu(Application):
         self.scrollPixels = self.textsize[0] - self.width + 4
         self.currScrollPixels = 0
 
-    def draw(self, controller, frame, draw, delta):
+    def draw(self, frame, draw, delta):
         if not self.redraw_frame:
             return False
-        controller.clearFrame()
+        self.controller.clearFrame()
         self.redraw_frame = False
 
         if self.itemIdx > 0:

@@ -11,8 +11,8 @@ import time
 
 class DesktopController(BaseController):
 
-    def __init__(self, width, height,  upscale=10):
-        super(DesktopController, self).__init__(width, height)
+    def __init__(self, width, height, debugMode, upscale=10):
+        super(DesktopController, self).__init__(width, height, debugMode)
         self.gui = TkInterGUIThread(self, width, height,  upscale)
         self.gui_width = width*upscale
         self.gui_height = height*upscale
@@ -86,6 +86,7 @@ class DesktopInput(BaseInput):
                            "d":"right",
                            "q":"quit",
                            "e":"enter"}
+        print "Key mapping: ", self.keyMapping
 
     def processKeyboard(self):
         with keyboard.Listener(

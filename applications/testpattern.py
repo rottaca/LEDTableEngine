@@ -8,19 +8,18 @@ from engine.base import Application
 
 class TestPattern(Application):
 
-    def __init__(self, width, height, mode):
-        super(TestPattern, self).__init__(width, height)
+    def __init__(self, mode):
+        super(TestPattern, self).__init__()
         self.modeIdx = mode
         self.modes = [self.bouncing, self.randomColors]
-        self.initialize()
 
-    def initialize(self):
+    def initialize(self, controller,  width, height):
+        super(TestPattern,self).initialize(controller,  width, height)
         self.pos = [0,0]
         self.dir = [1,1]
         self.last_step_time = 0
-        self.finished = False
 
-    def processInput(self, controller, inputs, delta_time):
+    def processInput(self, inputs, delta_time):
         if any("quit" == x.name for x in inputs):
             self.finished = True
             return True
@@ -30,9 +29,13 @@ class TestPattern(Application):
             if self.modeIdx >= len(self.modes):
                 self.modeIdx = 0
 
-        if controller.getTime() - self.last_step_time < 100:
+
+        if self.controller.getTime() - self.last_step_time < 100:
+            self.redraw_frame = False
             return True
-        self.last_step_time = controller.getTime()
+
+        self.last_step_time = self.controller.getTime()
+        self.redraw_frame = True
 
         if self.modes[self.modeIdx] == self.bouncing:
             self.pos[0] = self.pos[0] + self.dir[0]
@@ -54,15 +57,15 @@ class TestPattern(Application):
 
         return True
 
-    def draw(self, controller, frame, draw, delta):
-        return self.modes[self.modeIdx](controller, frame, draw, delta)
+    def draw(self, frame, draw, delta):
+        return self.modes[self.modeIdx](frame, draw, delta)
 
-    def continueApp(self, controller):
-        super(TestPattern,self).continueApp(controller)
-        controller.clearFrame()
+    def continueApp(self):
+        super(TestPattern,self).continueApp(self.controller)
+        self.controller.clearFrame()
 
-    def bouncing(self, controller, frame, draw, delta):
-        controller.clearFrame()
+    def bouncing(self, frame, draw, delta):
+        self.controller.clearFrame()
 
         px = round(self.pos[0])
         py = round(self.pos[1])
@@ -70,8 +73,8 @@ class TestPattern(Application):
         draw.point([px, py], fill=(255,0,0))
         return True
 
-    def randomColors(self, controller, frame, draw, delta):
-        #controller.clearFrame()
+    def randomColors(self, frame, draw, delta):
+        #self.controller.clearFrame()
         # Set random pixel to a color
         draw.point([randint(0, self.width), randint(0, self.height)], fill=(randint(100, 255),randint(100, 255),randint(100, 255)))
         # Clear random pixel

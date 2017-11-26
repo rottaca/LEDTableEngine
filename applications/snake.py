@@ -8,19 +8,17 @@ from engine.base import Application
 
 class Snake(Application):
 
-    def __init__(self, width, height):
-        super(Snake, self).__init__(width, height)
-        self.initialize()
+    def __init__(self):
+        super(Snake, self).__init__()
 
-    def initialize(self):
+    def initialize(self, controller,  width, height):
+        super(Snake,self).initialize(controller,  width, height)
         self.snake = [(self.width/2, self.height/2)]
         self.dir = (0,1)
         self.food = (self.width/2 , self.height/2 + 5 )
         self.last_step_time = 0
-        self.redraw_frame = True
-        self.finished = False
 
-    def processInput(self, controller, inputs, delta_time):
+    def processInput(self, inputs, delta_time):
         if self.finished:
             return True
 
@@ -45,11 +43,13 @@ class Snake(Application):
             else:
                 self.dir = newDir
 
-        if controller.getTime() - self.last_step_time < 1000.0/(0.2*len(self.snake)+1):
+        if self.controller.getTime() - self.last_step_time < 1000.0/(0.2*len(self.snake)+1):
+            self.redraw_frame = False
             return True
 
-        self.last_step_time = controller.getTime()
+        self.last_step_time = self.controller.getTime()
         self.redraw_frame = True
+        
         newPos = (self.snake[0][0] + self.dir[0], self.snake[0][1] + self.dir[1])
 
         if newPos[0] < 0 or newPos[0] >= self.width or newPos[1] < 0 or newPos[1] >= self.height or newPos in self.snake:
@@ -64,16 +64,11 @@ class Snake(Application):
 
         return True
 
-    def draw(self, controller, frame, draw, delta):
-        if not self.redraw_frame:
-            return False
-
-        self.redraw_frame = False
-
+    def draw(self, frame, draw, delta):
         if self.finished:
-            controller.clearFrame(clearColor=(255,0,0))
+            self.controller.clearFrame(clearColor=(255,0,0))
         else:
-            controller.clearFrame()
+            self.controller.clearFrame()
 
         draw.point(self.food,fill=(0,255,0))
 

@@ -11,11 +11,11 @@ class BubbleShooter(Application):
 
 
 
-    def __init__(self, width, height):
-        super(BubbleShooter, self).__init__(width, height)
-        self.initialize()
+    def __init__(self):
+        super(BubbleShooter, self).__init__()
 
-    def initialize(self):
+    def initialize(self, controller,  width, height):
+        super(BubbleShooter,self).initialize(controller,  width, height)
         self.bubbles = [] #List for all bubbles on the field
         self.cannon = [] # List with the points for the main sturcture
         self.pipe = [] # cannon pipe
@@ -23,12 +23,14 @@ class BubbleShooter(Application):
         self.createField()
 
 
-    def processInput(self, controller, inputs, delta_time):
+    def processInput(self, inputs, delta_time):
          return True
 
-    def draw(self, controller, frame, draw, delta):
+    def draw(self, frame, draw, delta):
+        # Draw only once
+        self.redraw_frame = False
 
-        controller.clearFrame()
+        self.controller.clearFrame()
 
         # Draw bubbles
         for bubble in self.bubbles:
