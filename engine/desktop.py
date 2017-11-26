@@ -13,13 +13,19 @@ class DesktopController(BaseController):
 
     def __init__(self, width, height, debugMode, upscale=10):
         super(DesktopController, self).__init__(width, height, debugMode)
-        self.gui = TkInterGUIThread(self, width, height,  upscale)
         self.gui_width = width*upscale
         self.gui_height = height*upscale
+        self.width = width
+        self.height = height
+        self.upscale = upscale
+        self.root = tk.Tk()
+        self.root.resizable(width=False, height=False)
+        self.root.geometry('{}x{}'.format(self.width*self.upscale, self.height*self.upscale))
+        self.label = tk.Label(self.root)
+        self.label.pack(fill=tk.BOTH, expand=1)
 
     def onExit(self):
-        self.gui.close()
-        self.gui.join()
+        pass
 
     def showFrame(self):
         resized = self.frame.resize((self.gui_width,self.gui_height),Image.NEAREST)
@@ -33,45 +39,12 @@ class DesktopController(BaseController):
         for y in range(0,self.height):
             draw.line([0, y*sy, self.gui_width, y*sy])
 
-        self.gui.setFrame(resized)
-
+        self.tkimage = ImageTk.PhotoImage(resized)
+        self.label.configure(image=self.tkimage)
+        self.root.update_idletasks()
+        self.root.update()
         return True
 
-
-class TkInterGUIThread(threading.Thread):
-    def __init__(self, controller, width, height, upscale):
-        threading.Thread.__init__(self)
-        self.start()
-        self.width = width
-        self.height = height
-        self.upscale = upscale
-        self.controller = controller
-        self.frame = None
-        self.closed = False
-
-    def setFrame(self,frame):
-        if not self.closed:
-            self.frame = frame
-            self.root.after(1, self.updateFrame)
-
-    def close(self):
-        self.closed = True
-        self.root.quit()
-
-    def updateFrame(self):
-        if self.frame and not self.closed:
-            self.tkimage = ImageTk.PhotoImage(self.frame)
-            self.label.configure(image=self.tkimage)
-            self.frame = None
-
-    def run(self):
-        self.root = tk.Tk()
-        self.root.resizable(width=False, height=False)
-        self.root.geometry('{}x{}'.format(self.width*self.upscale, self.height*self.upscale))
-        self.label = tk.Label(self.root)
-        self.label.pack(fill=tk.BOTH, expand=1)
-        self.root.protocol("WM_DELETE_WINDOW", self.close)
-        self.root.mainloop()
 
 class DesktopInput(BaseInput):
 
