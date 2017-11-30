@@ -11,7 +11,9 @@ class TestPattern(Application):
     def __init__(self, mode):
         super(TestPattern, self).__init__()
         self.modeIdx = mode
-        self.modes = [self.bouncing, self.randomColors]
+        self.modes = [self.interpolate, self.bouncing, self.randomColors]
+        self.interpolation = 0.0
+        self.interpolateDir = 1
 
     def initialize(self, controller,  width, height):
         super(TestPattern,self).initialize(controller,  width, height)
@@ -55,6 +57,16 @@ class TestPattern(Application):
                 self.dir[0] = -self.dir[0]
                 self.pos[0] = 0
 
+        elif self.modes[self.modeIdx] == self.interpolate:
+            self.interpolation = self.interpolation + self.interpolateDir*delta_time/2000.0
+            print self.interpolation
+            if self.interpolation > 1:
+                self.interpolation = 1
+                self.interpolateDir = -self.interpolateDir
+            elif self.interpolation < 0:
+                self.interpolation = 0
+                self.interpolateDir = -self.interpolateDir
+
         return True
 
     def draw(self, frame, draw, delta):
@@ -74,9 +86,20 @@ class TestPattern(Application):
         return True
 
     def randomColors(self, frame, draw, delta):
-        #self.controller.clearFrame()
         # Set random pixel to a color
         draw.point([randint(0, self.width), randint(0, self.height)], fill=(randint(100, 255),randint(100, 255),randint(100, 255)))
         # Clear random pixel
         draw.point([randint(0, self.width), randint(0, self.height)], fill=(0,0,0))
+        return True
+
+    def interpolate(self, frame, draw, delta):
+        color = (0,0,0)
+        if self.interpolation < 0.5:
+            s = self.interpolation*2
+            color = (int(255*(1 - s)), int(255*s), 0)
+        else:
+            s = (self.interpolation-0.5)*2
+            color = (0, int(255*(1-s)), int(255*(s)))
+
+        draw.rectangle([0,0, self.width,self.height],fill=color)
         return True

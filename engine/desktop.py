@@ -13,10 +13,8 @@ class DesktopController(BaseController):
 
     def __init__(self, width, height, debugMode, upscale=10):
         super(DesktopController, self).__init__(width, height, debugMode)
-        self.gui_width = width*upscale
-        self.gui_height = height*upscale
-        self.width = width
-        self.height = height
+        self.gui_width = self.width*upscale
+        self.gui_height = self.height*upscale
         self.upscale = upscale
         self.root = tk.Tk()
         self.root.resizable(width=False, height=False)
@@ -26,7 +24,7 @@ class DesktopController(BaseController):
 
     def shutdown(self):
         self.root.quit()
-        
+
     def showFrame(self):
         resized = self.frame.resize((self.gui_width,self.gui_height),Image.NEAREST)
 

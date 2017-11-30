@@ -1,30 +1,46 @@
 from PIL import ImageTk, Image, ImageDraw
 import Tkinter as tk
 import serial
+import itertools
 
 from base import BaseController
 from base import BaseInput, KeyEvent
 
 class LEDTableController(BaseController):
 
-    def __init__(self, width, height, debugMode = False, serialPort="/dev/ttyUSB0", baud=19200, timeout=1):
+    def __init__(self, width, height, debugMode = False, serialPort="/dev/ttyACM0", baud=115200, timeout=1):
         super(LEDTableController, self).__init__(width, height, debugMode)
         self.tpm2 = TPM2()
         self.serial = serial.Serial(serialPort, baud, timeout=timeout, rtscts=True,dsrdtr=True)
+        # self.i = 0.0
         print "Opened serial port: ", self.serial
-        p = self.tpm2.createCmdPacket("rwConnPixelCnt", [], readOrWrite="read")
-        res = self.serialTPM2(p)
-        if len(res) == 1:
-            print "Result: " < self.tpm2.ackByte[res]
-        else:
-            print "No answer recieved"
+
+        # p = self.tpm2.createCmdPacket("rwConnPixelCnt",[255])
+        # res = self.serialTPM2(p)
+        # if len(res) == 1:
+        #     print "Result: " < self.tpm2.ackByte[res]
+        # else:
+        #     print "No answer recieved"
 
     def showFrame(self):
 
+        data = list(itertools.chain(*self.frame.getdata()))
+        # col =(int(self.i*255),int((1-self.i)*255),0)
+        #
+        # print col
+        # data = list(itertools.chain(*[col for i in range(0,self.width*self.height)]))
+        # self.i= self.i + 0.01
+        # if self.i > 1:
+        #     self.i = 0
+        p = self.tpm2.createDataPacket(data)
+        res = self.serialTPM2(p)
         return True
 
     def serialTPM2(self, packet):
-        self.serial.write(packet)
+        sz = self.serial.write(packet)
+        if sz != len(packet):
+            print "Failed to write all data"
+            return bytes()
         if packet[1] == self.tpm2.blockTypes["cmd"] and ((packet[4] & 0x07 == 0) or (packet[4] & 0x06 == 1)):
            return self.serial.read()
         else:
@@ -88,7 +104,7 @@ class TPM2:
         arr.append(self.endByte)
         return bytearray(arr)
 
-    def createCmdPacket(self, cmdType, paramBytes, cmdWithAnswer=False, readOrWrite="write"):
+    def createCmdPacket(self, cmdType, paramBytes, cmdWithAnswer=True, readOrWrite="write"):
         ctrlByte = (int(readOrWrite=="write") << 0x07) | (int(cmdWithAnswer) << 0x07)
         data = [ctrlByte, self.cmdTypes[cmdType]]
         data.extend(paramBytes)

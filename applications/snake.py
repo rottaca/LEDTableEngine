@@ -19,7 +19,9 @@ class Snake(Application):
         self.last_step_time = 0
 
     def processInput(self, inputs, delta_time):
-        if self.finished:
+
+        if any("quit" == x.name for x in inputs):
+            self.finished = True
             return True
 
         tmpDir = self.dir
@@ -32,9 +34,6 @@ class Snake(Application):
                 newDir = (-1, 0)
             elif i.name is "right":
                 newDir = (1, 0)
-            elif i.name is "quit":
-                self.finished = True
-                return True
             else:
                 continue
 
@@ -49,7 +48,7 @@ class Snake(Application):
 
         self.last_step_time = self.controller.getTime()
         self.redraw_frame = True
-        
+
         newPos = (self.snake[0][0] + self.dir[0], self.snake[0][1] + self.dir[1])
 
         if newPos[0] < 0 or newPos[0] >= self.width or newPos[1] < 0 or newPos[1] >= self.height or newPos in self.snake:

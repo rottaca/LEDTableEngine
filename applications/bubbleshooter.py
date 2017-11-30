@@ -24,7 +24,12 @@ class BubbleShooter(Application):
 
 
     def processInput(self, inputs, delta_time):
-         return True
+        if any("quit" == x.name for x in inputs):
+            self.finished = True
+            return True
+
+
+        return True
 
     def draw(self, frame, draw, delta):
         # Draw only once
