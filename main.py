@@ -1,4 +1,5 @@
 
+import argparse
 
 from engine.desktop import DesktopController, DesktopInput
 from engine.ledTable import LEDTableController, LEDTableInput, TPM2
@@ -14,8 +15,26 @@ DISPLAY_HEIGHT = 15
 
 if __name__ == '__main__':
 
-    #r = LEDTableController(DISPLAY_WIDTH,DISPLAY_HEIGHT, debugMode=True)
-    r = DesktopController(DISPLAY_WIDTH,DISPLAY_HEIGHT, debugMode=True, upscale=30)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--display',default="desktop", choices=["desktop","table"], help="Render device / controller.")
+    parser.add_argument('--input', default="keyboard", choices=["keyboard","controller","touch"], help="Input device that passes controls to controller.")
+    parser.add_argument('--ledDisplayDevice', default="/dev/ttyACM0", help="Serial device for LED Matrix control.")
+    parser.add_argument('--FPS', default=30, type=int, help="Processing framerate for applications.")
+    parser.add_argument('--debug', default=False, action='store_true', help="Enable debug output.")
+    args = parser.parse_args()
+    
+    if args.debug:
+        print "Parameters: ", args
+
+    inputs = {
+        "keyboard" : DesktopInput(debouncedInput = True),
+        "controller" : LEDTableInput()
+    }
+    controllers = {
+        "desktop" : DesktopController(DISPLAY_WIDTH,DISPLAY_HEIGHT, debugMode=args.debug, upscale=30),
+        "table" : LEDTableController(DISPLAY_WIDTH,DISPLAY_HEIGHT, debugMode=args.debug, serialPort=args.ledDisplayDevice)
+    }
+
     test = TestPattern(mode=0)
     snake = Snake()
     shoot = BubbleShooter()
@@ -33,10 +52,13 @@ if __name__ == '__main__':
          ("Raining Lava", rainingLava),
          ("Submenu",menu2)])
 
-    input = DesktopInput(debouncedInput = True)
+    r = controllers[args.display]
+    r.initialize()
+    input = inputs[args.input]
+
     r.setInputHandler(input)
     r.addApplication(menu)
 
-    r.run(FPS=25)
+    r.run(FPS=args.FPS)
     r.shutdown()
-    exit()
+    exit(0)

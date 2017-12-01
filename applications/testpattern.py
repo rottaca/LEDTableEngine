@@ -11,7 +11,7 @@ class TestPattern(Application):
     def __init__(self, mode):
         super(TestPattern, self).__init__()
         self.modeIdx = mode
-        self.modes = [self.interpolate, self.bouncing, self.randomColors]
+        self.modes = [self.interpolate, self.interpolateBW, self.bouncing, self.randomColors]
         self.interpolation = 0.0
         self.interpolateDir = 1
 
@@ -57,9 +57,9 @@ class TestPattern(Application):
                 self.dir[0] = -self.dir[0]
                 self.pos[0] = 0
 
-        elif self.modes[self.modeIdx] == self.interpolate:
-            self.interpolation = self.interpolation + self.interpolateDir*delta_time/2000.0
-            print self.interpolation
+        elif self.modes[self.modeIdx] in [self.interpolate, self.interpolateBW]:
+            self.interpolation = self.interpolation + self.interpolateDir*delta_time/1000.0
+            
             if self.interpolation > 1:
                 self.interpolation = 1
                 self.interpolateDir = -self.interpolateDir
@@ -100,6 +100,12 @@ class TestPattern(Application):
         else:
             s = (self.interpolation-0.5)*2
             color = (0, int(255*(1-s)), int(255*(s)))
+
+        draw.rectangle([0,0, self.width,self.height],fill=color)
+        return True
+
+    def interpolateBW(self, frame, draw, delta):
+        color = (int(255*self.interpolation), int(255*self.interpolation), int(255*self.interpolation))
 
         draw.rectangle([0,0, self.width,self.height],fill=color)
         return True

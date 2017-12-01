@@ -16,6 +16,9 @@ class DesktopController(BaseController):
         self.gui_width = self.width*upscale
         self.gui_height = self.height*upscale
         self.upscale = upscale
+
+    def initialize(self):
+        super(DesktopController, self).initialize()
         self.root = tk.Tk()
         self.root.resizable(width=False, height=False)
         self.root.geometry('{}x{}'.format(self.width*self.upscale, self.height*self.upscale))

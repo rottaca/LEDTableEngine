@@ -11,7 +11,13 @@ class LEDTableController(BaseController):
     def __init__(self, width, height, debugMode = False, serialPort="/dev/ttyACM0", baud=115200, timeout=1):
         super(LEDTableController, self).__init__(width, height, debugMode)
         self.tpm2 = TPM2()
-        self.serial = serial.Serial(serialPort, baud, timeout=timeout, rtscts=True,dsrdtr=True)
+        self.serialPort = serialPort
+        self.baud = baud
+        self.timeout = timeout
+
+    def initialize(self):
+        super(LEDTableController, self).initialize()
+        self.serial = serial.Serial(self.serialPort, self.baud, timeout=self.timeout, rtscts=True, dsrdtr=True)
         # self.i = 0.0
         print "Opened serial port: ", self.serial
 
@@ -21,6 +27,7 @@ class LEDTableController(BaseController):
         #     print "Result: " < self.tpm2.ackByte[res]
         # else:
         #     print "No answer recieved"
+
 
     def showFrame(self):
 

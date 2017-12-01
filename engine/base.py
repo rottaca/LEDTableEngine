@@ -2,6 +2,7 @@ from PIL import Image, ImageDraw
 import time
 
 class BaseController(object):
+
     def __init__(self, width, height, debugMode=False):
         self.width = width
         self.height = height
@@ -10,6 +11,10 @@ class BaseController(object):
         self.appStack = []
         self.queuedInsertions = []
         self.debugMode = debugMode
+
+    # Initialize your controller here, not in the constructor !
+    def initialize(self):
+        pass
 
     def setInputHandler(self, input):
         self.input = input
