@@ -18,7 +18,7 @@ class TestPattern(Application):
     def initialize(self, controller,  width, height):
         super(TestPattern,self).initialize(controller,  width, height)
         self.pos = [0,0]
-        self.dir = [1,1]
+        self.dir = [0,1]
         self.last_step_time = 0
 
     def processInput(self, inputs, delta_time):
@@ -46,9 +46,11 @@ class TestPattern(Application):
             if(self.pos[1] > self.height - 1):
                 self.dir[1] = -self.dir[1]
                 self.pos[1] = self.height - 1
+                self.pos[0] = self.pos[0]+1
             elif(self.pos[1] < 0):
                 self.dir[1] = -self.dir[1]
                 self.pos[1] = 0
+                self.pos[0] = self.pos[0]+1
 
             if(self.pos[0] > self.width - 1):
                 self.dir[0] = -self.dir[0]
@@ -56,6 +58,8 @@ class TestPattern(Application):
             elif(self.pos[0] < 0):
                 self.dir[0] = -self.dir[0]
                 self.pos[0] = 0
+            if self.pos == [self.width, self.height]:
+                self.pos = [0,0]
 
         elif self.modes[self.modeIdx] in [self.interpolate, self.interpolateBW]:
             self.interpolation = self.interpolation + self.interpolateDir*delta_time/1000.0
@@ -81,7 +85,7 @@ class TestPattern(Application):
 
         px = round(self.pos[0])
         py = round(self.pos[1])
-        draw.rectangle([px-2, py-2, px+2, py+2], outline=(0,100,54))
+        #draw.rectangle([px-2, py-2, px+2, py+2], outline=(0,100,54))
         draw.point([px, py], fill=(255,0,0))
         return True
 

@@ -2,6 +2,7 @@ from PIL import ImageTk, Image, ImageDraw
 import Tkinter as tk
 import serial
 import itertools
+import numpy as np
 
 from base import BaseController
 from base import BaseInput, KeyEvent
@@ -17,11 +18,10 @@ class LEDTableController(BaseController):
 
     def initialize(self):
         super(LEDTableController, self).initialize()
-        self.serial = serial.Serial(self.serialPort, self.baud, timeout=self.timeout, rtscts=True, dsrdtr=True)
-        # self.i = 0.0
+        self.serial = serial.Serial(self.serialPort, timeout=self.timeout, rtscts=True, dsrdtr=True)
         print "Opened serial port: ", self.serial
 
-        # p = self.tpm2.createCmdPacket("rwConnPixelCnt",[255])
+        # p = self.tpm2.createCmdPacket("rwConnPixelCnt",[50])
         # res = self.serialTPM2(p)
         # if len(res) == 1:
         #     print "Result: " < self.tpm2.ackByte[res]
@@ -30,16 +30,14 @@ class LEDTableController(BaseController):
 
 
     def showFrame(self):
+        # Swap row to column order of pixels for output
+        img_data = np.array(self.frame.getdata()).reshape(self.height, self.width, 3)
+        img_data2 = np.zeros([self.width, self.height, 3],dtype=np.int)
+        for x in range(0,self.width):
+            for y in range(0, self.height):
+                img_data2[x][y] = img_data[y][x]
 
-        data = list(itertools.chain(*self.frame.getdata()))
-        # col =(int(self.i*255),int((1-self.i)*255),0)
-        #
-        # print col
-        # data = list(itertools.chain(*[col for i in range(0,self.width*self.height)]))
-        # self.i= self.i + 0.01
-        # if self.i > 1:
-        #     self.i = 0
-        p = self.tpm2.createDataPacket(data)
+        p = self.tpm2.createDataPacket(img_data2.flatten())
         res = self.serialTPM2(p)
         return True
 
