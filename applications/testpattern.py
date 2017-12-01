@@ -59,7 +59,7 @@ class TestPattern(Application):
 
         elif self.modes[self.modeIdx] in [self.interpolate, self.interpolateBW]:
             self.interpolation = self.interpolation + self.interpolateDir*delta_time/1000.0
-            
+
             if self.interpolation > 1:
                 self.interpolation = 1
                 self.interpolateDir = -self.interpolateDir

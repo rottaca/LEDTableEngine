@@ -53,7 +53,7 @@ class BaseController(object):
         averageProcessingTime = 0
         lastDisplayUpdate = new_time
         lastDebugStatsUpdate = new_time
-
+        lastDisplayUpdateDelta = 0
         self.showFrame()
 
         if len(self.appStack) > 0:
@@ -69,11 +69,13 @@ class BaseController(object):
             delta_time = new_time - last_time
             averageProcessingTime = 0.9*averageProcessingTime + 0.1*delta_time
 
+            t1 = self.getTime()
             self.appStack[-1].processInput(inputs, delta_time)
-
+            t2 = self.getTime()
             if self.appStack[-1].requiresRedraw():
                 self.appStack[-1].draw(self.frame, self.draw, delta_time)
                 self.showFrame()
+                lastDisplayUpdateDelta = self.getTime() - t2
                 averageDispUpdateTime = 0.9*averageDispUpdateTime + 0.1*(new_time - lastDisplayUpdate)
                 lastDisplayUpdate = new_time
 
@@ -81,8 +83,10 @@ class BaseController(object):
                 lastDebugStatsUpdate = new_time
                 print "Debug Statistics"
                 print "------------------------------------------------------"
-                print "Display Rate: ", 1000.0/averageDispUpdateTime, " FPS"
-                print "Processing Rate: ", 1000.0/averageProcessingTime, " FPS"
+                print "Avg. Display Rate: ", 1000.0/averageDispUpdateTime, " FPS"
+                print "Last. Display Time: ", lastDisplayUpdateDelta, " ms"
+                print "Avg. Processing Rate: ", 1000.0/averageProcessingTime, " FPS"
+                print "Last. Processing Time: ", t2-t1, " ms"
                 print "Apps on Stack:", len(self.appStack)
                 print "Pending apps for insert:", len(self.queuedInsertions)
                 print "------------------------------------------------------"
