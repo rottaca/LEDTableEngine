@@ -12,7 +12,6 @@
 class KeyboardDebouncer {
 private:
   BaseInput::InputEvents m_events;
-  std::vector<bool> m_eventUpdated;
 public:
   KeyboardDebouncer ();
   virtual ~KeyboardDebouncer ();

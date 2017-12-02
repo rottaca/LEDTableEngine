@@ -34,6 +34,10 @@ public:
 
   virtual void setController(BaseController* ctrl);
   virtual BaseInput::InputEvents getInputEvents()=0;
+
+  static bool isReleased(const InputEvents& events, InputEventName name);
+  static bool isPressed(const InputEvents& events, InputEventName name);
+  static bool isHold(const InputEvents& events, InputEventName name);
 };
 
 

@@ -4,7 +4,7 @@ from PIL import ImageTk, Image, ImageDraw, ImageFont
 import Tkinter as tk
 from random import randint
 
-from engine.base import Application
+from LEDTableEngine.base import Application
 
 class Menu(Application):
 

@@ -14,6 +14,6 @@ int main (int argc, char *argv[])
 
   dc->initialize(20, 15, kh, true);
   dc->addApplication(testPatterns);
-  dc->run();
+  dc->run(30);
   return 0;
 }

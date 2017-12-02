@@ -72,7 +72,7 @@ class BaseController(object):
             t1 = self.getTime()
             self.appStack[-1].processInput(inputs, delta_time)
             t2 = self.getTime()
-            if self.appStack[-1].requiresRedraw():
+            if self.appStack[-1].requiresRedraw() or True:
                 self.appStack[-1].draw(self.frame, self.draw, delta_time)
                 self.showFrame()
                 lastDisplayUpdateDelta = self.getTime() - t2

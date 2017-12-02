@@ -4,7 +4,7 @@ from PIL import ImageTk, Image, ImageDraw
 import Tkinter as tk
 from random import randint
 
-from engine.base import Application
+from LEDTableEngine.base import Application
 
 class TestPattern(Application):
 
@@ -32,9 +32,9 @@ class TestPattern(Application):
                 self.modeIdx = 0
 
 
-        if self.controller.getTime() - self.last_step_time < 100:
-            self.redraw_frame = False
-            return True
+        # if self.controller.getTime() - self.last_step_time < 100:
+        #     self.redraw_frame = False
+        #     return True
 
         self.last_step_time = self.controller.getTime()
         self.redraw_frame = True

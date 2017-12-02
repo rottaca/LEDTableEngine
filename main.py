@@ -1,8 +1,8 @@
 
 import argparse
 
-from engine.desktop import DesktopController, DesktopInput
-from engine.ledTable import LEDTableController, LEDTableInput, TPM2
+from LEDTableEngine.desktop import DesktopController, DesktopInput
+from LEDTableEngine.ledTable import LEDTableController, LEDTableInput, TPM2
 
 from applications.testpattern import TestPattern
 from applications.snake import Snake
@@ -22,7 +22,7 @@ if __name__ == '__main__':
     parser.add_argument('--FPS', default=30, type=int, help="Processing framerate for applications.")
     parser.add_argument('--debug', default=False, action='store_true', help="Enable debug output.")
     args = parser.parse_args()
-    
+
     if args.debug:
         print "Parameters: ", args
 

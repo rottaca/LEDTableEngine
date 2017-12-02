@@ -1,6 +1,8 @@
 #include "baseController.hpp"
 #include "baseInput.hpp"
 
+#define FPS_INTERPOLATE (0.01)
+
 BaseController::BaseController(){
   m_width = 0;
   m_height = 0;
@@ -88,7 +90,7 @@ void BaseController::run(size_t fps){
       }
       std::cout << std::endl;
     }
-    
+
     TimeUnit t1 = getTimeMs();
     m_applicationStack.top()->processInput(events, eventsDebounced);
     // std::this_thread::sleep_for(std::chrono::milliseconds(10));
@@ -99,8 +101,8 @@ void BaseController::run(size_t fps){
       m_applicationStack.top()->draw(m_frameBuffer);
       // std::this_thread::sleep_for(std::chrono::milliseconds(5));
       showFrame(m_frameBuffer);
-      avgDispUpdateTime = 0.9*avgDispUpdateTime + 0.1*(getTimeMs() - t2);
-      avgDispUpdateRate = 0.9*avgDispUpdateRate + 0.1*(newTime - lastDisplayUpdate);
+      avgDispUpdateTime = (1-FPS_INTERPOLATE)*avgDispUpdateTime + FPS_INTERPOLATE*(getTimeMs() - t2);
+      avgDispUpdateRate = (1-FPS_INTERPOLATE)*avgDispUpdateRate + FPS_INTERPOLATE*(newTime - lastDisplayUpdate);
       lastDisplayUpdate = newTime;
     }
 
@@ -118,8 +120,8 @@ void BaseController::run(size_t fps){
     }
 
     frameTime = getTimeMs() - newTime;
-    avgLoopRate = 0.9*avgLoopRate + 0.1*(newTime-lastTime);
-    avgFrameTime = 0.9*avgFrameTime + 0.1*frameTime;
+    avgLoopRate = (1-FPS_INTERPOLATE)*avgLoopRate + FPS_INTERPOLATE*(newTime-lastTime);
+    avgFrameTime = (1-FPS_INTERPOLATE)*avgFrameTime + FPS_INTERPOLATE*frameTime;
     lastTime = newTime;
 
     if(frameTime < fpsMs){

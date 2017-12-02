@@ -1,3 +1,0 @@
-/home/andreas/Softwareentwicklung/Python/projects/ledTable/build/CMakeFiles/edit_cache.dir
-/home/andreas/Softwareentwicklung/Python/projects/ledTable/build/CMakeFiles/rebuild_cache.dir
-/home/andreas/Softwareentwicklung/Python/projects/ledTable/build/CMakeFiles/LEDTable.dir
