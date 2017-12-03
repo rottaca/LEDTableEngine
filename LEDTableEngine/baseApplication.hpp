@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "baseInput.hpp"
+#include "types.hpp"
 
 class BaseController;
 
@@ -33,7 +34,8 @@ public:
   virtual const Palette& getPalette();
 
   virtual void processInput(const BaseInput::InputEvents &events,
-                            const BaseInput::InputEvents &eventsDebounced)=0;
+                            const BaseInput::InputEvents &eventsDebounced,
+                            TimeUnit deltaTime)=0;
   virtual void draw(std::vector<uint8_t> &frame)=0;
 };
 

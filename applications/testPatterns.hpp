@@ -32,7 +32,8 @@ public:
   void initialize(BaseController * ctrl);
 
   void processInput(const BaseInput::InputEvents &events,
-                    const BaseInput::InputEvents &eventsDebounced);
+                    const BaseInput::InputEvents &eventsDebounced,
+                    TimeUnit deltaTime);
   void draw(std::vector<uint8_t> &frame);
 };
 

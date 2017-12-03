@@ -50,7 +50,8 @@ void TestPatternApp::initialize(BaseController * ctrl){
 }
 
 void TestPatternApp::processInput(const BaseInput::InputEvents &events,
-                          const BaseInput::InputEvents &eventsDebounced){
+                          const BaseInput::InputEvents &eventsDebounced,
+                          TimeUnit deltaTime){
     bool modeChanged = false;
     if(BaseInput::isPressed(eventsDebounced,BaseInput::InputEventName::ENTER)){
       m_patternType = (PatternType)((int)m_patternType + 1);
@@ -69,12 +70,8 @@ void TestPatternApp::processInput(const BaseInput::InputEvents &events,
       case RANDOM:
       break;
       case COLORFADE:
-          m_interpolate+=0.001;
-          if(m_interpolate > 1)
-            m_interpolate = 0;
-      break;
       case COLORFADE_BW:
-          m_interpolate+=0.001;
+          m_interpolate+=deltaTime/10000.0;
           if(m_interpolate > 1)
             m_interpolate = 0;
       break;

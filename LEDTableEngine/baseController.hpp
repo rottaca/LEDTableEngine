@@ -13,19 +13,19 @@
 #include "baseApplication.hpp"
 
 #include "keyboardDebouncer.hpp"
+#include "types.hpp"
 
 class BaseInput;
 
 class BaseController {
 
 public:
-  typedef std::chrono::milliseconds::rep TimeUnit;
 
 protected:
   size_t m_width;
   size_t m_height;
   size_t m_size;
-  bool m_debug;
+  bool m_debug, m_isRunning;
 
 private:
   std::shared_ptr<BaseInput> m_inputHandler;
@@ -44,7 +44,7 @@ public:
   void addApplication(std::shared_ptr<BaseApplication> app, bool queuedInsert = false);
   void run(size_t fps=50);
 
-  std::chrono::milliseconds::rep getTimeMs();
+  TimeUnit getTimeMs();
   void clearFrame(uint8_t val = 0);
 
   size_t getWidth(){

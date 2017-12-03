@@ -1,5 +1,5 @@
-#ifndef _H_DESKTOP_CONTROLLER_
-#define _H_DESKTOP_CONTROLLER_
+#ifndef _H_MATRIX_CONTROLLER_
+#define _H_MATRIX_CONTROLLER_
 
 #include <cstdlib>
 #include <memory>
@@ -7,20 +7,14 @@
 #include <vector>
 #include <chrono>
 
-// SDL-Header einbinden
-#ifdef WIN32
-#include <SDL.h>
-#else
-#include <SDL2/SDL.h>
-#endif
-
 #include "../LEDTableEngine/baseController.hpp"
+#include "TPM2.hpp"
 
-class DesktopController : public BaseController {
+class MatrixController : public BaseController {
 public:
 
-  DesktopController();
-  ~DesktopController ();
+  MatrixController();
+  ~MatrixController ();
 
   bool initialize(size_t width, size_t height,
                           std::shared_ptr<BaseInput> input, bool debug=false);
@@ -30,12 +24,8 @@ private:
   void shutdown();
   void copyImageToBuffer(const std::vector<uint8_t>&frame);
 
-  int m_upscaleWidth, m_upscaleHeight;
-  SDL_Window* m_window;
-  SDL_Surface *m_windowSurf;
-  SDL_Surface* m_imageSurf;
-  SDL_Renderer* m_renderer;
-  float m_upscale;
+  TPM2::Packet m_frameDataPacket;
+  std::shared_ptr<TPM2> m_tpm2;
 
 };
 

@@ -22,6 +22,7 @@ bool BaseController::initialize(size_t width, size_t height,
   m_debug = debug;
   m_inputHandler = input;
   m_inputHandler->setController(this);
+  m_isRunning = true;
 
   while(!m_applicationStack.empty())
     m_applicationStack.pop();
@@ -66,6 +67,7 @@ void BaseController::run(size_t fps){
   TimeUnit lastDisplayUpdate = newTime;
   TimeUnit lastDebugStatsUpdate = newTime;
   TimeUnit frameTime = fpsMs;
+  TimeUnit deltaTime;
   float avgDispUpdateRate = 0;
   float avgDispUpdateTime = 0;
   float avgLoopRate = 0;
@@ -74,9 +76,11 @@ void BaseController::run(size_t fps){
 
   showFrame(m_frameBuffer);
 
-  while (m_applicationStack.size() > 0) {
+  while (m_isRunning && m_applicationStack.size() > 0) {
 
     newTime = getTimeMs();
+    deltaTime = newTime-lastTime;
+    avgLoopRate = (1-FPS_INTERPOLATE)*avgLoopRate + FPS_INTERPOLATE*deltaTime;
 
     BaseInput::InputEvents events = m_inputHandler->getInputEvents();
     m_kdb.processInput(events);
@@ -92,7 +96,7 @@ void BaseController::run(size_t fps){
     }
 
     TimeUnit t1 = getTimeMs();
-    m_applicationStack.top()->processInput(events, eventsDebounced);
+    m_applicationStack.top()->processInput(events, eventsDebounced,deltaTime);
     // std::this_thread::sleep_for(std::chrono::milliseconds(10));
     TimeUnit t2 = getTimeMs();
     avgInputProcTime = 0.9*avgInputProcTime + 0.1*(t2-t1);
@@ -120,12 +124,12 @@ void BaseController::run(size_t fps){
     }
 
     frameTime = getTimeMs() - newTime;
-    avgLoopRate = (1-FPS_INTERPOLATE)*avgLoopRate + FPS_INTERPOLATE*(newTime-lastTime);
     avgFrameTime = (1-FPS_INTERPOLATE)*avgFrameTime + FPS_INTERPOLATE*frameTime;
     lastTime = newTime;
 
+    int sleepTime = 0;
     if(frameTime < fpsMs){
-      int sleepTime = (int)(fpsMs - frameTime);
+      sleepTime = (int)(fpsMs - frameTime);
       std::chrono::milliseconds sleepDur = std::chrono::milliseconds(sleepTime);
       std::this_thread::sleep_for(sleepDur);
     }
@@ -139,6 +143,7 @@ void BaseController::run(size_t fps){
       std::cout << "Avg. Display Time:        " << avgDispUpdateTime << " ms" << std::endl;
       std::cout << "Avg. Proc Time:           " << avgInputProcTime << " ms" << std::endl;
       std::cout << "Avg. Proc + Display Time: " << avgFrameTime << " ms" << std::endl;
+      std::cout << "Last Sleep Time:          " << sleepTime << " ms" << std::endl;
       std::cout << "Apps on Stack:            " << m_applicationStack.size() << std::endl;
       std::cout << "------------------------------------------------------"  << std::endl;
     }
@@ -155,7 +160,7 @@ void BaseController::clearFrame(uint8_t val){
 void BaseController::shutdown(){
 
 }
-BaseController::TimeUnit BaseController::getTimeMs(){
+TimeUnit BaseController::getTimeMs(){
     auto now = std::chrono::high_resolution_clock::now();
     auto millis = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
     return millis;

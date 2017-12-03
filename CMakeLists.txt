@@ -11,6 +11,8 @@ add_executable(LEDTable
       LEDTableEngine/keyboardDebouncer.cpp
 
       controllers/desktopController.cpp
+      controllers/matrixController.cpp
+      controllers/TPM2.cpp
 
 
       inputHandlers/keyboard.cpp
@@ -20,11 +22,13 @@ add_executable(LEDTable
 
 )
 
-find_package(GTK2 2.6 REQUIRED gtk)
-if(GTK2_FOUND)
-   include_directories(${GTK2_INCLUDE_DIRS})
-   target_link_libraries(LEDTable ${GTK2_LIBRARIES})
-endif()
+INCLUDE(FindPkgConfig)
+
+PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
+PKG_SEARCH_MODULE(SDL2IMAGE REQUIRED SDL2_image>=2.0.0)
+
+INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIRS})
+TARGET_LINK_LIBRARIES(LEDTable ${SDL2_LIBRARIES} ${SDL2IMAGE_LIBRARIES})
 
 find_package (Threads)
 target_link_libraries (LEDTable ${CMAKE_THREAD_LIBS_INIT})
