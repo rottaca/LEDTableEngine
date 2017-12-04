@@ -2,6 +2,6 @@
 #define _H_TYPES_
 #include <chrono>
 
-  typedef std::chrono::milliseconds::rep TimeUnit;
+  typedef float TimeUnit;
 
 #endif

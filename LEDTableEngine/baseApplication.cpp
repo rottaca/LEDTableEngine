@@ -18,6 +18,7 @@ void BaseApplication::initialize(BaseController * ctrl){
   m_isPaused = false;
   // Set default color
   m_colorPalette = {0,0,0};
+  m_bufferColorMode = BufferColorMode::PALETTE;
 }
 void BaseApplication::pauseApp(){
   m_isPaused = true;
@@ -34,4 +35,7 @@ bool BaseApplication::requiresRedraw(){
 }
 bool BaseApplication::hasFinished(){
   return m_hasFinished;
+}
+BufferColorMode getBufferColorMode(){
+  return m_bufferColorMode;
 }

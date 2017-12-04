@@ -20,7 +20,8 @@ protected:
   bool m_hasFinished;
   bool m_isPaused;
   Palette m_colorPalette;
-
+  BufferColorMode m_bufferColorMode;
+  
 public:
   BaseApplication();
   virtual ~BaseApplication ();
@@ -32,6 +33,7 @@ public:
   virtual bool requiresRedraw();
   virtual bool hasFinished();
   virtual const Palette& getPalette();
+  virtual BufferColorMode getBufferColorMode();
 
   virtual void processInput(const BaseInput::InputEvents &events,
                             const BaseInput::InputEvents &eventsDebounced,

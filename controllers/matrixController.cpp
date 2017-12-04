@@ -21,22 +21,29 @@ bool MatrixController::initialize(size_t width, size_t height,
 
 }
 void MatrixController::copyImageToBuffer(const std::vector<uint8_t>&frame){
-   const BaseApplication::Palette& palette = getCurrentPalette();
-   size_t idx = 0;
    uint8_t* p = m_frameDataPacket.dataPtr;
-   uint8_t r,g,b;
-   for (size_t y = 0; y < m_height; y++) {
-     for (size_t x = 0; x < m_width; x++) {
+    
+    for (size_t y = 0; y < m_height; y++) {
+	   for (size_t x = 0; x < m_width; x++) {
 
-       int c = frame[idx++];
-       r = palette[c*3];
-       g = palette[c*3 + 1];
-       b = palette[c*3 + 2];
-       *p++ = r;
-       *p++ = g;
-       *p++ = b;
-     }
-   }
+	     // Palette mode
+	     if(m_bufferMode == BufferColorMode::PALETTE){
+		   int c = frame[idx++];
+		   r = palette[c*3];
+		   g = palette[c*3 + 1];
+		   b = palette[c*3 + 2];
+		 }
+		 // RGB Mode
+	     else{
+		   r = frame[idx++];
+		   g = frame[idx++];
+		   b = frame[idx++];
+	     }
+	     *p++ = r;
+	     *p++ = g;
+	     *p++ = b;
+	   }
+    }
 }
 
 void MatrixController::showFrame(const std::vector<uint8_t>&frame){

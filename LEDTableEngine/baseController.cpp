@@ -23,12 +23,14 @@ bool BaseController::initialize(size_t width, size_t height,
   m_inputHandler = input;
   m_inputHandler->setController(this);
   m_isRunning = true;
-
+  m_bufferMode = BufferColorMode::PALETTE;
+  
   while(!m_applicationStack.empty())
     m_applicationStack.pop();
 
   m_queuedApplications.clear();
   createFrame();
+  updateBufferColorMode();
 
   return true;
 }
@@ -73,9 +75,9 @@ void BaseController::run(size_t fps){
   float avgLoopRate = 0;
   float avgFrameTime = 0;
   float avgInputProcTime = 0;
-
-  showFrame(m_frameBuffer);
-
+  
+  updateBufferColorMode();
+  
   while (m_isRunning && m_applicationStack.size() > 0) {
 
     newTime = getTimeMs();
@@ -97,30 +99,32 @@ void BaseController::run(size_t fps){
 
     TimeUnit t1 = getTimeMs();
     m_applicationStack.top()->processInput(events, eventsDebounced,deltaTime);
-    // std::this_thread::sleep_for(std::chrono::milliseconds(10));
     TimeUnit t2 = getTimeMs();
-    avgInputProcTime = 0.9*avgInputProcTime + 0.1*(t2-t1);
 
     if(m_applicationStack.top()->requiresRedraw()){
       m_applicationStack.top()->draw(m_frameBuffer);
-      // std::this_thread::sleep_for(std::chrono::milliseconds(5));
       showFrame(m_frameBuffer);
       avgDispUpdateTime = (1-FPS_INTERPOLATE)*avgDispUpdateTime + FPS_INTERPOLATE*(getTimeMs() - t2);
       avgDispUpdateRate = (1-FPS_INTERPOLATE)*avgDispUpdateRate + FPS_INTERPOLATE*(newTime - lastDisplayUpdate);
       lastDisplayUpdate = newTime;
     }
+	
+    avgInputProcTime = 0.9*avgInputProcTime + 0.1*(t2-t1);
 
     if(m_queuedApplications.size() > 0){
       for(auto app: m_queuedApplications){
         addApplicationDirect(app);
       }
       m_queuedApplications.clear();
+	  updateBufferColorMode();
     }
     if(m_applicationStack.top()->hasFinished()){
       m_applicationStack.top()->pauseApp();
       m_applicationStack.pop();
-      if(m_applicationStack.size() > 0)
-        m_applicationStack.top()->continueApp();
+      if(m_applicationStack.size() > 0){
+		  updateBufferColorMode();
+          m_applicationStack.top()->continueApp();
+	  }
     }
 
     frameTime = getTimeMs() - newTime;
@@ -152,16 +156,33 @@ void BaseController::run(size_t fps){
 }
 
 void BaseController::createFrame(){
-  m_frameBuffer.resize(m_size);
+  switch(m_bufferMode){
+	  case RGB:
+		m_frameBuffer.resize(m_size*3);
+	  break;
+	  case PALETTE:
+		m_frameBuffer.resize(m_size);
+	  break;
+  }
 }
 void BaseController::clearFrame(uint8_t val){
-  m_frameBuffer.assign(m_size,val);
+  m_frameBuffer.assign(m_frameBuffer.size(),val);
+}
+void BaseController::updateBufferColorMode(){
+    assert(m_applicationStack.size() > 0);
+	BufferColorMode mode = m_applicationStack.top()->getBufferColorMode();
+	if(m_bufferMode != mode){
+		m_bufferMode = mode;
+		createFrame();
+	}else{
+		m_bufferMode = mode;
+	}
 }
 void BaseController::shutdown(){
 
 }
 TimeUnit BaseController::getTimeMs(){
     auto now = std::chrono::high_resolution_clock::now();
-    auto millis = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
-    return millis;
+    auto millis = std::chrono::duration_cast<std::chrono::nanoseconds>(now.time_since_epoch()).count();
+    return millis/1000.0;
 }

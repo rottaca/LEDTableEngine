@@ -1,5 +1,6 @@
 #include "desktopController.hpp"
 #include <cmath>
+#include <cstring>
 
 DesktopController::DesktopController(){
 
@@ -66,22 +67,33 @@ void DesktopController::copyImageToBuffer(const std::vector<uint8_t>&frame){
    int rowstride = m_imageSurf->pitch;
    unsigned char* pixels = (unsigned char*)m_imageSurf->pixels;
    const BaseApplication::Palette& palette = getCurrentPalette();
-   size_t idx = 0;
-   uint8_t r,g,b;
-   for (size_t y = 0; y < m_height; y++) {
-     unsigned char* p = pixels + y*rowstride;
-     for (size_t x = 0; x < m_width; x++) {
+   
+	size_t idx = 0;
+	uint8_t r,g,b;
+    for (size_t y = 0; y < m_height; y++) {
+	   unsigned char* p = pixels + y*rowstride;
+	   for (size_t x = 0; x < m_width; x++) {
 
-       int c = frame[idx++];
-       r = palette[c*3];
-       g = palette[c*3 + 1];
-       b = palette[c*3 + 2];
-       *p++ = r;
-       *p++ = g;
-       *p++ = b;
-       *p++ = 255;
-     }
-   }
+	     // Palette mode
+	     if(m_bufferMode == BufferColorMode::PALETTE){
+		   int c = frame[idx++];
+		   r = palette[c*3];
+		   g = palette[c*3 + 1];
+		   b = palette[c*3 + 2];
+		 }
+		 // RGB Mode
+	     else{
+		   r = frame[idx++];
+		   g = frame[idx++];
+		   b = frame[idx++];
+	     }
+	     *p++ = r;
+	     *p++ = g;
+	     *p++ = b;
+	     *p++ = 255;
+	   }
+    }
+  
    SDL_UnlockSurface(m_imageSurf);
 }
 
