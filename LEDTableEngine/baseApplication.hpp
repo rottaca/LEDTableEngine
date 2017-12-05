@@ -21,7 +21,7 @@ protected:
   bool m_isPaused;
   Palette m_colorPalette;
   BufferColorMode m_bufferColorMode;
-  
+
 public:
   BaseApplication();
   virtual ~BaseApplication ();
@@ -38,7 +38,7 @@ public:
   virtual void processInput(const BaseInput::InputEvents &events,
                             const BaseInput::InputEvents &eventsDebounced,
                             TimeUnit deltaTime)=0;
-  virtual void draw(std::vector<uint8_t> &frame)=0;
+  virtual void draw(Image &frame)=0;
 };
 
 

@@ -20,9 +20,9 @@ public:
                           std::shared_ptr<BaseInput> input, bool debug=false);
 
 private:
-  void showFrame(const std::vector<uint8_t>&frame);
+  void showFrame(const Image&frame);
   void shutdown();
-  void copyImageToBuffer(const std::vector<uint8_t>&frame);
+  void copyImageToBuffer(const Image&frame);
 
   TPM2::Packet m_frameDataPacket;
   std::shared_ptr<TPM2> m_tpm2;

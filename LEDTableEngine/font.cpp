@@ -9,17 +9,13 @@ This file is part of the zCraft project.
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <assert.h>
 
-#include "../opengl/opengl.hpp"
-#include "../config.hpp"
-#include "../bmfont/Font.hpp"
-#include "../core/stringutils.hpp" // for cropStr()
+#include "font.hpp"
 
 // Character to use when a character has not been found
 #define PLACEHOLDER_CHAR '?'
 
-namespace zn
-{
 namespace bmfont
 {
 	/*
@@ -65,18 +61,20 @@ namespace bmfont
 
 	Font::Font()
 	{
-		m_textures = nullptr;
+
 	}
 
 	Font::~Font()
 	{
-		if(m_textures != nullptr)
-			delete[] m_textures;
+		for(Image* i: m_textures){
+			delete i;
+		}
+		m_textures.clear();
 	}
 
 	bool Font::loadFromFile(const std::string fpath)
 	{
-		if(m_textures != nullptr)
+		if(m_textures.size()> 0)
 		{
 			std::cout << "WARNING: Font::loadFromFile(): "
 				<< "called twice. Second call is ignored." << std::endl;
@@ -96,17 +94,22 @@ namespace bmfont
 		int dirCharPos = fpath.find_last_of("/\\");
 		std::string dir = fpath.substr(0, dirCharPos + 1);
 
-		m_textures = new sf::Texture[m_chars.pages.size()];
+		m_textures.resize(m_chars.pages.size());
 
 		for(unsigned int i = 0; i < m_chars.pages.size(); i++)
 		{
 			const std::string texPath = dir + m_chars.pages[i];
-			if(!m_textures[i].loadFromFile(texPath))
+			SDL_Surface* surf = SDL_LoadBMP(texPath.c_str());
+			if(!surf)
 			{
 				std::cout << "ERROR: Font::loadFromFile(): "
 					<< "Couldn't load texture file \"" << texPath << "\"" << std::endl;
 				return false;
 			}
+			Image* img = new Image(surf->w, surf->h, surf->pitch/surf->w);
+			memcpy(img->data, surf->pixels,img->size);
+			SDL_FreeSurface(surf);
+			m_textures[i] = img;
 		}
 
 		return true;
@@ -197,8 +200,9 @@ namespace bmfont
 					else if(key == "file")
 					{
 						// Remove quotes
-						const std::string filename = cropStr(value, '"');
-						m_chars.pages[id] = filename;
+						value.erase(0,1);
+						value.erase(value.size()-1,1);
+						m_chars.pages[id] = value;
 					}
 				}
 			}
@@ -267,9 +271,9 @@ namespace bmfont
 		return true;
 	}
 
-	void Font::draw(const std::wstring &text, bool invertYAxis)
+	void Font::draw(Image& img, const std::string &text, std::vector<uint8_t> color)
 	{
-		draw(text, 0, 0, invertYAxis);
+		draw(img,text, 0, 0, color);
 	}
 
 	int Font::getLineHeight()
@@ -277,16 +281,16 @@ namespace bmfont
 		return m_chars.lineHeight;
 	}
 
-	Vector2i Font::getTextSize(const std::wstring &text, int begin, int end)
+	Point Font::getTextSize(const std::string &text, int begin, int end)
 	{
 		if(begin < 0)
-			return Vector2i();
+			return Point(0,0);
 		if(end < 0 || end >= static_cast<int>(text.size()))
 			end = text.size()-1;
 
 		// TODO Font::getTextSize() : exact height instead of max height
 
-		Vector2i size(0, getLineHeight());
+		Point size(0, getLineHeight());
 		for(int i = begin; i <= end; ++i)
 		{
 			const CharDescriptor * cd = m_chars.getChar(text[i]);
@@ -305,18 +309,12 @@ namespace bmfont
 
 	// TODO Font: optimize rendering
 
-	void Font::draw(const std::wstring &text, float x0, float y0, bool invertYAxis)
+	void Font::draw(Image& img, const std::string &text, float x0, float y0, std::vector<uint8_t> color)
 	{
-		unsigned int originX = x0, originY = y0; // Cursor position
-		unsigned int x, y; // Shifted position
-		float tx, ty, tw, th; // Texture sub-rect coordinates
-		wchar_t c; // Current read character
+		assert(color.size() == img.channels);
 
-	#if defined ZN_OPENGL2
-		glEnable(GL_TEXTURE_2D);
-	#endif
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		ssize_t originX = x0, originY = y0; // Cursor position
+		wchar_t c; // Current read character
 
 		for(unsigned int i = 0; i < text.size(); i++)
 		{
@@ -343,73 +341,30 @@ namespace bmfont
 			}
 
 			// Use the glyph atlas texture
-			const sf::Texture & tex = m_textures[cd->page];
+			const Image* tex = m_textures[cd->page];
 
-			// Get glyph texture sub-rect
-			const sf::Vector2u ts = tex.getSize();
-			tx = static_cast<float>(cd->x) / static_cast<float>(ts.x);
-			ty = static_cast<float>(cd->y) / static_cast<float>(ts.y);
-			tw = static_cast<float>(cd->width) / static_cast<float>(ts.x);
-			th = static_cast<float>(cd->height) / static_cast<float>(ts.y);
-
-			// Get drawing coordinates
-			x = originX + cd->xoffset;
-			y = originY + cd->yoffset;
-
-			// Draw glyph
-
-			sf::Texture::bind(&tex);
-			gl::drawTexturedRect(
-				x, y, cd->width, cd->height,
-				tx, ty, tw, th);
-
-//			glBegin(GL_QUADS);
-//
-//			glTexCoord2f(tx, ty);
-//			glVertex2i(x, y);
-//
-//			glTexCoord2f(tx + tw, ty);
-//			glVertex2i(x + cd->width, y);
-//
-//			glTexCoord2f(tx + tw, ty + th);
-//			glVertex2i(x + cd->width, y + cd->height);
-//
-//			glTexCoord2f(tx, ty + th);
-//			glVertex2i(x, y + cd->height);
-//
-//			glEnd();
+	    for (ssize_t yFnt = 0; yFnt < cd->height; yFnt++) {
+	       unsigned char* pFnt = tex->data + (yFnt+cd->y)*tex->rowstride + tex->channels*(cd->x);
+		     for (ssize_t xFnt = 0; xFnt < cd->width; xFnt++) {
+			     if(*pFnt > 0){
+						 ssize_t xImg = originX + cd->xoffset + xFnt;
+						 ssize_t yImg = originY + cd->yoffset + yFnt;
+						 if(xImg >= 0 && xImg < img.width && yImg >= 0 && yImg <= img.height)
+						  {
+								int idx = (yImg)*img.width + xImg;
+							  for(uint8_t c: color)
+							 	img.data[idx++] = c;
+							}
+			     }
+					 pFnt+=tex->channels;
+	       }
+		  }
 
 			// Advance cursor
 			originX += cd->xadvance;
 
-			// DEBUG
-			// This code draws glyph rectangles
-			/*
-			glDisable(GL_TEXTURE_2D);
-			glColor4f(1,1,0,1);
-			glBegin(GL_LINE_LOOP);
-			glVertex2i(originX, originY);
-			glVertex2i(originX + cd->width, originY);
-			glVertex2i(originX + cd->width, originY + cd->height);
-			glVertex2i(originX, originY + cd->height);
-			glEnd();
-			glColor4f(0,1,1,1);
-			glBegin(GL_LINE_LOOP);
-			glVertex2i(x, y);
-			glVertex2i(x + cd->width, y);
-			glVertex2i(x + cd->width, y + cd->height);
-			glVertex2i(x, y + cd->height);
-			glEnd();
-			glColor4f(1,1,1,1);
-			glEnable(GL_TEXTURE_2D);
-			*/
 		}
-
-	#if defined ZN_OPENGL2
-		glDisable(GL_TEXTURE_2D);
-	#endif
 
 	}
 
 } // namespace bmfont
-} // namespace zn

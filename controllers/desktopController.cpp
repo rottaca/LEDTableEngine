@@ -61,31 +61,32 @@ bool DesktopController::initialize(size_t width, size_t height,
    return true;
 
 }
-void DesktopController::copyImageToBuffer(const std::vector<uint8_t>&frame){
+void DesktopController::copyImageToBuffer(const Image&frame){
    SDL_LockSurface(m_imageSurf);
 
    int rowstride = m_imageSurf->pitch;
    unsigned char* pixels = (unsigned char*)m_imageSurf->pixels;
    const BaseApplication::Palette& palette = getCurrentPalette();
-   
+
 	size_t idx = 0;
 	uint8_t r,g,b;
+
     for (size_t y = 0; y < m_height; y++) {
 	   unsigned char* p = pixels + y*rowstride;
 	   for (size_t x = 0; x < m_width; x++) {
 
 	     // Palette mode
 	     if(m_bufferMode == BufferColorMode::PALETTE){
-		   int c = frame[idx++];
+		   int c = frame.data[idx++];
 		   r = palette[c*3];
 		   g = palette[c*3 + 1];
 		   b = palette[c*3 + 2];
 		 }
 		 // RGB Mode
 	     else{
-		   r = frame[idx++];
-		   g = frame[idx++];
-		   b = frame[idx++];
+		   r = frame.data[idx++];
+		   g = frame.data[idx++];
+		   b = frame.data[idx++];
 	     }
 	     *p++ = r;
 	     *p++ = g;
@@ -93,11 +94,11 @@ void DesktopController::copyImageToBuffer(const std::vector<uint8_t>&frame){
 	     *p++ = 255;
 	   }
     }
-  
+
    SDL_UnlockSurface(m_imageSurf);
 }
 
-void DesktopController::showFrame(const std::vector<uint8_t>&frame){
+void DesktopController::showFrame(const Image&frame){
   // Wir holen uns so lange neue Ereignisse, bis es keine mehr gibt.
   SDL_Event event;
   while(SDL_PollEvent(&event))
@@ -115,6 +116,10 @@ void DesktopController::showFrame(const std::vector<uint8_t>&frame){
   copyImageToBuffer(frame);
   SDL_Texture* bitmapTex = SDL_CreateTextureFromSurface(m_renderer, m_imageSurf);
   SDL_RenderCopy(m_renderer, bitmapTex, NULL, NULL);
+  // TODO Draw grid
+  // SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+  // SDL_RenderDrawLine(m_renderer, 320, 200, 300, 240);
+
   SDL_RenderPresent(m_renderer);
   SDL_DestroyTexture(bitmapTex);
 }

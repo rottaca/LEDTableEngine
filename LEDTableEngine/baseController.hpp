@@ -19,20 +19,18 @@ class BaseInput;
 
 class BaseController {
 
-public:
-  enum BufferColorMode{RGB, PALETTE};
 protected:
   size_t m_width;
   size_t m_height;
   size_t m_size;
   bool m_debug, m_isRunning;
   BufferColorMode m_bufferMode;
-  
+
 private:
   std::shared_ptr<BaseInput> m_inputHandler;
   std::stack<std::shared_ptr<BaseApplication> > m_applicationStack;
   std::vector<std::shared_ptr<BaseApplication> > m_queuedApplications;
-  std::vector<uint8_t> m_frameBuffer;
+  Image m_frameBuffer;
   KeyboardDebouncer m_kdb;
 
 public:
@@ -40,13 +38,13 @@ public:
   virtual ~BaseController ();
 
   virtual bool initialize(size_t width, size_t height,
-                          std::shared_ptr<BaseInput> input, 
+                          std::shared_ptr<BaseInput> input,
 						  bool debug=false);
 
-  void addApplication(std::shared_ptr<BaseApplication> app, 
+  void addApplication(std::shared_ptr<BaseApplication> app,
                       bool queuedInsert = false);
   void run(size_t fps=50);
-  void clearFrame(uint8_t val = 0);
+  void clearFrame(std::vector<uint8_t> color);
 
   TimeUnit getTimeMs();
 
@@ -64,7 +62,7 @@ public:
   }
 
 protected:
-  virtual void showFrame(const std::vector<uint8_t>&frame)=0;
+  virtual void showFrame(const Image&frame)=0;
   virtual void shutdown();
   virtual const BaseApplication::Palette& getCurrentPalette();
   void updateBufferColorMode();

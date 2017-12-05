@@ -1,28 +1,27 @@
 /*
 Font.hpp
-Copyright (C) 2010-2012 Marc GILLERON
-This file is part of the zCraft project.
 */
 
-#ifndef ZN_BM_FONT_HPP_INCLUDED
-#define ZN_BM_FONT_HPP_INCLUDED
+#ifndef _H_BMP_FONT_
+#define _H_BMP_FONT_
 
-#include <SFML/Graphics.hpp>
 #include <vector>
 #include <list>
 #include <unordered_map>
 
-#include "engine/core/Vector2.hpp"
+#ifdef WIN32
+#include <SDL.h>
+#else
+#include <SDL2/SDL.h>
+#endif
+
+#include "types.hpp"
 
 /**
-	This is a simple C++ OpenGL BMFont implementation.
-	Requires SFML (sf::Texture), glew and C++11 compiler.
-	Documentation about BMFont : http://www.angelcode.com/products/bmfont/
-	(included in the installer provided on the website)
+	This is a simple C++ BMFont implementation.
+  Adpated from https://github.com/Zylann/zCraft
 **/
 
-namespace zn
-{
 namespace bmfont
 {
 	/**
@@ -198,7 +197,7 @@ namespace bmfont
 		CharSet m_chars;
 		FontInfo m_info;
 
-		sf::Texture * m_textures; // array of textures
+		std::vector<Image*> m_textures; // array of textures
 
 	public :
 
@@ -217,11 +216,11 @@ namespace bmfont
 
 		// Draws a text at (x,y) using the font. The invertYAxis parameter is
 		// useful when you have a coordinate system where Y axis goes upside.
-		void draw(const std::wstring &text, float x0, float y0, bool invertYAxis = false);
+		void draw(Image& img, const std::string &text, float x0, float y0, std::vector<uint8_t> color);
 
 		// Draws a text using the current OpenGL state. The invertYAxis parameter is
 		// useful when you have a coordinate system where Y axis goes upside.
-		void draw(const std::wstring &text, bool invertYAxis = false);
+		void draw(Image& img, const std::string &text, std::vector<uint8_t> color);
 
 		// Gets the maximum height of a line written with this font
 		int getLineHeight();
@@ -235,7 +234,7 @@ namespace bmfont
 		 * it will be clamped to the last index.
 		 * @return width and height of the measured text.
 		 */
-		Vector2i getTextSize(const std::wstring & text, int begin=0, int end=-1);
+		Point getTextSize(const std::string & text, int begin=0, int end=-1);
 
 	private :
 
@@ -245,6 +244,5 @@ namespace bmfont
 	};
 
 } // namespace bmfont
-} // namespace zn
 
-#endif // ZN_BM_FONT_HPP_INCLUDED
+#endif // _H_BMP_FONT_

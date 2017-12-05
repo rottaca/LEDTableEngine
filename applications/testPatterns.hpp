@@ -8,10 +8,11 @@
 #include <array>
 
 #include "../LEDTableEngine/baseApplication.hpp"
+#include "../LEDTableEngine/font.hpp"
 
 class TestPatternApp: public BaseApplication {
 protected:
-  enum PatternType{RANDOM = 0, COLORFADE, COLORFADE_BW, END};
+  enum PatternType{RANDOM = 0, COLORFADE, COLORFADE_BW, FONT_TEST, END};
 
   std::default_random_engine m_generator;
   std::uniform_int_distribution<int> m_colDist;
@@ -24,6 +25,7 @@ protected:
   Palette m_randomPalette;
   Palette m_colorFadebwPalette;
   Palette m_colorFadePalette;
+  bmfont::Font m_font;
 
 public:
   TestPatternApp();
@@ -34,7 +36,8 @@ public:
   void processInput(const BaseInput::InputEvents &events,
                     const BaseInput::InputEvents &eventsDebounced,
                     TimeUnit deltaTime);
-  void draw(std::vector<uint8_t> &frame);
+  void draw(Image &frame);
+  void continueApp();
 };
 
 

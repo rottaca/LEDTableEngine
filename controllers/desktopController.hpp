@@ -26,9 +26,9 @@ public:
                           std::shared_ptr<BaseInput> input, bool debug=false);
 
 private:
-  void showFrame(const std::vector<uint8_t>&frame);
+  void showFrame(const Image&frame);
   void shutdown();
-  void copyImageToBuffer(const std::vector<uint8_t>&frame);
+  void copyImageToBuffer(const Image&frame);
 
   int m_upscaleWidth, m_upscaleHeight;
   SDL_Window* m_window;

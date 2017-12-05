@@ -36,6 +36,6 @@ bool BaseApplication::requiresRedraw(){
 bool BaseApplication::hasFinished(){
   return m_hasFinished;
 }
-BufferColorMode getBufferColorMode(){
+BufferColorMode BaseApplication::getBufferColorMode(){
   return m_bufferColorMode;
 }

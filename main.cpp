@@ -6,8 +6,12 @@
 
 #include "controllers/desktopController.hpp"
 #include "controllers/matrixController.hpp"
+
 #include "inputHandlers/keyboardInput.hpp"
+
 #include "applications/testPatterns.hpp"
+#include "applications/textMenu.hpp"
+#include "applications/snake.hpp"
 
 extern char *optarg;
 extern int optind, opterr, optopt;
@@ -28,7 +32,15 @@ int main (int argc, char **argv)
 
   // Apps
   std::vector<std::shared_ptr<BaseApplication> > apps;
+  auto a = std::make_shared<TextMenu>();
+  a->setMenuItems({
+    TextMenu::MenuEntry("test",nullptr),
+    TextMenu::MenuEntry("long entry",nullptr),
+    TextMenu::MenuEntry("short",nullptr)
+  });
+  apps.push_back(a);
   apps.push_back(std::make_shared<TestPatternApp>());
+  apps.push_back(std::make_shared<Snake>());
 
   int opt;
   while ((opt = getopt(argc, argv ,"dc:i:")) != -1) {
@@ -67,7 +79,8 @@ int main (int argc, char **argv)
   }
 
   controllers[controllerIdx]->addApplication(apps[0]);
-  controllers[controllerIdx]->run(30);
+  //controllers[controllerIdx]->addApplication(apps[1]);
+  controllers[controllerIdx]->run(25);
 
   return 0;
 }
