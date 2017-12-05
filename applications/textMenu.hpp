@@ -11,14 +11,15 @@
 #include "../LEDTableEngine/font.hpp"
 
 class MenuEntryHandler;
+class BaseController;
 
 class TextMenu: public BaseApplication {
 public:
 
   struct MenuEntry{
     std::string name;
-    MenuEntryHandler* handler;
-    MenuEntry(std::string name, MenuEntryHandler* h){
+    std::shared_ptr<MenuEntryHandler> handler;
+    MenuEntry(std::string name, std::shared_ptr<MenuEntryHandler> h){
       this->name = name;
       handler = h;
     }
@@ -59,7 +60,16 @@ private:
 };
 
 class MenuEntryHandler{
+public:
   virtual bool onSelectMenuItem(const TextMenu::MenuEntry& menuEntry, size_t idx)=0;
 };
 
+class AppLauncher: public MenuEntryHandler{
+private:
+  std::shared_ptr<BaseApplication> m_app;
+  std::shared_ptr<BaseController> m_ctrl;
+public:
+  AppLauncher(std::shared_ptr<BaseController> ctrl, std::shared_ptr<BaseApplication> app);
+  bool onSelectMenuItem(const TextMenu::MenuEntry& menuEntry, size_t idx);
+};
 #endif

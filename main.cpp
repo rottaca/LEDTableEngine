@@ -30,18 +30,6 @@ int main (int argc, char **argv)
   std::vector<std::shared_ptr<BaseInput> > inputs;
   inputs.push_back(std::make_shared<KeyboardInput>());
 
-  // Apps
-  std::vector<std::shared_ptr<BaseApplication> > apps;
-  auto a = std::make_shared<TextMenu>();
-  a->setMenuItems({
-    TextMenu::MenuEntry("test",nullptr),
-    TextMenu::MenuEntry("long entry",nullptr),
-    TextMenu::MenuEntry("short",nullptr)
-  });
-  apps.push_back(a);
-  apps.push_back(std::make_shared<TestPatternApp>());
-  apps.push_back(std::make_shared<Snake>());
-
   int opt;
   while ((opt = getopt(argc, argv ,"dc:i:")) != -1) {
     switch (opt) {
@@ -72,15 +60,23 @@ int main (int argc, char **argv)
         exit(1);
     }
   }
-
-  if(!controllers[controllerIdx]->initialize(20, 15, inputs[inputIdx], debug)){
+  auto c = controllers[controllerIdx];
+  if(!c->initialize(20, 15, inputs[inputIdx], debug)){
     std::cout << "Init of controller failed" << std::endl;
     exit(1);
   }
 
-  controllers[controllerIdx]->addApplication(apps[0]);
-  //controllers[controllerIdx]->addApplication(apps[1]);
-  controllers[controllerIdx]->run(25);
+  // Apps
+  auto a = std::make_shared<TextMenu>();
+  a->setMenuItems({
+    TextMenu::MenuEntry("Test Pattern",
+                    std::make_shared<AppLauncher>(c,std::make_shared<TestPatternApp>())),
+    TextMenu::MenuEntry("Snake",
+                    std::make_shared<AppLauncher>(c,std::make_shared<Snake>()))
+  });
+
+  c->addApplication(a);
+  c->run(25);
 
   return 0;
 }

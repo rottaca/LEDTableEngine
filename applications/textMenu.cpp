@@ -94,7 +94,11 @@ void TextMenu::processInput(const BaseInput::InputEvents &events,
         }
         break;
         case BaseInput::InputEventName::ENTER:{
-
+          if(m_menuEntries[m_menuEntryIdx].handler){
+            m_menuEntries[m_menuEntryIdx].handler->onSelectMenuItem(m_menuEntries[m_menuEntryIdx], m_menuEntryIdx);
+          }else{
+            m_hasFinished = true;
+          }
         }
         break;
       }
@@ -140,4 +144,12 @@ void TextMenu::draw(Image &frame){
       frame(frame.height-1, frame.width/2,0) = 1;
     }
   }
+}
+
+AppLauncher::AppLauncher(std::shared_ptr<BaseController> ctrl, std::shared_ptr<BaseApplication> app){
+  m_app = app;
+  m_ctrl = ctrl;
+}
+bool AppLauncher::onSelectMenuItem(const TextMenu::MenuEntry& menuEntry, size_t idx){
+  m_ctrl->addApplication(m_app, true);
 }
