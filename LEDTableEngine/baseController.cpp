@@ -120,6 +120,7 @@ void BaseController::run(size_t fps){
                         }
                         m_queuedApplications.clear();
                         updateBufferColorMode();
+                        m_applicationStack.top()->continueApp();
                 }
                 if(m_applicationStack.top()->hasFinished()) {
                         m_applicationStack.top()->pauseApp();

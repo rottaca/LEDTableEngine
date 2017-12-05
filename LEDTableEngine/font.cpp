@@ -345,18 +345,19 @@ namespace bmfont
 
 	    for (ssize_t yFnt = 0; yFnt < cd->height; yFnt++) {
 	       unsigned char* pFnt = tex->data + (yFnt+cd->y)*tex->rowstride + tex->channels*(cd->x);
+					 ssize_t xImg = originX + cd->xoffset;
+					 ssize_t yImg = originY + cd->yoffset + yFnt;
 		     for (ssize_t xFnt = 0; xFnt < cd->width; xFnt++) {
 			     if(*pFnt > 0){
-						 ssize_t xImg = originX + cd->xoffset + xFnt;
-						 ssize_t yImg = originY + cd->yoffset + yFnt;
 						 if(xImg >= 0 && xImg < img.width && yImg >= 0 && yImg <= img.height)
 						  {
-								int idx = (yImg)*img.width + xImg;
+								int idx = (yImg)*img.rowstride + xImg*img.channels;
 							  for(uint8_t c: color)
-							 	img.data[idx++] = c;
+							 		img.data[idx++] = c;
 							}
 			     }
 					 pFnt+=tex->channels;
+					 xImg++;
 	       }
 		  }
 
