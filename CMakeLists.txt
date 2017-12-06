@@ -19,9 +19,10 @@ add_executable(LEDTable
       inputHandlers/keyboard.cpp
       inputHandlers/keyboardInput.cpp
 
-      applications/textMenu.cpp  
+      applications/textMenu.cpp
       applications/testPatterns.cpp
       applications/snake.cpp
+      applications/imageSlideShow.cpp
 
 )
 
@@ -36,6 +37,5 @@ TARGET_LINK_LIBRARIES(LEDTable ${SDL2_LIBRARIES} ${SDL2IMAGE_LIBRARIES})
 find_package (Threads)
 target_link_libraries (LEDTable ${CMAKE_THREAD_LIBS_INIT})
 
-
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/font
-     DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/res
+    DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

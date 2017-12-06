@@ -1,5 +1,5 @@
-#ifndef _H_TESTPATTERN_APP_
-#define _H_TESTPATTERN_APP_
+#ifndef _H_IMAGE_SLIDE_SHOW_APP_
+#define _H_IMAGE_SLIDE_SHOW_APP_
 
 #include <cstdlib>
 #include <memory>
@@ -10,21 +10,20 @@
 #include "../LEDTableEngine/baseApplication.hpp"
 #include "../LEDTableEngine/font.hpp"
 
-class TestPatternApp: public BaseApplication {
+class ImageSlideShowApp: public BaseApplication {
 protected:
-  enum PatternType{RANDOM = 0, COLORFADE, COLORFADE_BW, FONT_TEST, END};
 
-  std::default_random_engine m_generator;
-  std::uniform_int_distribution<int> m_colDist;
-  std::uniform_int_distribution<int> m_posDist;
-
-  PatternType m_patternType;
+  TimeUnit m_lastImageChange;
   float m_interpolate;
-  bmfont::Font m_font;
-
+  size_t m_currImageIdx;
+  std::vector<std::shared_ptr<Image> > m_images;
+  std::vector<std::string> m_imageFilePaths;
+  TimeUnit m_blendTime, m_changeTime;
 public:
-  TestPatternApp();
-  virtual ~TestPatternApp ();
+  ImageSlideShowApp();
+  virtual ~ImageSlideShowApp ();
+
+  void setImages(std::vector<std::string> imgFiles);
 
   void initialize(BaseController * ctrl);
 
@@ -33,6 +32,9 @@ public:
                     TimeUnit deltaTime);
   void draw(Image &frame);
   void continueApp();
+
+private:
+  std::shared_ptr<Image> loadImage(std::string path);
 };
 
 

@@ -12,6 +12,7 @@
 #include "applications/testPatterns.hpp"
 #include "applications/textMenu.hpp"
 #include "applications/snake.hpp"
+#include "applications/imageSlideShow.hpp"
 
 extern char *optarg;
 extern int optind, opterr, optopt;
@@ -67,10 +68,20 @@ int main (int argc, char **argv)
   }
 
   // Apps
+  auto iss = std::make_shared<ImageSlideShowApp>();
+  iss->setImages({
+    "strand.bmp",
+    "img1.bmp",
+    "img2.bmp"
+  });
+
+  // Main Menu
   auto a = std::make_shared<TextMenu>();
   a->setMenuItems({
     TextMenu::MenuEntry("Test Pattern",
                     std::make_shared<AppLauncher>(c,std::make_shared<TestPatternApp>())),
+    TextMenu::MenuEntry("Slide Show",
+                    std::make_shared<AppLauncher>(c,iss)),
     TextMenu::MenuEntry("Snake",
                     std::make_shared<AppLauncher>(c,std::make_shared<Snake>()))
   });

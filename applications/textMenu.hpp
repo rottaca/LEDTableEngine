@@ -26,6 +26,12 @@ public:
   };
 
 protected:
+  enum ColorPaleteIdx {
+    BG = 0,
+    ARROW=1,
+    TEXT=2
+  };
+
   bmfont::Font m_font;
   TimeUnit m_lastStepUpdate;
   TimeUnit m_timeTextWarpInitialWait;

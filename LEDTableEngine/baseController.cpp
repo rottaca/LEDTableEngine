@@ -171,9 +171,9 @@ void BaseController::createFrame(){
 void BaseController::clearFrame(std::vector<uint8_t> color){
     assert(m_frameBuffer.channels == color.size());
     if(color.size() == 1)
-        memset(m_frameBuffer.data,color[0],m_frameBuffer.size);
+        memset(m_frameBuffer.data,color[0],m_frameBuffer.width*m_frameBuffer.height);
     else if(color.size() == 3){
-        for (size_t i = 0; i < m_frameBuffer.size; i++) {
+        for (size_t i = 0; i < m_frameBuffer.width*m_frameBuffer.height; i++) {
           m_frameBuffer.data[3*i+0] = color[0];
           m_frameBuffer.data[3*i+1] = color[1];
           m_frameBuffer.data[3*i+2] = color[2];

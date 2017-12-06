@@ -10,59 +10,18 @@ TestPatternApp::~TestPatternApp (){
 
 void TestPatternApp::initialize(BaseController * ctrl){
   BaseApplication::initialize(ctrl);
-  m_palettes[0] = {
-    0,0,0,
-    255,0,0,
-    255,90,0,
-    255,154,0,
-    255,206,0,
-    255,232,8
-  };
-  for(int i = m_palettes[0].size(); i <= 255; i++){
-    m_palettes[0].push_back(0);
-    m_palettes[0].push_back(0);
-    m_palettes[0].push_back(0);
-  }
-  for(int i = 0; i <= 255; i++){
-    float s = i/127.0;
-    if (i > 127){
-      s = (i-127)/127.0;
-      m_palettes[1].push_back(255*(1 - s));
-      m_palettes[1].push_back(255*s);
-      m_palettes[1].push_back(0);
-    }
-    else{
-      m_palettes[1].push_back(0);
-      m_palettes[1].push_back(255*(1 - s));
-      m_palettes[1].push_back(255*s);
-    }
-    m_palettes[2].push_back(i);
-    m_palettes[2].push_back(i);
-    m_palettes[2].push_back(i);
-  }
-
-  m_palettes[3] = {
-    0,0,0,
-    255,0,0,
-    255,255,0,
-  };
-  for(int i = m_palettes[3].size(); i <= 255; i++){
-    m_palettes[3].push_back(0);
-    m_palettes[3].push_back(0);
-    m_palettes[3].push_back(0);
-  }
 
   m_generator = std::default_random_engine(m_ctrl->getTimeMs());
-  m_colDist = std::uniform_int_distribution<int>(0,5);
+  m_colDist = std::uniform_int_distribution<int>(0,255);
   m_posDist = std::uniform_int_distribution<int>(0,m_ctrl->getSize()-1);
   m_patternType = RANDOM;
-  m_colorPalette = m_palettes[RANDOM];
+  m_bufferColorMode = BufferColorMode::RGB;
   m_interpolate = 0;
-  m_font.loadFromFile("font/myfont.fnt");
+  m_font.loadFromFile("res/font/myfont.fnt");
 }
 
 void TestPatternApp::continueApp(){
-  m_ctrl->clearFrame({0});
+  m_ctrl->clearFrame({0,0,0});
 }
 void TestPatternApp::processInput(const BaseInput::InputEvents &events,
                           const BaseInput::InputEvents &eventsDebounced,
@@ -73,13 +32,13 @@ void TestPatternApp::processInput(const BaseInput::InputEvents &events,
       if(m_patternType == END)
         m_patternType = (PatternType)0;
       modeChanged = true;
+      std::cout << "New Mode: " << m_patternType << std::endl;
     }
     if(BaseInput::isPressed(eventsDebounced,BaseInput::InputEventName::EXIT)){
       m_hasFinished = true;
       return;
     }
-    if(modeChanged)
-      m_colorPalette = m_palettes[m_patternType];
+
     switch (m_patternType) {
       case RANDOM:
       break;
@@ -96,18 +55,37 @@ void TestPatternApp::draw(Image &frame){
     case RANDOM:{
       int pos = m_posDist(m_generator);
       int col = m_colDist(m_generator);
-      frame.data[pos] = col;
+      frame.data[3*pos] = col;
+      col = m_colDist(m_generator);
+      frame.data[3*pos+1] = col;
+      col = m_colDist(m_generator);
+      frame.data[3*pos+2] = col;
       pos = m_posDist(m_generator);
-      frame.data[pos] = 0;
+      frame.data[3*pos] = 0;
+      frame.data[3*pos+1] = 0;
+      frame.data[3*pos+2] = 0;
     }
     break;
-    case COLORFADE:
+    case COLORFADE:{
+      for (size_t i = 0; i < frame.size; i+=3) {
+        if(m_interpolate < 0.5){
+          frame.data[i] =(1- m_interpolate*2)*255;
+          frame.data[i+1] = m_interpolate*2*255;
+          frame.data[i+2] =0;
+        }else{
+          frame.data[i] = 0;
+          frame.data[i+1] = (1-(m_interpolate-0.5)*2)*255;
+          frame.data[i+2] = ((m_interpolate-0.5)*2)*255;
+        }
+      }
+    }
+    break;
     case COLORFADE_BW:
       std::fill(frame.data, frame.data+frame.size, m_interpolate*255);
     break;
     case FONT_TEST:{
-      std::string txt = "B";
-      m_font.draw(frame,txt,{2});
+      std::string txt = "Test text";
+      m_font.draw(frame,txt,{26,254,100});
     }
 
     break;
