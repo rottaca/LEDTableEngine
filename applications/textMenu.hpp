@@ -38,7 +38,7 @@ protected:
   TimeUnit m_timeTextWarpStart;
   TimeUnit m_timeTextWarpPerChar;
   size_t m_menuEntryIdx;
-  Point m_currTextSize;
+  Pointi m_currTextSize;
   size_t m_scrollXPixels;
   size_t m_currScrollXPixels;
   bool m_isClosable;

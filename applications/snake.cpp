@@ -24,9 +24,9 @@ void Snake::initialize(BaseController * ctrl){
   }
 
   m_snake.clear();
-  m_snake.push_front(Point(ctrl->getWidth()/2, ctrl->getHeight()/2));
-  m_moveDir = Point(0, 1);
-  m_foodPos = Point(ctrl->getWidth()/2, ctrl->getHeight()/2 + 5);
+  m_snake.push_front(Pointi(ctrl->getWidth()/2, ctrl->getHeight()/2));
+  m_moveDir = Pointi(0, 1);
+  m_foodPos = Pointi(ctrl->getWidth()/2, ctrl->getHeight()/2 + 5);
   m_lastUpdateTime = 0;
   m_deathTime = 0;
   m_generator = std::default_random_engine(m_ctrl->getTimeMs());
@@ -46,7 +46,7 @@ void Snake::processInput(const BaseInput::InputEvents &events,
       }
       return;
 	}
-	Point newDir = m_moveDir;
+	Pointi newDir = m_moveDir;
 	for( const auto&e: eventsDebounced){
 		if(e.state != BaseInput::InputEventState::KEY_PRESSED)
 			continue;
@@ -85,7 +85,7 @@ void Snake::processInput(const BaseInput::InputEvents &events,
 	m_lastUpdateTime = m_ctrl->getTimeMs();
 	m_requiresRedraw = true;
 
-	Point newPos(m_snake.front().x+m_moveDir.x,
+	Pointi newPos(m_snake.front().x+m_moveDir.x,
 				 m_snake.front().y+m_moveDir.y);
 
 	if(newPos.x < 0 || newPos.x >= m_ctrl->getWidth() ||
@@ -114,7 +114,7 @@ void Snake::draw(Image &frame){
 
 	frame.data[m_foodPos.x + m_foodPos.y*frame.width] = 1;
 
-	for(Point p: m_snake){
+	for(Pointi p: m_snake){
 		frame.data[p.x + p.y*frame.width] = 2;
 	}
 }

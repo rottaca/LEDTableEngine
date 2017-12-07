@@ -6,29 +6,31 @@
 
   enum BufferColorMode{RGB, PALETTE};
 
-
+  template<typename T>
   struct Point{
-    int x,y;
+    T x,y;
     Point(){
       x = 0;
       y = 0;
     }
-    Point(int x, int y){
+    Point(T x, T y){
       this->x = x;
       this->y = y;
     }
 
-    bool operator==(const Point& r) const
+    bool operator==(const Point<T>& r) const
     {
       return x == r.x && y == r.y;
     }
 
-    bool operator () ( const Point& r ) const
+    bool operator () ( const Point<T>& r ) const
     {
       return x == r.x && y == r.y;
     }
-
   };
+  typedef Point<int> Pointi;
+  typedef Point<float> Pointf;
+
 
   struct Image{
     uint8_t *data;

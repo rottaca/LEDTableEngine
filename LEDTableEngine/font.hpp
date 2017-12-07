@@ -234,7 +234,7 @@ namespace bmfont
 		 * it will be clamped to the last index.
 		 * @return width and height of the measured text.
 		 */
-		Point getTextSize(const std::string & text, int begin=0, int end=-1);
+		Pointi getTextSize(const std::string & text, int begin=0, int end=-1);
 
 	private :
 

@@ -23,6 +23,7 @@ add_executable(LEDTable
       applications/testPatterns.cpp
       applications/snake.cpp
       applications/imageSlideShow.cpp
+      applications/pong.cpp
 
 )
 

@@ -281,16 +281,16 @@ namespace bmfont
 		return m_chars.lineHeight;
 	}
 
-	Point Font::getTextSize(const std::string &text, int begin, int end)
+	Pointi Font::getTextSize(const std::string &text, int begin, int end)
 	{
 		if(begin < 0)
-			return Point(0,0);
+			return Pointi(0,0);
 		if(end < 0 || end >= static_cast<int>(text.size()))
 			end = text.size()-1;
 
 		// TODO Font::getTextSize() : exact height instead of max height
 
-		Point size(0, getLineHeight());
+		Pointi size(0, getLineHeight());
 		for(int i = begin; i <= end; ++i)
 		{
 			const CharDescriptor * cd = m_chars.getChar(text[i]);

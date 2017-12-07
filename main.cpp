@@ -13,6 +13,7 @@
 #include "applications/textMenu.hpp"
 #include "applications/snake.hpp"
 #include "applications/imageSlideShow.hpp"
+#include "applications/pong.hpp"
 
 extern char *optarg;
 extern int optind, opterr, optopt;
@@ -83,7 +84,9 @@ int main (int argc, char **argv)
     TextMenu::MenuEntry("Slide Show",
                     std::make_shared<AppLauncher>(c,iss)),
     TextMenu::MenuEntry("Snake",
-                    std::make_shared<AppLauncher>(c,std::make_shared<Snake>()))
+                    std::make_shared<AppLauncher>(c,std::make_shared<Snake>())),
+    TextMenu::MenuEntry("Pong",
+                    std::make_shared<AppLauncher>(c,std::make_shared<Pong>()))
   });
 
   c->addApplication(a);

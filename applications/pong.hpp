@@ -1,5 +1,5 @@
-#ifndef _H_SNAKE_APP_
-#define _H_SNAKE_APP_
+#ifndef _H_PONG_APP_
+#define _H_PONG_APP_
 
 #include <cstdlib>
 #include <memory>
@@ -10,20 +10,28 @@
 
 #include "../LEDTableEngine/baseApplication.hpp"
 
-class Snake: public BaseApplication {
+class Pong: public BaseApplication {
 protected:
 
   std::default_random_engine m_generator;
-  std::uniform_int_distribution<int> m_posDist;
-  std::list<Pointi> m_snake;
-  Pointi m_moveDir;
-  Pointi m_foodPos;
+  std::uniform_real_distribution<float> m_randFloat;
+
+  Pointf m_ballSpeed;
+  Pointf m_ballPos;
+  int m_playerHeight;
+  std::array<int,2> m_playerPos;
+  std::array<int,2> m_playerScore;
+  std::array<bool,2> m_playerWonRound;
+
+  float m_speedIncrease;
+  TimeUnit m_movementSpeed;
+
   TimeUnit m_lastUpdateTime;
   TimeUnit m_deathTime;
 
 public:
-  Snake();
-  virtual ~Snake ();
+  Pong();
+  virtual ~Pong ();
 
   void initialize(BaseController * ctrl);
 
@@ -31,6 +39,8 @@ public:
                     const BaseInput::InputEvents &eventsDebounced,
                     TimeUnit deltaTime);
   void draw(Image &frame);
+private:
+  void resetRound();
 };
 
 
