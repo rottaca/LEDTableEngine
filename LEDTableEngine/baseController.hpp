@@ -33,6 +33,8 @@ private:
   Image m_frameBuffer;
   KeyboardDebouncer m_kdb;
 
+  size_t m_refTimeStartUs;
+
 public:
   BaseController();
   virtual ~BaseController ();
@@ -44,7 +46,8 @@ public:
   void addApplication(std::shared_ptr<BaseApplication> app,
                       bool queuedInsert = false);
   void run(size_t fps=50);
-  void clearFrame(std::vector<uint8_t> color);
+  void clearFrame(ColorRGB color);
+  void clearFrame(uint8_t paletteIdx);
 
   TimeUnit getTimeMs();
 
@@ -64,7 +67,7 @@ public:
 protected:
   virtual void showFrame(const Image&frame)=0;
   virtual void shutdown();
-  virtual const BaseApplication::Palette& getCurrentPalette();
+  virtual const Palette& getCurrentPalette();
   void updateBufferColorMode();
 
 private:

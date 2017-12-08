@@ -1,8 +1,12 @@
 #ifndef _H_TYPES_
 #define _H_TYPES_
 #include <chrono>
+#include <vector>
+#include <array>
 
   typedef int64_t TimeUnit;
+  typedef std::array<uint8_t,3> ColorRGB;
+  typedef std::vector<ColorRGB> Palette;
 
   enum BufferColorMode{RGB, PALETTE};
 

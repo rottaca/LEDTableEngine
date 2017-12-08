@@ -14,6 +14,7 @@ void TestPatternApp::initialize(BaseController * ctrl){
   m_generator = std::default_random_engine(m_ctrl->getTimeMs());
   m_colDist = std::uniform_int_distribution<int>(0,255);
   m_posDist = std::uniform_int_distribution<int>(0,m_ctrl->getSize()-1);
+  m_colorPalette = createPaletteHSV(0, 359.9, 1, 1, 255);
   m_patternType = SINGLE_PIXEL;
   m_bufferColorMode = BufferColorMode::RGB;
   m_interpolate = 0;
@@ -83,15 +84,10 @@ void TestPatternApp::draw(Image &frame){
     break;
     case COLORFADE:{
       for (size_t i = 0; i < frame.size; i+=3) {
-        if(m_interpolate < 0.5){
-          frame.data[i] =(1- m_interpolate*2)*255;
-          frame.data[i+1] = m_interpolate*2*255;
-          frame.data[i+2] =0;
-        }else{
-          frame.data[i] = 0;
-          frame.data[i+1] = (1-(m_interpolate-0.5)*2)*255;
-          frame.data[i+2] = ((m_interpolate-0.5)*2)*255;
-        }
+        ColorRGB c = m_colorPalette[(int)(m_interpolate*255)];
+        frame.data[i] =c[0];
+        frame.data[i+1] = c[1];
+        frame.data[i+2] = c[2];
       }
     }
     break;

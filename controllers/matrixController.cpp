@@ -19,11 +19,11 @@ bool MatrixController::initialize(size_t width, size_t height,
 }
 
 void MatrixController::copyImageToBuffer(const Image& frame) {
-  const BaseApplication::Palette& palette = getCurrentPalette();
+  const Palette& palette = getCurrentPalette();
   uint8_t *pixels                         = m_frameDataPacket.dataPtr;
   uint8_t *p;
   size_t   idx = 0;
-  uint8_t  r, g, b;
+	ColorRGB c;
 
   for (size_t y = 0; y < m_height; y++) {
     p = pixels + 3 * y;
@@ -36,21 +36,18 @@ void MatrixController::copyImageToBuffer(const Image& frame) {
 
       // Palette mode
       if (m_bufferMode == BufferColorMode::PALETTE) {
-        int c = frame.data[idx++];
-        r = palette[c * 3];
-        g = palette[c * 3 + 1];
-        b = palette[c * 3 + 2];
+          int p = frame.data[idx++];
+          c = palette[p];
       }
-
       // RGB Mode
-      else {
-        r = frame.data[idx++];
-        g = frame.data[idx++];
-        b = frame.data[idx++];
-      }
-      *(p + 0) = r;
-      *(p + 1) = g;
-      *(p + 2) = b;
+ 	     else{
+   		   c[0] = frame.data[idx++];
+   		   c[1] = frame.data[idx++];
+   		   c[2] = frame.data[idx++];
+ 	     }
+ 	     *p++ = c[0];
+ 	     *p++ = c[1];
+ 	     *p++ = c[2];
     }
   }
 }

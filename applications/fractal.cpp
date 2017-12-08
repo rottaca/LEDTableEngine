@@ -16,16 +16,14 @@ void FractalApp::initialize(BaseController * ctrl){
                       5,5.0*ctrl->getHeight()/ctrl->getWidth(),
                       0.0001, 10000);
 
-  m_colorPalette.resize(3*255);
+  m_colorPalette.resize(255);
   for(int i = 0; i <= 255; i++){
     percentToRGB((float)i/255,
-        m_colorPalette[3*i],
-        m_colorPalette[3*i+1],
-        m_colorPalette[3*i+2]);
+        m_colorPalette[i][0],
+        m_colorPalette[i][1],
+        m_colorPalette[i][2]);
   }
-  m_colorPalette.insert(m_colorPalette.end(),255);
-  m_colorPalette.insert(m_colorPalette.end(),255);
-  m_colorPalette.insert(m_colorPalette.end(),255);
+  m_colorPalette.insert(m_colorPalette.end(),{255,255,255});
 
   m_currZoom = m_frac.zoomMin;
   m_zoomDir = 1;

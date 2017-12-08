@@ -25,6 +25,7 @@ add_executable(LEDTable
       applications/imageSlideShow.cpp
       applications/pong.cpp
       applications/fractal.cpp
+      applications/shaders.cpp
 
 )
 

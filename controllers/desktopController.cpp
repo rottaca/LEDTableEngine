@@ -66,10 +66,10 @@ void DesktopController::copyImageToBuffer(const Image&frame){
 
    int rowstride = m_imageSurf->pitch;
    unsigned char* pixels = (unsigned char*)m_imageSurf->pixels;
-   const BaseApplication::Palette& palette = getCurrentPalette();
+   const Palette& palette = getCurrentPalette();
 
 	size_t idx = 0;
-	uint8_t r,g,b;
+	ColorRGB c;
 
     for (size_t y = 0; y < m_height; y++) {
 	   unsigned char* p = pixels + y*rowstride;
@@ -77,20 +77,18 @@ void DesktopController::copyImageToBuffer(const Image&frame){
 
 	     // Palette mode
 	     if(m_bufferMode == BufferColorMode::PALETTE){
-		   int c = frame.data[idx++];
-		   r = palette[c*3];
-		   g = palette[c*3 + 1];
-		   b = palette[c*3 + 2];
+		   int p = frame.data[idx++];
+		   c = palette[p];
 		 }
 		 // RGB Mode
 	     else{
-		   r = frame.data[idx++];
-		   g = frame.data[idx++];
-		   b = frame.data[idx++];
+		   c[0] = frame.data[idx++];
+		   c[1] = frame.data[idx++];
+		   c[2] = frame.data[idx++];
 	     }
-	     *p++ = r;
-	     *p++ = g;
-	     *p++ = b;
+	     *p++ = c[0];
+	     *p++ = c[1];
+	     *p++ = c[2];
 	     *p++ = 255;
 	   }
     }

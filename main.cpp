@@ -15,6 +15,7 @@
 #include "applications/imageSlideShow.hpp"
 #include "applications/pong.hpp"
 #include "applications/fractal.hpp"
+#include "applications/shaders.hpp"
 
 extern char *optarg;
 extern int optind, opterr, optopt;
@@ -89,7 +90,9 @@ int main (int argc, char **argv)
     TextMenu::MenuEntry("Pong",
                     std::make_shared<AppLauncher>(c,std::make_shared<Pong>())),
     TextMenu::MenuEntry("Fractals",
-                    std::make_shared<AppLauncher>(c,std::make_shared<FractalApp>()))
+                    std::make_shared<AppLauncher>(c,std::make_shared<FractalApp>())),
+    TextMenu::MenuEntry("Shaders",
+                    std::make_shared<AppLauncher>(c,std::make_shared<ShaderApp>()))
   });
 
   c->addApplication(a);

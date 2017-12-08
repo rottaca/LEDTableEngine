@@ -11,8 +11,6 @@
 class BaseController;
 
 class BaseApplication {
-public:
-  typedef std::vector<uint8_t> Palette;
 
 protected:
   BaseController* m_ctrl;
@@ -39,6 +37,12 @@ public:
                             const BaseInput::InputEvents &eventsDebounced,
                             TimeUnit deltaTime)=0;
   virtual void draw(Image &frame)=0;
+
+protected:
+  Palette createPaletteColorFade(ColorRGB c1, ColorRGB c2, int steps, bool fillTo256 = true);
+  Palette createPaletteHSV(float hStart, float hStop, float S, float V, int steps, bool fillTo256 = true);
+
+  void hsv2rgb(float h, float s, float v, float &r, float &g, float &b);
 };
 
 

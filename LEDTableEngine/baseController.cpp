@@ -26,6 +26,8 @@ bool BaseController::initialize(size_t width, size_t height,
         m_inputHandler->setController(this);
         m_isRunning = true;
         m_bufferMode = BufferColorMode::PALETTE;
+        auto now = std::chrono::high_resolution_clock::now();
+        m_refTimeStartUs = std::chrono::duration_cast<std::chrono::microseconds>(now.time_since_epoch()).count();
 
         while(!m_applicationStack.empty())
                 m_applicationStack.pop();
@@ -35,7 +37,7 @@ bool BaseController::initialize(size_t width, size_t height,
         updateBufferColorMode();
         return true;
 }
-const BaseApplication::Palette& BaseController::getCurrentPalette(){
+const Palette& BaseController::getCurrentPalette(){
         assert(m_applicationStack.size() > 0);
         return m_applicationStack.top()->getPalette();
 }
@@ -168,17 +170,18 @@ void BaseController::createFrame(){
                 break;
         }
 }
-void BaseController::clearFrame(std::vector<uint8_t> color){
-    assert(m_frameBuffer.channels == color.size());
-    if(color.size() == 1)
-        memset(m_frameBuffer.data,color[0],m_frameBuffer.width*m_frameBuffer.height);
-    else if(color.size() == 3){
-        for (size_t i = 0; i < m_frameBuffer.width*m_frameBuffer.height; i++) {
-          m_frameBuffer.data[3*i+0] = color[0];
-          m_frameBuffer.data[3*i+1] = color[1];
-          m_frameBuffer.data[3*i+2] = color[2];
-        }
-    }
+void BaseController::clearFrame(ColorRGB color){
+  assert(m_frameBuffer.channels == 3);
+  for (size_t i = 0; i < m_frameBuffer.width*m_frameBuffer.height; i++) {
+    m_frameBuffer.data[3*i+0] = color[0];
+    m_frameBuffer.data[3*i+1] = color[1];
+    m_frameBuffer.data[3*i+2] = color[2];
+  }
+}
+void BaseController::clearFrame(uint8_t paletteIdx)
+{
+  assert(m_frameBuffer.channels == 1);
+  memset(m_frameBuffer.data,paletteIdx,m_frameBuffer.width*m_frameBuffer.height);
 }
 void BaseController::updateBufferColorMode(){
         if(m_applicationStack.size() == 0)
@@ -197,6 +200,6 @@ void BaseController::shutdown(){
 }
 TimeUnit BaseController::getTimeMs(){
         auto now = std::chrono::high_resolution_clock::now();
-        auto millis = std::chrono::duration_cast<std::chrono::microseconds>(now.time_since_epoch()).count();
-        return millis/1000.0;
+        auto micros = std::chrono::duration_cast<std::chrono::microseconds>(now.time_since_epoch()).count();
+        return (micros-m_refTimeStartUs)/1000.0;
 }

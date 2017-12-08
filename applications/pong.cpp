@@ -12,16 +12,14 @@ Pong::~Pong (){
 void Pong::initialize(BaseController * ctrl){
   BaseApplication::initialize(ctrl);
   m_colorPalette = {
-    0,0,0,				// Background
-    0,255,0,			// Ball
-    255,255,0,			// P1
-    0,255,255,			// P2
-    255,0,0 			// Death
+    {0,0,0},				// Background
+    {0,255,0},			// Ball
+    {255,255,0},			// P1
+    {0,255,255},			// P2
+    {255,0,0 }			// Death
   };
   for(int i = m_colorPalette.size(); i <= 255; i++){
-    m_colorPalette.push_back(0);
-    m_colorPalette.push_back(0);
-    m_colorPalette.push_back(0);
+    m_colorPalette.push_back({0,0,0});
   }
 
   float speedScale = 5;

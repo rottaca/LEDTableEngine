@@ -11,17 +11,15 @@ TextMenu::~TextMenu (){
 void TextMenu::initialize(BaseController * ctrl){
   BaseApplication::initialize(ctrl);
   m_colorPalette = {
-    0,0,0,
-    255,0,0,
-    255,90,0,
-    255,154,0,
-    255,206,0,
-    255,232,8
+    {0,0,0},
+    {255,0,0},
+    {255,90,0},
+    {255,154,0},
+    {255,206,0},
+    {255,232,8}
   };
   for(int i = m_colorPalette.size(); i <= 255; i++){
-    m_colorPalette.push_back(0);
-    m_colorPalette.push_back(0);
-    m_colorPalette.push_back(0);
+    m_colorPalette.push_back({0,0,0});
   }
 
   m_font.loadFromFile("res/font/myfont.fnt");
@@ -39,7 +37,7 @@ void TextMenu::initialize(BaseController * ctrl){
 }
 
 void TextMenu::continueApp(){
-  m_ctrl->clearFrame({0});
+  m_ctrl->clearFrame(0);
 }
 void TextMenu::updateTextData()
 {

@@ -12,15 +12,13 @@ Snake::~Snake (){
 void Snake::initialize(BaseController * ctrl){
   BaseApplication::initialize(ctrl);
   m_colorPalette = {
-    0,0,0,				// Background
-    0,0,255,			// Food
-    0,255,0,			// Snake
-    255,0,0 			// Death
+    {0,0,0},				// Background
+    {0,0,255},			// Food
+    {0,255,0},			// Snake
+    {255,0,0} 			// Death
   };
   for(int i = m_colorPalette.size(); i <= 255; i++){
-    m_colorPalette.push_back(0);
-    m_colorPalette.push_back(0);
-    m_colorPalette.push_back(0);
+    m_colorPalette.push_back({0,0,0});
   }
 
   m_snake.clear();
@@ -107,9 +105,9 @@ void Snake::processInput(const BaseInput::InputEvents &events,
 }
 void Snake::draw(Image &frame){
 	if(m_deathTime > 0){
-		m_ctrl->clearFrame({3});
+		m_ctrl->clearFrame(3);
 	}else{
-		m_ctrl->clearFrame({0});
+		m_ctrl->clearFrame(0);
 	}
 
 	frame.data[m_foodPos.x + m_foodPos.y*frame.width] = 1;
