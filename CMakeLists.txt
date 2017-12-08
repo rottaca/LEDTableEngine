@@ -24,6 +24,7 @@ add_executable(LEDTable
       applications/snake.cpp
       applications/imageSlideShow.cpp
       applications/pong.cpp
+      applications/fractal.cpp
 
 )
 
