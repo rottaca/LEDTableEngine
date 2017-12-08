@@ -13,7 +13,7 @@ cKeyboard::cKeyboard() {
         pthread_create(&thread, 0, &cKeyboard::loop, this);
     }else{
       std::cout << "Couldn't open keyboard event file."<< std::endl;
-      exit(1);
+//      exit(1);
     }
 }
 

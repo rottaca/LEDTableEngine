@@ -11,4 +11,4 @@ exec >${DIR}/log.txt
 echo "Sleeping for 10 seconds befor start..."
 sleep 10
 echo "Starting main ...."
-DISPLAY=:0 stdbuf -oL -eL /usr/bin/python ${DIR}/main.py --debug
+DISPLAY=:0 stdbuf -oL -eL /home/pi/LEDTableEngine/build/LEDTable -c matrix -d

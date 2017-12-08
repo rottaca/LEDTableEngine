@@ -29,6 +29,11 @@ void MatrixController::copyImageToBuffer(const Image& frame) {
     p = pixels + 3 * y;
 
     for (size_t x = 0; x < m_width; x++) {
+      if(x%2==0)
+      	p = pixels + 3*(y + x*m_height);
+      else
+        p = pixels + 3*(m_height- 1 - y + x*m_height);
+
       // Palette mode
       if (m_bufferMode == BufferColorMode::PALETTE) {
         int c = frame.data[idx++];
@@ -46,8 +51,6 @@ void MatrixController::copyImageToBuffer(const Image& frame) {
       *(p + 0) = r;
       *(p + 1) = g;
       *(p + 2) = b;
-
-      p += 3 * m_height;
     }
   }
 }
