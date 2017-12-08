@@ -12,7 +12,7 @@
 
 class TestPatternApp: public BaseApplication {
 protected:
-  enum PatternType{RANDOM = 0, COLORFADE, COLORFADE_BW, FONT_TEST, END};
+  enum PatternType{SINGLE_PIXEL, RANDOM, COLORFADE, COLORFADE_BW, FONT_TEST, END};
 
   std::default_random_engine m_generator;
   std::uniform_int_distribution<int> m_colDist;
@@ -21,6 +21,8 @@ protected:
   PatternType m_patternType;
   float m_interpolate;
   bmfont::Font m_font;
+  TimeUnit m_lastStepUpdate;
+  size_t m_pos;
 
 public:
   TestPatternApp();

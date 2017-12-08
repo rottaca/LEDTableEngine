@@ -14,10 +14,12 @@ void TestPatternApp::initialize(BaseController * ctrl){
   m_generator = std::default_random_engine(m_ctrl->getTimeMs());
   m_colDist = std::uniform_int_distribution<int>(0,255);
   m_posDist = std::uniform_int_distribution<int>(0,m_ctrl->getSize()-1);
-  m_patternType = RANDOM;
+  m_patternType = SINGLE_PIXEL;
   m_bufferColorMode = BufferColorMode::RGB;
   m_interpolate = 0;
   m_font.loadFromFile("res/font/myfont.fnt");
+  m_lastStepUpdate = 0;
+  m_pos = 0;
 }
 
 void TestPatternApp::continueApp(){
@@ -39,6 +41,12 @@ void TestPatternApp::processInput(const BaseInput::InputEvents &events,
       return;
     }
 
+    if(m_ctrl->getTimeMs() - m_lastStepUpdate > 1000)
+    {
+      m_lastStepUpdate = m_ctrl->getTimeMs();
+      m_pos =(m_pos+1) % m_ctrl->getSize();
+
+    }
     switch (m_patternType) {
       case RANDOM:
       break;
@@ -52,6 +60,13 @@ void TestPatternApp::processInput(const BaseInput::InputEvents &events,
 }
 void TestPatternApp::draw(Image &frame){
   switch (m_patternType) {
+    case SINGLE_PIXEL:{
+      m_ctrl->clearFrame({0,0,0});
+      frame.data[3*m_pos] = 255;
+      frame.data[3*m_pos+1] = 255;
+      frame.data[3*m_pos+2] = 0;
+    }
+    break;
     case RANDOM:{
       int pos = m_posDist(m_generator);
       int col = m_colDist(m_generator);
