@@ -1,20 +1,27 @@
 #include "keyboard.hpp"
 
 cKeyboard::cKeyboard() {
-    active = false;
-    keyboard_fd = 0;
-    keyboard_ev = new input_event();
-    keyboard_st = new keyboard_state();
-    keyboard_fd = open(KEYBOARD_DEV, O_RDONLY | O_NONBLOCK);
-    if (keyboard_fd > 0) {
-        ioctl(keyboard_fd, EVIOCGNAME(256), name);
-        std::cout << "   Name: " << name << std::endl;
-        active = true;
-        pthread_create(&thread, 0, &cKeyboard::loop, this);
-    }else{
-      std::cout << "Couldn't open keyboard event file."<< std::endl;
-//      exit(1);
-    }
+  active = false;
+  keyboard_fd = 0;
+  keyboard_ev = new input_event();
+  keyboard_st = new keyboard_state();
+}
+bool cKeyboard::start(std::string keyboardDev){
+  active = false;
+  keyboard_fd = 0;
+  keyboard_ev = new input_event();
+  keyboard_st = new keyboard_state();
+  keyboard_fd = open(keyboardDev.c_str(), O_RDONLY | O_NONBLOCK);
+  if (keyboard_fd > 0) {
+      ioctl(keyboard_fd, EVIOCGNAME(256), name);
+      std::cout << "Opened Keyboard event file: " << name << std::endl;
+      active = true;
+      pthread_create(&thread, 0, &cKeyboard::loop, this);
+  }else{
+    std::cerr << "Couldn't open keyboard event file " << keyboardDev << "." << std::endl;
+    return false;
+  }
+  return true;
 }
 
 void* cKeyboard::loop(void *obj) {

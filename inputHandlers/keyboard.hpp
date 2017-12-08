@@ -6,8 +6,7 @@
 #include <pthread.h>
 #include <linux/input.h>
 #include <unistd.h>
-
-#define KEYBOARD_DEV "/dev/input/by-path/platform-i8042-serio-0-event-kbd"
+#include <string>
 
 struct keyboard_state {
     signed short keys[KEY_CNT];
@@ -26,6 +25,7 @@ class cKeyboard {
   public:
     cKeyboard();
     ~cKeyboard();
+    bool start(std::string keyboardDev);
     static void* loop(void* obj);
     void readEv();
     short getKeyState(short key);

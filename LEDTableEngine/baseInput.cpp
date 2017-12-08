@@ -15,6 +15,9 @@ void BaseInput::setController(BaseController* ctrl){
   m_ctrl = ctrl;
 }
 
+bool BaseInput::initialize(){
+  return true;
+}
 
 bool BaseInput::isReleased(const InputEvents& events, InputEventName name){
   for(auto e: events){

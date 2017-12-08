@@ -11,4 +11,9 @@ exec >${DIR}/log.txt
 echo "Sleeping for 10 seconds befor start..."
 sleep 10
 echo "Starting main ...."
-DISPLAY=:0 stdbuf -oL -eL /home/pi/LEDTableEngine/build/LEDTable -c matrix -d
+keybardDev=$(find /dev/input/by-path/ -name "*kbd*" | head -1)
+if [ -z "$keybardDev" ]; then
+  >2 echo "Failed to find valid keyboard event file!"
+else
+  DISPLAY=:0 stdbuf -oL -eL /home/pi/LEDTableEngine/build/LEDTable -c matrix -k $keybardDev -d
+fi

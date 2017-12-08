@@ -7,7 +7,8 @@ MatrixController::~MatrixController() {}
 
 bool MatrixController::initialize(size_t width, size_t height,
                                   std::shared_ptr<BaseInput>input, bool debug) {
-  BaseController::initialize(width, height, input, debug);
+  if(!BaseController::initialize(width, height, input, debug))
+    return false;
   m_tpm2 = std::make_shared<TPM2>();
 
   if (!m_tpm2->connect("/dev/ttyACM0")) {

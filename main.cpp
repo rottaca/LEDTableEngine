@@ -23,19 +23,12 @@ extern int optind, opterr, optopt;
 int main (int argc, char **argv)
 {
   bool debug = false;
-  // Controllers/Displays
   size_t controllerIdx = 0;
-  std::vector<std::shared_ptr<BaseController> > controllers;
-  controllers.push_back(std::make_shared<DesktopController>());
-  controllers.push_back(std::make_shared<MatrixController>());
-
-  // Inputs
   size_t inputIdx = 0;
-  std::vector<std::shared_ptr<BaseInput> > inputs;
-  inputs.push_back(std::make_shared<KeyboardInput>());
+  std::string keyboardDev = "/dev/input/by-path/platform-i8042-serio-0-event-kbd";
 
   int opt;
-  while ((opt = getopt(argc, argv ,"dc:i:")) != -1) {
+  while ((opt = getopt(argc, argv ,"dc:i:k:")) != -1) {
     switch (opt) {
       case 'd':
         debug = true;
@@ -58,12 +51,25 @@ int main (int argc, char **argv)
           exit(1);
         }
       break;
+      case 'k':
+        keyboardDev = optarg;
+      break;
 
       default:
         std::cerr << "Unknwon commandline option: " << (char)opt << std::endl;
         exit(1);
     }
   }
+
+  // Controllers/Displays
+  std::vector<std::shared_ptr<BaseController> > controllers;
+  controllers.push_back(std::make_shared<DesktopController>());
+  controllers.push_back(std::make_shared<MatrixController>());
+
+  // Inputs
+  std::vector<std::shared_ptr<BaseInput> > inputs;
+  inputs.push_back(std::make_shared<KeyboardInput>(keyboardDev));
+
   auto c = controllers[controllerIdx];
   if(!c->initialize(20, 15, inputs[inputIdx], debug)){
     std::cout << "Init of controller failed" << std::endl;

@@ -1,14 +1,17 @@
 
 #include "keyboardInput.hpp"
 
-KeyboardInput::KeyboardInput (){
-
+KeyboardInput::KeyboardInput (std::string keyboardDev){
+  m_keyboardDevName = keyboardDev;
 }
 KeyboardInput::~KeyboardInput (){
 
 }
+bool KeyboardInput::initialize(){
+  return m_keyboard.start(m_keyboardDevName);
+}
 
-KeyboardInput::InputEvents KeyboardInput::getInputEvents(){
+BaseInput::InputEvents KeyboardInput::getInputEvents(){
   InputEvents ie;
   if(m_keyboard.getKeyState(KEY_A)){
     ie.push_back(InputEvent(BaseInput::InputEventState::KEY_PRESSED,

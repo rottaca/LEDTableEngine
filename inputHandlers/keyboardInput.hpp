@@ -12,13 +12,15 @@
 class KeyboardInput :public BaseInput{
 
 public:
-  KeyboardInput ();
+  KeyboardInput (std::string keyboardDev);
   virtual ~KeyboardInput ();
 
-  KeyboardInput::InputEvents getInputEvents();
+  bool initialize();
+  BaseInput::InputEvents getInputEvents();
 
 private:
   cKeyboard m_keyboard;
+  std::string m_keyboardDevName;
 };
 
 

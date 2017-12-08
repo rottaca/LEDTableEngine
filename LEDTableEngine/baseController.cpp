@@ -35,6 +35,10 @@ bool BaseController::initialize(size_t width, size_t height,
         m_queuedApplications.clear();
         createFrame();
         updateBufferColorMode();
+
+        if(!m_inputHandler->initialize())
+          return false;
+
         return true;
 }
 const Palette& BaseController::getCurrentPalette(){

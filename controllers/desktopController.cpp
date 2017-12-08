@@ -11,7 +11,9 @@ DesktopController::~DesktopController(){
 
 bool DesktopController::initialize(size_t width, size_t height,
                           std::shared_ptr<BaseInput> input, bool debug){
-   BaseController::initialize(width, height, input, debug);
+   if(!BaseController::initialize(width, height, input, debug))
+     return false;
+
    m_upscale = 30;
    m_upscaleWidth = width*m_upscale;
    m_upscaleHeight= height*m_upscale;

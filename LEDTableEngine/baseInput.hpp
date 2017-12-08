@@ -33,6 +33,7 @@ public:
   virtual ~BaseInput ();
 
   virtual void setController(BaseController* ctrl);
+  virtual bool initialize();
   virtual BaseInput::InputEvents getInputEvents()=0;
 
   static bool isReleased(const InputEvents& events, InputEventName name);
