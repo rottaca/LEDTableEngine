@@ -59,23 +59,24 @@ void ShaderApp::draw(Image &frame){
 #define MAX_ITER 5
 
 void ShaderApp::waterShader(TimeUnit tm, size_t x, size_t y, uint8_t &r, uint8_t &g, uint8_t &b){
-  float time = tm/1000.0 * .5+23.0;
-  Pointf uv((float)x/m_ctrl->getWidth(),(float)y/m_ctrl->getHeight());
+  double time = tm/1000.0 * .5+23.0;
+  Pointf uv((double)x/m_ctrl->getWidth(),(double)y/m_ctrl->getHeight());
 
   Pointf p(fmod(uv.x*TAU,TAU)-250.0,fmod(uv.y*TAU,TAU)-250.0 );
+  std::cout << p.x << std::endl;
 	Pointf i = p;
-	float c = 1.0;
-	float inten = .005;
+	double c = 1.0;
+	double inten = .005;
 
 	for (int n = 0; n < MAX_ITER; n++)
 	{
-		float t = time * (1.0 - (3.5 / float(n+1)));
+		double t = time * (1.0 - (3.5 / double(n+1)));
 		i.x = p.x + cos(t - i.x) + sin(t + i.y);
 		i.y = p.y + sin(t - i.y) + cos(t + i.x);
     Pointf tmp(p.x / (sin(i.x+t)/inten), p.y / (cos(i.y+t)/inten));
 		c += 1.0/sqrt(tmp.x*tmp.x + tmp.y*tmp.y);
 	}
-	c /= float(MAX_ITER);
+	c /= double(MAX_ITER);
 	c = 1.17-pow(c, 1.4);
 
   r = std::min(std::max(pow(fabs(c), 8.0) + 0.0, 0.0),1.0)*255.0;
@@ -87,6 +88,7 @@ void ShaderApp::chessboardShader(TimeUnit tm, size_t x, size_t y, uint8_t &r, ui
   ColorRGB c1 = {0,0,0};
   ColorRGB c2 = {255,255,255};
   int tilesPerDim = 8;
+  int borderSize = 2;
   int padX = (m_ctrl->getWidth() - tilesPerDim)/2;
   int padY = (m_ctrl->getHeight() - tilesPerDim)/2;
 
@@ -101,8 +103,8 @@ void ShaderApp::chessboardShader(TimeUnit tm, size_t x, size_t y, uint8_t &r, ui
       g = c2[1];
       b = c2[2];
     }
-  }else if((x >= padX-1 && x <= m_ctrl->getWidth() - padX) &&
-     (y >= padY-1 && y <= m_ctrl->getHeight() - padY)){
+  }else if((x >= padX-borderSize && x <= m_ctrl->getWidth() - 1 + borderSize - padX) &&
+     (y >= padY-borderSize && y <= m_ctrl->getHeight() - 1 + borderSize- padY)){
       r = 210;
       g = 105;
       b = 30;
