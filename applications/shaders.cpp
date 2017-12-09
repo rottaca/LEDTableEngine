@@ -11,7 +11,6 @@ ShaderApp::~ShaderApp (){
 void ShaderApp::initialize(BaseController * ctrl){
   BaseApplication::initialize(ctrl);
   m_bufferColorMode = BufferColorMode::RGB;
-
 }
 
 void ShaderApp::continueApp(){
@@ -45,6 +44,9 @@ void ShaderApp::draw(Image &frame){
          break;
          case CHESS:
          chessboardShader(tm, ix,iy,*(p+0),*(p+1),*(p+2));
+         break;
+         case WAVINGCOLOR:
+         wavingColors(tm, ix,iy,*(p+0),*(p+1),*(p+2));
          break;
        }
        p+=3;
@@ -109,4 +111,15 @@ void ShaderApp::chessboardShader(TimeUnit tm, size_t x, size_t y, uint8_t &r, ui
       g = 153;
       b = 204;
   }
+}
+void ShaderApp::wavingColors(TimeUnit tm, size_t x, size_t y, uint8_t &r, uint8_t &g, uint8_t &b){
+  float p = (float)x/m_ctrl->getWidth() + (float)y/m_ctrl->getHeight();
+  float h = (cos(p*1 + tm/1500.0)+1)*180;
+  float s = (sin(p*2 + tm/3000.0)+1)*0.25;
+
+  float tr,tg,tb;
+  hsv2rgb(h, 0.5+s, 1, tr, tg, tb);
+  r = tr*255;
+  g = tg*255;
+  b = tb*255;
 }

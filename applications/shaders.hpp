@@ -15,7 +15,8 @@ class ShaderApp: public BaseApplication {
 protected:
   enum ShaderType{
                WATER = 0,
-               CHESS,    
+               CHESS,
+               WAVINGCOLOR,
                END};
 
   ShaderType m_shader;
@@ -35,6 +36,7 @@ public:
 private:
   void waterShader(TimeUnit tm, size_t x, size_t y, uint8_t &r, uint8_t &g, uint8_t &b);
   void chessboardShader(TimeUnit tm, size_t x, size_t y, uint8_t &r, uint8_t &g, uint8_t &b);
+  void wavingColors(TimeUnit tm, size_t x, size_t y, uint8_t &r, uint8_t &g, uint8_t &b);
 
 };
 
