@@ -8,7 +8,7 @@
 #include <array>
 #include <list>
 
-#include "../LEDTableEngine/baseApplication.hpp"
+#include "../engine/baseApplication.hpp"
 
 class Snake: public BaseApplication {
 protected:

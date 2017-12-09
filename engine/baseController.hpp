@@ -25,6 +25,7 @@ protected:
   size_t m_size;
   bool m_debug, m_isRunning;
   BufferColorMode m_bufferMode;
+  float m_brightness;
 
 private:
   std::shared_ptr<BaseInput> m_inputHandler;
@@ -48,6 +49,13 @@ public:
   void run(size_t fps=50);
   void clearFrame(ColorRGB color);
   void clearFrame(uint8_t paletteIdx);
+
+  void setBrightness(float b){
+    m_brightness = b;
+  }
+  float getBrightness(){
+    return m_brightness;
+  }
 
   TimeUnit getTimeMs();
 

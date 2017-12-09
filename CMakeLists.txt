@@ -5,11 +5,11 @@ set (CMAKE_CXX_STANDARD 11)
 
 add_executable(LEDTable
       main.cpp
-      LEDTableEngine/baseController.cpp
-      LEDTableEngine/baseInput.cpp
-      LEDTableEngine/baseApplication.cpp
-      LEDTableEngine/keyboardDebouncer.cpp
-      LEDTableEngine/font.cpp
+      engine/baseController.cpp
+      engine/baseInput.cpp
+      engine/baseApplication.cpp
+      engine/keyboardDebouncer.cpp
+      engine/font.cpp
 
       controllers/desktopController.cpp
       controllers/matrixController.cpp

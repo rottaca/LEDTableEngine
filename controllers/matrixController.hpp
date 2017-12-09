@@ -7,7 +7,7 @@
 #include <vector>
 #include <chrono>
 
-#include "../LEDTableEngine/baseController.hpp"
+#include "../engine/baseController.hpp"
 #include "TPM2.hpp"
 
 class MatrixController : public BaseController {

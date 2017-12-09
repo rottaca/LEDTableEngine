@@ -1,5 +1,5 @@
 #include "testPatterns.hpp"
-#include "../LEDTableEngine/baseController.hpp"
+#include "../engine/baseController.hpp"
 
 TestPatternApp::TestPatternApp(){
 

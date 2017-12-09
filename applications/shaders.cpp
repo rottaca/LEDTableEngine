@@ -1,5 +1,5 @@
 #include "shaders.hpp"
-#include "../LEDTableEngine/baseController.hpp"
+#include "../engine/baseController.hpp"
 
 ShaderApp::ShaderApp(){
 
@@ -63,7 +63,6 @@ void ShaderApp::waterShader(TimeUnit tm, size_t x, size_t y, uint8_t &r, uint8_t
   Pointf uv((double)x/m_ctrl->getWidth(),(double)y/m_ctrl->getHeight());
 
   Pointf p(fmod(uv.x*TAU,TAU)-250.0,fmod(uv.y*TAU,TAU)-250.0 );
-  std::cout << p.x << std::endl;
 	Pointf i = p;
 	double c = 1.0;
 	double inten = .005;
@@ -114,6 +113,7 @@ void ShaderApp::chessboardShader(TimeUnit tm, size_t x, size_t y, uint8_t &r, ui
       b = 204;
   }
 }
+
 void ShaderApp::wavingColors(TimeUnit tm, size_t x, size_t y, uint8_t &r, uint8_t &g, uint8_t &b){
   float p = (float)x/m_ctrl->getWidth() + (float)y/m_ctrl->getHeight();
   float h = (cos(p*1 + tm/1500.0)+1)*180;

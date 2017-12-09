@@ -7,8 +7,8 @@
 #include <random>
 #include <array>
 
-#include "../LEDTableEngine/baseApplication.hpp"
-#include "../LEDTableEngine/font.hpp"
+#include "../engine/baseApplication.hpp"
+#include "../engine/font.hpp"
 
 class MenuEntryHandler;
 class BaseController;
@@ -37,17 +37,21 @@ protected:
   TimeUnit m_timeTextWarpInitialWait;
   TimeUnit m_timeTextWarpStart;
   TimeUnit m_timeTextWarpPerChar;
-  size_t m_menuEntryIdx;
+  TimeUnit m_lastKeyPress;
+
   Pointi m_currTextSize;
+  size_t m_menuEntryIdx;
   size_t m_scrollXPixels;
   size_t m_currScrollXPixels;
-  bool m_isClosable;
-  std::vector<MenuEntry> m_menuEntries;
   size_t m_paddingX;
+
+  bool m_isClosable;
+
+  std::vector<MenuEntry> m_menuEntries;
 
 public:
 
-  TextMenu();
+  TextMenu(bool closable=true);
   virtual ~TextMenu ();
 
   void initialize(BaseController * ctrl);
@@ -60,14 +64,13 @@ public:
 
   void setMenuItems(std::vector<MenuEntry> entries);
 
-private:
-
   void updateTextData();
+
 };
 
 class MenuEntryHandler{
 public:
-  virtual bool onSelectMenuItem(const TextMenu::MenuEntry& menuEntry, size_t idx)=0;
+  virtual bool onSelectMenuItem(TextMenu* menu, TextMenu::MenuEntry& menuEntry, size_t idx)=0;
 };
 
 class AppLauncher: public MenuEntryHandler{
@@ -76,6 +79,6 @@ private:
   std::shared_ptr<BaseController> m_ctrl;
 public:
   AppLauncher(std::shared_ptr<BaseController> ctrl, std::shared_ptr<BaseApplication> app);
-  bool onSelectMenuItem(const TextMenu::MenuEntry& menuEntry, size_t idx);
+  bool onSelectMenuItem(TextMenu* menu, TextMenu::MenuEntry& menuEntry, size_t idx);
 };
 #endif

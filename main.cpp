@@ -3,6 +3,8 @@
 #include <math.h>
 #include <unistd.h>
 #include <cstring>
+#include <sstream>
+#include <iomanip> // setprecision
 
 #include "controllers/desktopController.hpp"
 #include "controllers/matrixController.hpp"
@@ -19,6 +21,38 @@
 
 extern char *optarg;
 extern int optind, opterr, optopt;
+
+
+class SettingsMenuHandler: public MenuEntryHandler{
+private:
+  std::shared_ptr<BaseController> m_ctrl;
+public:
+  SettingsMenuHandler(std::shared_ptr<BaseController> ctrl){
+    m_ctrl = ctrl;
+  }
+  bool onSelectMenuItem(TextMenu* menu, TextMenu::MenuEntry& menuEntry, size_t idx){
+    switch (idx) {
+      case 0:{
+        float f = m_ctrl->getBrightness();
+        f += 0.2;
+        if(f > 1){
+          f = 0.4;
+        }
+        m_ctrl->setBrightness(f);
+        std::stringstream stream;
+        stream << "Brightness: ";
+        stream << std::fixed << std::setprecision(2) << f;
+        menuEntry.name = stream.str();
+      }
+      break;
+      default:
+      return false;
+      break;
+    }
+    menu->updateTextData();
+    return false;
+  }
+};
 
 int main (int argc, char **argv)
 {
@@ -76,21 +110,44 @@ int main (int argc, char **argv)
     exit(1);
   }
 
-  // Main Menu
-  auto a = std::make_shared<TextMenu>();
-  a->setMenuItems({
-    TextMenu::MenuEntry("Test Pattern",
-                    std::make_shared<AppLauncher>(c,std::make_shared<TestPatternApp>())),
-    TextMenu::MenuEntry("Slide Show",
-                    std::make_shared<AppLauncher>(c,std::make_shared<ImageSlideShowApp>())),
+  // Games
+  auto games = std::make_shared<TextMenu>();
+  games->setMenuItems({
     TextMenu::MenuEntry("Snake",
                     std::make_shared<AppLauncher>(c,std::make_shared<Snake>())),
     TextMenu::MenuEntry("Pong",
-                    std::make_shared<AppLauncher>(c,std::make_shared<Pong>())),
+                    std::make_shared<AppLauncher>(c,std::make_shared<Pong>()))
+  });
+
+  // Effects
+  auto effects = std::make_shared<TextMenu>();
+  effects->setMenuItems({
+    TextMenu::MenuEntry("Slide Show",
+      std::make_shared<AppLauncher>(c,std::make_shared<ImageSlideShowApp>())),
     TextMenu::MenuEntry("Fractals",
-                    std::make_shared<AppLauncher>(c,std::make_shared<FractalApp>())),
+      std::make_shared<AppLauncher>(c,std::make_shared<FractalApp>())),
     TextMenu::MenuEntry("Shaders",
-                    std::make_shared<AppLauncher>(c,std::make_shared<ShaderApp>()))
+      std::make_shared<AppLauncher>(c,std::make_shared<ShaderApp>()))
+  });
+
+  // Settings
+  auto settings = std::make_shared<TextMenu>();
+  auto settingsHandler = std::make_shared<SettingsMenuHandler>(c);
+  settings->setMenuItems({
+    TextMenu::MenuEntry("Brightness: 1",settingsHandler)
+  });
+
+  // Main Menu
+  auto a = std::make_shared<TextMenu>(false);
+  a->setMenuItems({
+    TextMenu::MenuEntry("Test Pattern",
+                    std::make_shared<AppLauncher>(c,std::make_shared<TestPatternApp>())),
+    TextMenu::MenuEntry("Effects",
+                    std::make_shared<AppLauncher>(c,effects)),
+    TextMenu::MenuEntry("Games",
+                    std::make_shared<AppLauncher>(c,games)),
+    TextMenu::MenuEntry("Settings",
+                    std::make_shared<AppLauncher>(c,settings))
   });
 
   c->addApplication(a);

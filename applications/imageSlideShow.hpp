@@ -7,8 +7,8 @@
 #include <random>
 #include <array>
 
-#include "../LEDTableEngine/baseApplication.hpp"
-#include "../LEDTableEngine/font.hpp"
+#include "../engine/baseApplication.hpp"
+#include "../engine/font.hpp"
 
 class ImageSlideShowApp: public BaseApplication {
 protected:

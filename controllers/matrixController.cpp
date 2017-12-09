@@ -46,9 +46,9 @@ void MatrixController::copyImageToBuffer(const Image& frame) {
    		   c[1] = frame.data[idx++];
    		   c[2] = frame.data[idx++];
  	     }
- 	     *p++ = c[0];
- 	     *p++ = c[1];
- 	     *p++ = c[2];
+ 	     *p++ = c[0]*m_brightness;
+ 	     *p++ = c[1]*m_brightness;
+ 	     *p++ = c[2]*m_brightness;
     }
   }
 }

@@ -1,8 +1,8 @@
 #include "textMenu.hpp"
-#include "../LEDTableEngine/baseController.hpp"
+#include "../engine/baseController.hpp"
 
-TextMenu::TextMenu(){
-
+TextMenu::TextMenu(bool closable){
+  m_isClosable = closable;
 }
 TextMenu::~TextMenu (){
 
@@ -18,6 +18,7 @@ void TextMenu::initialize(BaseController * ctrl){
     {255,206,0},
     {255,232,8}
   };
+
   for(int i = m_colorPalette.size(); i <= 255; i++){
     m_colorPalette.push_back({0,0,0});
   }
@@ -30,7 +31,6 @@ void TextMenu::initialize(BaseController * ctrl){
   m_menuEntryIdx = 0;
   m_scrollXPixels = 0;
   m_currScrollXPixels = 0;
-  m_isClosable = true;
   m_menuEntryIdx = 0;
   m_paddingX = 3;
   updateTextData();
@@ -54,10 +54,6 @@ void TextMenu::setMenuItems(std::vector<MenuEntry> entries){
 void TextMenu::processInput(const BaseInput::InputEvents &events,
                           const BaseInput::InputEvents &eventsDebounced,
                           TimeUnit deltaTime){
-    if(BaseInput::isPressed(eventsDebounced,BaseInput::InputEventName::EXIT)){
-      m_hasFinished = true;
-      return;
-    }
     TimeUnit t = m_ctrl->getTimeMs();
 
     if((m_currScrollXPixels != 0 && m_currScrollXPixels != m_scrollXPixels && t-m_timeTextWarpStart >= m_timeTextWarpPerChar) ||
@@ -93,8 +89,15 @@ void TextMenu::processInput(const BaseInput::InputEvents &events,
         break;
         case BaseInput::InputEventName::ENTER:{
           if(m_menuEntries[m_menuEntryIdx].handler){
-            m_menuEntries[m_menuEntryIdx].handler->onSelectMenuItem(m_menuEntries[m_menuEntryIdx], m_menuEntryIdx);
-          }else{
+           if(m_menuEntries[m_menuEntryIdx].handler->onSelectMenuItem(this, m_menuEntries[m_menuEntryIdx], m_menuEntryIdx) && m_isClosable)
+            m_hasFinished = true;
+          }else if(m_isClosable){
+            m_hasFinished = true;
+          }
+        }
+        break;
+        case BaseInput::InputEventName::EXIT:{
+          if(m_isClosable){
             m_hasFinished = true;
           }
         }
@@ -152,6 +155,7 @@ AppLauncher::AppLauncher(std::shared_ptr<BaseController> ctrl, std::shared_ptr<B
   m_app = app;
   m_ctrl = ctrl;
 }
-bool AppLauncher::onSelectMenuItem(const TextMenu::MenuEntry& menuEntry, size_t idx){
+bool AppLauncher::onSelectMenuItem(TextMenu* menu, TextMenu::MenuEntry& menuEntry, size_t idx){
   m_ctrl->addApplication(m_app, true);
+  return false;
 }

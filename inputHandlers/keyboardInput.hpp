@@ -6,7 +6,7 @@
 #include <vector>
 #include <string>
 
-#include "../LEDTableEngine/baseInput.hpp"
+#include "../engine/baseInput.hpp"
 #include "keyboard.hpp"
 
 class KeyboardInput :public BaseInput{

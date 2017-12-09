@@ -2,7 +2,7 @@
 
 #include <dirent.h>
 
-#include "../LEDTableEngine/baseController.hpp"
+#include "../engine/baseController.hpp"
 
 ImageSlideShowApp::ImageSlideShowApp(){
   DIR *dir;

@@ -1,5 +1,5 @@
 #include "fractal.hpp"
-#include "../LEDTableEngine/baseController.hpp"
+#include "../engine/baseController.hpp"
 
 FractalApp::FractalApp(){
 

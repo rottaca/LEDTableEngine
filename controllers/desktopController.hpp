@@ -14,7 +14,7 @@
 #include <SDL2/SDL.h>
 #endif
 
-#include "../LEDTableEngine/baseController.hpp"
+#include "../engine/baseController.hpp"
 
 class DesktopController : public BaseController {
 public:

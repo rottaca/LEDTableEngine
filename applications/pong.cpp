@@ -1,5 +1,5 @@
 #include "pong.hpp"
-#include "../LEDTableEngine/baseController.hpp"
+#include "../engine/baseController.hpp"
 #include <algorithm>
 
 template <typename T> int sgn(T val) {

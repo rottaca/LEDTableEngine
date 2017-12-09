@@ -9,7 +9,7 @@
 #include <cstdlib>
 #include <complex>
 
-#include "../LEDTableEngine/baseApplication.hpp"
+#include "../engine/baseApplication.hpp"
 
 class ShaderApp: public BaseApplication {
 protected:

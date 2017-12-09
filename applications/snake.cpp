@@ -1,5 +1,5 @@
 #include "snake.hpp"
-#include "../LEDTableEngine/baseController.hpp"
+#include "../engine/baseController.hpp"
 #include <algorithm>
 
 Snake::Snake(){
