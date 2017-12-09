@@ -23,8 +23,6 @@ public:
   ImageSlideShowApp();
   virtual ~ImageSlideShowApp ();
 
-  void setImages(std::vector<std::string> imgFiles);
-
   void initialize(BaseController * ctrl);
 
   void processInput(const BaseInput::InputEvents &events,

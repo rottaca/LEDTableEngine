@@ -2,8 +2,12 @@
 #include "../LEDTableEngine/baseController.hpp"
 #include <algorithm>
 
-Pong::Pong(){
+template <typename T> int sgn(T val) {
+    return (T(0) < val) - (val < T(0));
+}
 
+Pong::Pong(bool autoplay){
+  m_autoplay = autoplay;
 }
 Pong::~Pong (){
 
@@ -25,7 +29,7 @@ void Pong::initialize(BaseController * ctrl){
   float speedScale = 5;
   m_playerHeight = 3;
   m_speedIncrease = 0.01;
-  m_movementSpeed = 50;
+  m_movementSpeed = 100;
 
   m_lastUpdateTime = 0;
   m_deathTime = 0;
@@ -54,6 +58,9 @@ void Pong::processInput(const BaseInput::InputEvents &events,
       return;
 	}
 
+  m_ballPos.x += m_ballSpeed.x*deltaTime/1000.0f;
+  m_ballPos.y += m_ballSpeed.y*deltaTime/1000.0f;
+
 	if(m_ctrl->getTimeMs() - m_lastUpdateTime > m_movementSpeed){
 		m_lastUpdateTime = m_ctrl->getTimeMs();
 
@@ -63,13 +70,13 @@ void Pong::processInput(const BaseInput::InputEvents &events,
 
   		switch(e.name){
   			case BaseInput::InputEventName::UP:
-          if(m_playerPos[0] > m_playerHeight/2)
+          if(!m_autoplay && m_playerPos[0] > m_playerHeight/2)
             m_playerPos[0]--;
   				break;
   			case BaseInput::InputEventName::LEFT:
   				break;
   			case BaseInput::InputEventName::DOWN:
-          if(m_playerPos[0] < m_ctrl->getHeight() - 1 - m_playerHeight/2)
+          if(!m_autoplay && m_playerPos[0] < m_ctrl->getHeight() - 1 - m_playerHeight/2)
             m_playerPos[0]++;
   				break;
   			case BaseInput::InputEventName::RIGHT:
@@ -83,11 +90,22 @@ void Pong::processInput(const BaseInput::InputEvents &events,
       m_ballSpeed.x += m_speedIncrease*(m_ballSpeed.x > 0?1:-1);
       m_ballSpeed.y += m_speedIncrease*(m_ballSpeed.y > 0?1:-1);
     }
+
+    if(m_ballPos.x >= m_ctrl->getWidth()/2){
+      m_playerPos[1] = std::min(
+                        std::max(
+                             m_playerPos[1] + sgn((int)m_ballPos.y - m_playerPos[1]),
+                             m_playerHeight/2),
+                       (int)(m_ctrl->getHeight() - 1 - m_playerHeight/2));
+    }else if(m_autoplay){
+      m_playerPos[0] = std::min(
+                        std::max(
+                             m_playerPos[0] + sgn((int)m_ballPos.y - m_playerPos[0]),
+                             m_playerHeight/2),
+                       (int)(m_ctrl->getHeight() - 1 - m_playerHeight/2));
+    }
 	}
 
-  m_ballPos.x += m_ballSpeed.x*deltaTime/1000.0f;
-  m_ballPos.y += m_ballSpeed.y*deltaTime/1000.0f;
-  m_playerPos[1] = std::min(std::max((int)m_ballPos.y,m_playerHeight/2),(int)(m_ctrl->getHeight() - 1 - m_playerHeight/2));
 
   if (m_ballPos.x < 1) {
     if(fabs(m_ballPos.y-m_playerPos[0]) < m_playerHeight/2){

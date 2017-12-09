@@ -76,21 +76,13 @@ int main (int argc, char **argv)
     exit(1);
   }
 
-  // Apps
-  auto iss = std::make_shared<ImageSlideShowApp>();
-  iss->setImages({
-    "strand.bmp",
-    "img1.bmp",
-    "img2.bmp"
-  });
-
   // Main Menu
   auto a = std::make_shared<TextMenu>();
   a->setMenuItems({
     TextMenu::MenuEntry("Test Pattern",
                     std::make_shared<AppLauncher>(c,std::make_shared<TestPatternApp>())),
     TextMenu::MenuEntry("Slide Show",
-                    std::make_shared<AppLauncher>(c,iss)),
+                    std::make_shared<AppLauncher>(c,std::make_shared<ImageSlideShowApp>())),
     TextMenu::MenuEntry("Snake",
                     std::make_shared<AppLauncher>(c,std::make_shared<Snake>())),
     TextMenu::MenuEntry("Pong",

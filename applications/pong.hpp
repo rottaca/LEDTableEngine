@@ -28,9 +28,9 @@ protected:
 
   TimeUnit m_lastUpdateTime;
   TimeUnit m_deathTime;
-
+  bool m_autoplay;
 public:
-  Pong();
+  Pong(bool autoplay=true);
   virtual ~Pong ();
 
   void initialize(BaseController * ctrl);

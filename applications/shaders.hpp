@@ -13,7 +13,7 @@
 
 class ShaderApp: public BaseApplication {
 protected:
-  enum ShaderType{WATER,
+  enum ShaderType{WATER = 0,
                END};
 
   ShaderType m_shader;

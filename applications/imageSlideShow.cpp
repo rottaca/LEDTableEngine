@@ -1,15 +1,30 @@
 #include "imageSlideShow.hpp"
+
+#include <dirent.h>
+
 #include "../LEDTableEngine/baseController.hpp"
 
 ImageSlideShowApp::ImageSlideShowApp(){
+  DIR *dir;
+  struct dirent *ent;
+  if ((dir = opendir("res/ImageSlideShowApp/")) != NULL) {
+    /* print all the files and directories within directory */
+    while ((ent = readdir(dir)) != NULL) {
+      if(strstr(ent->d_name,".bmp")!=0){
+        std::cout << "Found image file for slideshow: " << ent->d_name << std::endl;
+        m_imageFilePaths.push_back(ent->d_name);
+      }
+    }
+    closedir (dir);
+  } else {
+    /* could not open directory */
+    std::cerr << "Couldn't open directory with slide show images!" << std::endl;
+  }
 }
 ImageSlideShowApp::~ImageSlideShowApp (){
 
 }
 
-void ImageSlideShowApp::setImages(std::vector<std::string> imgFiles){
-  m_imageFilePaths = imgFiles;
-}
 
 void ImageSlideShowApp::initialize(BaseController * ctrl){
   BaseApplication::initialize(ctrl);
