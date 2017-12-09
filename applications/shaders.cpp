@@ -43,6 +43,9 @@ void ShaderApp::draw(Image &frame){
          case WATER:
          waterShader(tm, ix,iy,*(p+0),*(p+1),*(p+2));
          break;
+         case CHESS:
+         chessboardShader(tm, ix,iy,*(p+0),*(p+1),*(p+2));
+         break;
        }
        p+=3;
      }
@@ -76,4 +79,34 @@ void ShaderApp::waterShader(TimeUnit tm, size_t x, size_t y, uint8_t &r, uint8_t
   r = std::min(std::max(pow(fabs(c), 8.0) + 0.0, 0.0),1.0)*255.0;
   g = std::min(std::max(pow(fabs(c), 8.0) + 0.35, 0.0),1.0)*255.0;
   b = std::min(std::max(pow(fabs(c), 8.0) + 0.5, 0.0),1.0)*255.0;
+}
+
+void ShaderApp::chessboardShader(TimeUnit tm, size_t x, size_t y, uint8_t &r, uint8_t &g, uint8_t &b){
+  ColorRGB c1 = {0,0,0};
+  ColorRGB c2 = {255,255,255};
+  int tilesPerDim = 8;
+  int padX = (m_ctrl->getWidth() - tilesPerDim)/2;
+  int padY = (m_ctrl->getHeight() - tilesPerDim)/2;
+
+  if(x >= padX && x <= m_ctrl->getWidth() - 1 - padX &&
+     y >= padY && y <= m_ctrl->getHeight() - 1 - padY){
+    if((x % 2 == 0) != (y % 2 == 0)){
+      r = c1[0];
+      g = c1[1];
+      b = c1[2];
+    }else{
+      r = c2[0];
+      g = c2[1];
+      b = c2[2];
+    }
+  }else if((x >= padX-1 && x <= m_ctrl->getWidth() - padX) &&
+     (y >= padY-1 && y <= m_ctrl->getHeight() - padY)){
+      r = 210;
+      g = 105;
+      b = 30;
+  }else {
+      r = 0;
+      g = 153;
+      b = 204;
+  }
 }
