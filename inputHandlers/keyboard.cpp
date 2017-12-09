@@ -19,7 +19,7 @@ bool cKeyboard::start(std::string keyboardDev){
       pthread_create(&thread, 0, &cKeyboard::loop, this);
   }else{
     std::cerr << "Couldn't open keyboard event file " << keyboardDev << "." << std::endl;
-    return false;
+    //return false;
   }
   return true;
 }

@@ -77,7 +77,7 @@ void ShaderApp::waterShader(TimeUnit tm, size_t x, size_t y, uint8_t &r, uint8_t
 	}
 	c /= double(MAX_ITER);
 	c = 1.17-pow(c, 1.4);
-
+//   std::cout << c << std::endl;
   r = std::min(std::max(pow(fabs(c), 8.0) + 0.0, 0.0),1.0)*255.0;
   g = std::min(std::max(pow(fabs(c), 8.0) + 0.35, 0.0),1.0)*255.0;
   b = std::min(std::max(pow(fabs(c), 8.0) + 0.5, 0.0),1.0)*255.0;
