@@ -26,6 +26,7 @@ add_executable(LEDTable
       applications/pong.cpp
       applications/fractal.cpp
       applications/shaders.cpp
+      applications/gameOfLife.cpp
 
 )
 

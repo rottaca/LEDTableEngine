@@ -3,6 +3,7 @@
 
 TextMenu::TextMenu(bool closable){
   m_isClosable = closable;
+  m_font.loadFromFile("res/font/myfont.fnt");
 }
 TextMenu::~TextMenu (){
 
@@ -23,7 +24,6 @@ void TextMenu::initialize(BaseController * ctrl){
     m_colorPalette.push_back({0,0,0});
   }
 
-  m_font.loadFromFile("res/font/myfont.fnt");
   m_lastStepUpdate = 0;
   m_timeTextWarpInitialWait = 1000;
   m_timeTextWarpStart = 0;
@@ -34,6 +34,8 @@ void TextMenu::initialize(BaseController * ctrl){
   m_menuEntryIdx = 0;
   m_paddingX = 3;
   updateTextData();
+  m_lastKeyPress = m_ctrl->getTimeMs();
+  m_screenOff = false;
 }
 
 void TextMenu::continueApp(){
@@ -55,6 +57,21 @@ void TextMenu::processInput(const BaseInput::InputEvents &events,
                           const BaseInput::InputEvents &eventsDebounced,
                           TimeUnit deltaTime){
     TimeUnit t = m_ctrl->getTimeMs();
+
+    if(eventsDebounced.size() > 0){
+      m_lastKeyPress = t;
+      if(m_screenOff){
+        m_screenOff = false;
+        return;
+      }
+    }
+
+    if(t - m_lastKeyPress > 10000){
+      m_screenOff = true;
+      return;
+    }else{
+      m_screenOff = false;
+    }
 
     if((m_currScrollXPixels != 0 && m_currScrollXPixels != m_scrollXPixels && t-m_timeTextWarpStart >= m_timeTextWarpPerChar) ||
        ((m_currScrollXPixels == 0 || m_currScrollXPixels == m_scrollXPixels) && t-m_timeTextWarpStart >= m_timeTextWarpPerChar + m_timeTextWarpInitialWait))
@@ -109,6 +126,10 @@ void TextMenu::draw(Image &frame){
   m_requiresRedraw = false;
 
   m_ctrl->clearFrame({ColorPaleteIdx::BG});
+
+  if(m_screenOff)
+    return;
+
 
   // Upper arrow
   if(m_menuEntryIdx > 0){

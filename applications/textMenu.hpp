@@ -38,7 +38,8 @@ protected:
   TimeUnit m_timeTextWarpStart;
   TimeUnit m_timeTextWarpPerChar;
   TimeUnit m_lastKeyPress;
-
+  bool m_screenOff;
+  
   Pointi m_currTextSize;
   size_t m_menuEntryIdx;
   size_t m_scrollXPixels;
