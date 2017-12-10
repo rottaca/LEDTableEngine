@@ -168,10 +168,10 @@ void BaseController::run(size_t fps){
 void BaseController::createFrame(){
         switch(m_bufferMode) {
         case RGB:
-                m_frameBuffer.resize(m_width,m_height,3);
+                m_frameBuffer.resize(m_height, m_width, 3);
                 break;
         case PALETTE:
-                m_frameBuffer.resize(m_width,m_height,1);
+                m_frameBuffer.resize(m_height, m_width, 1);
                 break;
         }
 }

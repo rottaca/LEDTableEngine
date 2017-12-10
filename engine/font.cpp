@@ -106,7 +106,7 @@ namespace bmfont
 					<< "Couldn't load texture file \"" << texPath << "\"" << std::endl;
 				return false;
 			}
-			Image* img = new Image(surf->w, surf->h, surf->pitch/surf->w);
+			Image* img = new Image(surf->h, surf->w, surf->pitch/surf->w);
 			memcpy(img->data, surf->pixels,img->size);
 			SDL_FreeSurface(surf);
 			m_textures[i] = img;

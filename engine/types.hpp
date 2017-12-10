@@ -54,7 +54,7 @@
       rowstride = 0;
       channels = 0;
     }
-    Image(size_t w, size_t h, uint8_t ch){
+    Image(size_t h, size_t w, uint8_t ch){
       data = new uint8_t[w*h*ch];
       width = w;
       height = h;
@@ -63,7 +63,7 @@
       channels = ch;
       ownsData = true;
     }
-    Image(uint8_t*d, size_t w, size_t h, uint8_t ch){
+    Image(uint8_t*d, size_t h, size_t w, uint8_t ch){
       data = d;
       width = w;
       height = h;
@@ -72,7 +72,7 @@
       channels = ch;
     }
 
-    void resize( size_t w, size_t h, uint8_t ch){
+    void resize( size_t h, size_t w, uint8_t ch){
       if(ownsData && data)
         delete[] data;
       data = new uint8_t[w*h*ch];

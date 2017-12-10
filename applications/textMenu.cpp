@@ -40,6 +40,9 @@ void TextMenu::initialize(BaseController * ctrl){
 
 void TextMenu::continueApp(){
   m_ctrl->clearFrame(0);
+  m_lastKeyPress = m_ctrl->getTimeMs();
+  m_screenOff = false;
+
 }
 void TextMenu::updateTextData()
 {

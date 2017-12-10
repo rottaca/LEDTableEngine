@@ -17,7 +17,28 @@ protected:
   size_t m_currentFieldIdx;
   TimeUnit m_lastUpdateTime;
   std::default_random_engine m_generator;
-  std::uniform_real_distribution<float> m_dist;
+  std::uniform_int_distribution<int> m_dist;
+
+  struct Rules{
+    std::vector<uint8_t> neighborsForBirth;
+    std::vector<uint8_t> neighborsForLiving;
+    float initialLivingCellRatio;
+
+    Rules(){
+      initialLivingCellRatio = 0.4;
+      neighborsForBirth = {3};
+      neighborsForLiving = {2,3};
+    }
+    Rules(  std::vector<uint8_t> neighborsForBirth,
+        std::vector<uint8_t> neighborsForLiving,
+        float initRatio){
+      this->neighborsForBirth = neighborsForBirth;
+      this->neighborsForLiving = neighborsForLiving;
+      initialLivingCellRatio = initRatio;
+    }
+  };
+
+  Rules m_evolutionRules;
 
 public:
   GameOfLife();

@@ -8,13 +8,23 @@ exec >${DIR}/log.txt
 
 
 
-echo "Sleeping for 10 seconds befor start..."
+echo ">>>>>>> Sleeping for 10 seconds befor start..."
 sleep 10
-echo "Starting main ...."
+echo ">>>>>>> Starting main ...."
 keybardDev=$(find /dev/input/by-path/ -name "*kbd*" | head -1)
 if [ -z "$keybardDev" ]; then
-  >2 echo "Failed to find valid keyboard event file!"
+  echo ">>>>>>> Failed to find valid keyboard event file!"
 else
   cd $DIR/build
-  DISPLAY=:0 stdbuf -oL -eL ./LEDTable -c matrix -k $keybardDev
+  restartCounter=0
+  until DISPLAY=:0 stdbuf -oL -eL ./LEDTable -c matrix -k $keybardDev; do
+    restartCounter=$((restartCounter + 1))
+    if (( $restartCounter == 10 )); then
+      echo ">>>>>>> Restart failed!"
+      exit 1
+    else
+      echo ">>>>>>> Restart engine, due to crash! Attempt $restartCounter of 10"
+      sleep 1
+    fi
+  done
 fi
