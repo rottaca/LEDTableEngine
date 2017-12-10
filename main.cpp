@@ -155,6 +155,5 @@ int main (int argc, char **argv)
 
   c->addApplication(a);
   c->run(25);
-
   return 0;
 }

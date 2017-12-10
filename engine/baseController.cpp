@@ -162,6 +162,13 @@ void BaseController::run(size_t fps){
                         std::cout << "------------------------------------------------------"  << std::endl;
                 }
         }
+        // Clear screen before exit
+        if(m_frameBuffer.channels == 3){
+          clearFrame({0,0,0});
+        }else{
+          clearFrame(0);
+        }
+        showFrame(m_frameBuffer);
         shutdown();
 }
 

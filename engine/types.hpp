@@ -70,11 +70,11 @@
       rowstride = width*ch;
       size = rowstride*height;
       channels = ch;
+      ownsData = false;
     }
 
     void resize( size_t h, size_t w, uint8_t ch){
-      if(ownsData && data)
-        delete[] data;
+      release();
       data = new uint8_t[w*h*ch];
       width = w;
       height = h;
@@ -84,14 +84,19 @@
       ownsData = true;
 
     }
+    void release(){
+      if(ownsData && data)
+        delete[] data;
+      data = nullptr;
+      ownsData = false;
+    }
 
     uint8_t &operator () (const size_t y, const size_t x, const size_t ch){
       return data[y*rowstride + x*channels + ch];
     }
 
     ~Image(){
-      if(ownsData && data)
-        delete[] data;
+      release();
     }
   };
 #endif
