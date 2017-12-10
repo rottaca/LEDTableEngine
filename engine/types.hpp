@@ -3,6 +3,8 @@
 #include <chrono>
 #include <vector>
 #include <array>
+#include <iostream>
+#include <assert.h>
 
   typedef int64_t TimeUnit;
   typedef std::array<uint8_t,3> ColorRGB;
@@ -74,6 +76,8 @@
     }
 
     void resize( size_t h, size_t w, uint8_t ch){
+      if(h == height && w == width && ch == channels)
+        return;
       release();
       data = new uint8_t[w*h*ch];
       width = w;
@@ -92,6 +96,10 @@
     }
 
     uint8_t &operator () (const size_t y, const size_t x, const size_t ch){
+      assert(y < height);
+      assert(x < width);
+      assert(ch < channels);
+      assert(y*rowstride + x*channels + ch < size);
       return data[y*rowstride + x*channels + ch];
     }
 

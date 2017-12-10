@@ -1,6 +1,7 @@
 #include "gameOfLife.hpp"
 #include "../engine/baseController.hpp"
 #include <algorithm>
+#include <cstring>
 
 GameOfLife::GameOfLife(){
 
@@ -31,10 +32,12 @@ void GameOfLife::initialize(BaseController * ctrl){
 
 void GameOfLife::randomInitField(){
   size_t sz = m_gameField[m_currentFieldIdx].size;
+  memset(m_gameField[0].data,0,sz);
+  memset(m_gameField[1].data,0,sz);
   for (size_t i = 0; i < sz*m_evolutionRules.initialLivingCellRatio; i++) {
     size_t x = m_dist(m_generator) % m_gameField[m_currentFieldIdx].width;
     size_t y = m_dist(m_generator) % m_gameField[m_currentFieldIdx].height;
-    m_gameField[m_currentFieldIdx](y,x,1) = 1;
+    m_gameField[m_currentFieldIdx](y,x,0) = 1;
   }
 }
 
@@ -57,7 +60,7 @@ void GameOfLife::processInput(const BaseInput::InputEvents &events,
     bool livingCellFOund = false;
     for (size_t y = 0; y < m_gameField[0].height; y++) {
       for (size_t x = 0; x < m_gameField[0].width; x++) {
-        uint8_t c = m_gameField[m_currentFieldIdx](y,x,1);
+        uint8_t c = m_gameField[m_currentFieldIdx](y,x,0);
         uint8_t n = checkNeighbours(m_gameField[m_currentFieldIdx], Pointi(x,y));
         if(c > 0){
           if(std::find(
@@ -80,7 +83,7 @@ void GameOfLife::processInput(const BaseInput::InputEvents &events,
             livingCellFOund = true;
           }
         }
-        m_gameField[nextField](y,x,1) = c;
+        m_gameField[nextField](y,x,0) = c;
       }
     }
     if(!livingCellFOund)
@@ -112,9 +115,9 @@ uint8_t GameOfLife::checkNeighbours(Image& gameField, Pointi p){
       if(p.x + x < 0 || p.x + x >= gameField.width || (x == 0 && y == 0))
         continue;
 
-      assert(p.x+x >= 0 && p.x+x < 20);
-      assert(p.y+y >= 0 && p.y+y < 15);
-      neighbours += (gameField(p.y+y, p.x+x, 1)>0) ;
+      assert(p.x+x >= 0 && p.x+x < gameField.width);
+      assert(p.y+y >= 0 && p.y+y < gameField.height);
+      neighbours += (gameField(p.y+y, p.x+x, 0)>0) ;
     }
   }
   return neighbours;
