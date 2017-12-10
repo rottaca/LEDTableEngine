@@ -1,3 +1,4 @@
 *.pyc
 *.gch
 build/
+log.txt

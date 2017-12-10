@@ -70,6 +70,8 @@ void TextMenu::processInput(const BaseInput::InputEvents &events,
     }
 
     if(t - m_lastKeyPress > 10000){
+      if(!m_screenOff)
+        m_requiresRedraw = true;
       m_screenOff = true;
       return;
     }else{

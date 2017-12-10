@@ -6,7 +6,7 @@ DIR=$(dirname $(readlink -f $0))
 exec 2>&1
 exec >${DIR}/log.txt
 
-
+killall LEDTable
 
 echo ">>>>>>> Sleeping for 10 seconds befor start..."
 sleep 10
