@@ -10,6 +10,7 @@ add_executable(LEDTable
       engine/baseApplication.cpp
       engine/keyboardDebouncer.cpp
       engine/font.cpp
+      engine/matrixScrollText.cpp
 
       controllers/desktopController.cpp
       controllers/matrixController.cpp
@@ -20,6 +21,7 @@ add_executable(LEDTable
       inputHandlers/keyboardInput.cpp
 
       applications/textMenu.cpp
+      applications/textDisplay.cpp
       applications/testPatterns.cpp
       applications/snake.cpp
       applications/imageSlideShow.cpp

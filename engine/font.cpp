@@ -283,11 +283,16 @@ namespace bmfont
 
 	Pointi Font::getTextSize(const std::string &text, int begin, int end)
 	{
+		if(m_textures.size()== 0)
+		{
+			std::cerr << "Font not initialized!" << std::endl;
+			return Pointi(0,0);
+		}
+
 		if(begin < 0)
 			return Pointi(0,0);
 		if(end < 0 || end >= static_cast<int>(text.size()))
 			end = text.size()-1;
-
 		// TODO Font::getTextSize() : exact height instead of max height
 
 		Pointi size(0, getLineHeight());

@@ -9,6 +9,7 @@
 
 #include "../engine/baseApplication.hpp"
 #include "../engine/font.hpp"
+#include "../engine/matrixScrollText.hpp"
 
 class MenuEntryHandler;
 class BaseController;
@@ -32,23 +33,15 @@ protected:
     TEXT=2
   };
 
-  bmfont::Font m_font;
-  TimeUnit m_lastStepUpdate;
-  TimeUnit m_timeTextWarpInitialWait;
-  TimeUnit m_timeTextWarpStart;
-  TimeUnit m_timeTextWarpPerChar;
   TimeUnit m_lastKeyPress;
-  bool m_screenOff;
-  
-  Pointi m_currTextSize;
-  size_t m_menuEntryIdx;
-  size_t m_scrollXPixels;
-  size_t m_currScrollXPixels;
-  size_t m_paddingX;
 
+  bool m_screenOff;
   bool m_isClosable;
 
+  size_t m_menuEntryIdx;
+
   std::vector<MenuEntry> m_menuEntries;
+  MatrixScrollText m_scrollText;
 
 public:
 

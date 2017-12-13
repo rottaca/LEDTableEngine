@@ -1,29 +1,30 @@
-#ifndef _H_SNAKE_APP_
-#define _H_SNAKE_APP_
+#ifndef _H_TEXT_DISPLAY_APP
+#define _H_TEXT_DISPLAY_APP
 
 #include <cstdlib>
 #include <memory>
 #include <vector>
 #include <random>
 #include <array>
-#include <list>
 
 #include "../engine/baseApplication.hpp"
+#include "../engine/font.hpp"
 #include "../engine/matrixScrollText.hpp"
 
-class Snake: public BaseApplication {
-protected:
+class MenuEntryHandler;
+class BaseController;
 
-  std::default_random_engine m_generator;
-  std::uniform_int_distribution<int> m_posDist;
-  std::list<Pointi> m_snake;
-  Pointi m_moveDir;
-  Pointi m_foodPos;
-  TimeUnit m_lastUpdateTime;
-
+class TextDisplay: public BaseApplication {
 public:
-  Snake();
-  virtual ~Snake ();
+
+
+protected:
+  MatrixScrollText m_scrollText;
+  std::string m_text;
+  
+public:
+  TextDisplay();
+  virtual ~TextDisplay ();
 
   void initialize(BaseController * ctrl);
 
@@ -31,7 +32,7 @@ public:
                     const BaseInput::InputEvents &eventsDebounced,
                     TimeUnit deltaTime);
   void draw(Image &frame);
+  void setText(std::string text);
 };
-
 
 #endif

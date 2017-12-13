@@ -3,7 +3,6 @@
 
 TextMenu::TextMenu(bool closable){
   m_isClosable = closable;
-  m_font.loadFromFile("res/font/myfont.fnt");
 }
 TextMenu::~TextMenu (){
 
@@ -24,18 +23,13 @@ void TextMenu::initialize(BaseController * ctrl){
     m_colorPalette.push_back({0,0,0});
   }
 
-  m_lastStepUpdate = 0;
-  m_timeTextWarpInitialWait = 1000;
-  m_timeTextWarpStart = 0;
-  m_timeTextWarpPerChar = 100;
   m_menuEntryIdx = 0;
-  m_scrollXPixels = 0;
-  m_currScrollXPixels = 0;
-  m_menuEntryIdx = 0;
-  m_paddingX = 3;
-  updateTextData();
   m_lastKeyPress = m_ctrl->getTimeMs();
   m_screenOff = false;
+
+  m_scrollText.init(m_ctrl->getHeight(), m_ctrl->getWidth());
+  m_scrollText.setColorPalette(2);
+  updateTextData();
 }
 
 void TextMenu::continueApp(){
@@ -46,10 +40,7 @@ void TextMenu::continueApp(){
 }
 void TextMenu::updateTextData()
 {
-  m_currTextSize = m_font.getTextSize(m_menuEntries[m_menuEntryIdx].name);
-  m_scrollXPixels = m_currTextSize.x - m_ctrl->getWidth() + 2*m_paddingX;
-  m_currScrollXPixels = 0;
-  m_timeTextWarpStart = 0;
+  m_scrollText.setText(m_menuEntries[m_menuEntryIdx].name);
 }
 
 void TextMenu::setMenuItems(std::vector<MenuEntry> entries){
@@ -78,17 +69,7 @@ void TextMenu::processInput(const BaseInput::InputEvents &events,
       m_screenOff = false;
     }
 
-    if((m_currScrollXPixels != 0 && m_currScrollXPixels != m_scrollXPixels && t-m_timeTextWarpStart >= m_timeTextWarpPerChar) ||
-       ((m_currScrollXPixels == 0 || m_currScrollXPixels == m_scrollXPixels) && t-m_timeTextWarpStart >= m_timeTextWarpPerChar + m_timeTextWarpInitialWait))
-       {
-         m_timeTextWarpStart = t;
-         m_currScrollXPixels++;
-         if (m_currScrollXPixels > m_scrollXPixels){
-           m_currScrollXPixels = 0;
-         }
-         m_requiresRedraw = true;
-       }
-
+    m_requiresRedraw = m_scrollText.update(m_ctrl->getTimeMs());
 
     for(auto& e: eventsDebounced){
       if(e.state != BaseInput::InputEventState::KEY_PRESSED){
@@ -153,11 +134,7 @@ void TextMenu::draw(Image &frame){
     }
   }
 
-  m_font.draw(frame,
-    m_menuEntries[m_menuEntryIdx].name,
-    m_paddingX-(float)m_currScrollXPixels,
-    frame.height/2.0 - m_currTextSize.y/2.0,
-    {ColorPaleteIdx::TEXT});
+  m_scrollText.draw(frame);
 
   // Upper arrow
   if(m_menuEntryIdx < m_menuEntries.size()-1){

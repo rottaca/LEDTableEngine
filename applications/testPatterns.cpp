@@ -2,7 +2,7 @@
 #include "../engine/baseController.hpp"
 
 TestPatternApp::TestPatternApp(){
-
+  m_font.loadFromFile("res/font/myfont.fnt");
 }
 TestPatternApp::~TestPatternApp (){
 
@@ -18,7 +18,6 @@ void TestPatternApp::initialize(BaseController * ctrl){
   m_patternType = SINGLE_PIXEL;
   m_bufferColorMode = BufferColorMode::RGB;
   m_interpolate = 0;
-  m_font.loadFromFile("res/font/myfont.fnt");
   m_lastStepUpdate = 0;
   m_pos = 0;
 }
