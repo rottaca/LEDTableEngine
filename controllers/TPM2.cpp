@@ -31,6 +31,9 @@ bool TPM2::connect(const std::string &device)
   return true;
 }
 bool TPM2::sendPacket(const Packet& p){
+  // Wait for all previous data to be written
+  // This allows the transmition of the previous frame until now!
+  tcdrain(m_deviceFile);
   int sz = write(m_deviceFile,p.bufferPtr.get(),p.dataSize+5);
   return sz == p.dataSize+5;
 }

@@ -21,7 +21,7 @@ public:
 protected:
   MatrixScrollText m_scrollText;
   std::string m_text;
-  
+
 public:
   TextDisplay();
   virtual ~TextDisplay ();

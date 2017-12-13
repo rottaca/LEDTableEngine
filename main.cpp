@@ -37,12 +37,12 @@ public:
         float f = m_ctrl->getBrightness();
         f += 0.2;
         if(f > 1){
-          f = 0.4;
+          f = 0.2;
         }
         m_ctrl->setBrightness(f);
         std::stringstream stream;
         stream << "Brightness: ";
-        stream << std::fixed << std::setprecision(2) << f;
+        stream << std::fixed << std::setprecision(1) << f;
         menuEntry.name = stream.str();
       }
       break;
