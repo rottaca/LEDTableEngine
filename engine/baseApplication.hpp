@@ -34,7 +34,6 @@ public:
   virtual BufferColorMode getBufferColorMode();
 
   virtual void processInput(const BaseInput::InputEvents &events,
-                            const BaseInput::InputEvents &eventsDebounced,
                             TimeUnit deltaTime)=0;
   virtual void draw(Image &frame)=0;
 

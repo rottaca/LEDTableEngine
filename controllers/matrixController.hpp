@@ -14,20 +14,22 @@ class MatrixController : public BaseController {
 public:
 
   MatrixController();
-  ~MatrixController ();
+  ~MatrixController();
 
-  bool initialize(size_t width, size_t height,
-                          std::shared_ptr<BaseInput> input, bool debug=false);
+  bool initialize(size_t                    width,
+                  size_t                    height,
+                  std::shared_ptr<BaseInput>input,
+                  bool                      debug = false);
 
 private:
-  void showFrame(const Image&frame);
+
+  void showFrame(const Image& frame);
   void shutdown();
-  void copyImageToBuffer(const Image&frame);
+  void copyImageToBuffer(const Image& frame);
 
   TPM2::Packet m_frameDataPacket;
   std::shared_ptr<TPM2> m_tpm2;
-
 };
 
 
-#endif
+#endif // ifndef _H_MATRIX_CONTROLLER_

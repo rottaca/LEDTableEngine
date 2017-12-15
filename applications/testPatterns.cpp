@@ -26,17 +26,16 @@ void TestPatternApp::continueApp(){
   m_ctrl->clearFrame({0,0,0});
 }
 void TestPatternApp::processInput(const BaseInput::InputEvents &events,
-                          const BaseInput::InputEvents &eventsDebounced,
-                          TimeUnit deltaTime){
+                                                    TimeUnit deltaTime){
     bool modeChanged = false;
-    if(BaseInput::isPressed(eventsDebounced,BaseInput::InputEventName::ENTER)){
+    if(BaseInput::isPressed(events,BaseInput::InputEventName::ENTER)){
       m_patternType = (PatternType)((int)m_patternType + 1);
       if(m_patternType == END)
         m_patternType = (PatternType)0;
       modeChanged = true;
       std::cout << "New Mode: " << m_patternType << std::endl;
     }
-    if(BaseInput::isPressed(eventsDebounced,BaseInput::InputEventName::EXIT)){
+    if(BaseInput::isPressed(events,BaseInput::InputEventName::EXIT)){
       m_hasFinished = true;
       return;
     }

@@ -37,6 +37,9 @@ bool BaseController::initialize(size_t width, size_t height,
         createFrame();
         updateBufferColorMode();
 
+        m_font = std::make_shared<bmfont::Font>();
+        m_font->loadFromFile("res/font/myfont.fnt");
+
         if(!m_inputHandler->initialize())
           return false;
 
@@ -108,7 +111,7 @@ void BaseController::run(size_t fps){
                 }
 
                 TimeUnit t1 = getTimeMs();
-                m_applicationStack.top()->processInput(events, eventsDebounced,deltaTime);
+                m_applicationStack.top()->processInput(eventsDebounced,deltaTime);
                 TimeUnit t2 = getTimeMs();
 
                 if(m_applicationStack.top()->requiresRedraw()) {

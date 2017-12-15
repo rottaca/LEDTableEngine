@@ -27,7 +27,7 @@ void TextMenu::initialize(BaseController * ctrl){
   m_lastKeyPress = m_ctrl->getTimeMs();
   m_screenOff = false;
 
-  m_scrollText.init(m_ctrl->getHeight(), m_ctrl->getWidth());
+  m_scrollText.init(m_ctrl->getHeight(), m_ctrl->getWidth(),m_ctrl->getDefaultFont());
   m_scrollText.setColorPalette(2);
   updateTextData();
 }
@@ -48,11 +48,10 @@ void TextMenu::setMenuItems(std::vector<MenuEntry> entries){
 }
 
 void TextMenu::processInput(const BaseInput::InputEvents &events,
-                          const BaseInput::InputEvents &eventsDebounced,
                           TimeUnit deltaTime){
     TimeUnit t = m_ctrl->getTimeMs();
 
-    if(eventsDebounced.size() > 0){
+    if(events.size() > 0){
       m_lastKeyPress = t;
       if(m_screenOff){
         m_screenOff = false;
@@ -71,7 +70,7 @@ void TextMenu::processInput(const BaseInput::InputEvents &events,
 
     m_requiresRedraw = m_scrollText.update(m_ctrl->getTimeMs());
 
-    for(auto& e: eventsDebounced){
+    for(auto& e: events){
       if(e.state != BaseInput::InputEventState::KEY_PRESSED){
         continue;
       }

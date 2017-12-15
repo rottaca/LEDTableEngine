@@ -17,7 +17,7 @@ void TextDisplay::initialize(BaseController * ctrl){
   for(int i = m_colorPalette.size(); i <= 255; i++){
     m_colorPalette.push_back({0,0,0});
   }
-  m_scrollText.init(m_ctrl->getHeight(), m_ctrl->getWidth());
+  m_scrollText.init(m_ctrl->getHeight(), m_ctrl->getWidth(),m_ctrl->getDefaultFont());
   m_scrollText.setColorPalette(1);
   m_scrollText.setText(m_text);
 }
@@ -26,12 +26,11 @@ void TextDisplay::setText(std::string text){
   m_text = text;
 }
 void TextDisplay::processInput(const BaseInput::InputEvents &events,
-                          const BaseInput::InputEvents &eventsDebounced,
-                          TimeUnit deltaTime){
+                                                    TimeUnit deltaTime){
     TimeUnit t = m_ctrl->getTimeMs();
     m_requiresRedraw = m_scrollText.update(t);
 
-    for(auto& e: eventsDebounced){
+    for(auto& e: events){
       if(e.state != BaseInput::InputEventState::KEY_PRESSED){
         continue;
       }

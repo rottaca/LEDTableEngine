@@ -2,3 +2,4 @@
 *.gch
 build/
 log.txt
+*.uncrustify

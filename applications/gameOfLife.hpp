@@ -11,52 +11,55 @@
 
 #include "../engine/baseApplication.hpp"
 
-class GameOfLife: public BaseApplication {
+class GameOfLife : public BaseApplication {
 protected:
-  std::array<Image,2> m_gameField;
-  size_t m_currentFieldIdx;
+
+  std::array<Image, 2> m_gameField;
+  size_t   m_currentFieldIdx;
   TimeUnit m_lastUpdateTime;
   std::default_random_engine m_generator;
   std::uniform_int_distribution<int> m_dist;
 
-  struct Rules{
-    std::vector<uint8_t> neighborsForBirth;
-    std::vector<uint8_t> neighborsForLiving;
-    float initialLivingCellRatio;
+  struct Rules {
+    std::vector<uint8_t>neighborsForBirth;
+    std::vector<uint8_t>neighborsForLiving;
+    float               initialLivingCellRatio;
 
-    Rules(){
+    Rules() {
       initialLivingCellRatio = 0.4;
-      neighborsForBirth = {3};
-      neighborsForLiving = {2,3};
+      neighborsForBirth      = { 3 };
+      neighborsForLiving     = { 2, 3 };
     }
-    Rules(  std::vector<uint8_t> neighborsForBirth,
-        std::vector<uint8_t> neighborsForLiving,
-        float initRatio){
-      this->neighborsForBirth = neighborsForBirth;
+
+    Rules(std::vector<uint8_t>neighborsForBirth,
+          std::vector<uint8_t>neighborsForLiving,
+          float               initRatio) {
+      this->neighborsForBirth  = neighborsForBirth;
       this->neighborsForLiving = neighborsForLiving;
-      initialLivingCellRatio = initRatio;
+      initialLivingCellRatio   = initRatio;
     }
   };
 
   Rules m_evolutionRules;
 
 public:
+
   GameOfLife();
-  virtual ~GameOfLife ();
+  virtual ~GameOfLife();
 
-  void initialize(BaseController * ctrl);
+  void initialize(BaseController *ctrl);
 
-  void processInput(const BaseInput::InputEvents &events,
-                    const BaseInput::InputEvents &eventsDebounced,
-                    TimeUnit deltaTime);
-  void draw(Image &frame);
+  void processInput(const BaseInput::InputEvents& events,
+                    TimeUnit                      deltaTime);
+  void draw(Image& frame);
   void continueApp();
 
 private:
-  uint8_t checkNeighbours(Image& gameField, Pointi p);
-  void randomInitField();
 
+  uint8_t checkNeighbours(Image& gameField,
+                          Pointi p);
+  void    randomInitField();
 };
 
 
-#endif
+#endif // ifndef _H_GAME_OF_LIFE_APP_

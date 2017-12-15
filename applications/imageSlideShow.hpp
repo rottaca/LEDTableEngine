@@ -10,30 +10,32 @@
 #include "../engine/baseApplication.hpp"
 #include "../engine/font.hpp"
 
-class ImageSlideShowApp: public BaseApplication {
+class ImageSlideShowApp : public BaseApplication {
 protected:
 
   TimeUnit m_lastImageChange;
-  float m_interpolate;
-  size_t m_currImageIdx;
+  float    m_interpolate;
+  size_t   m_currImageIdx;
   std::vector<std::shared_ptr<Image> > m_images;
   std::vector<std::string> m_imageFilePaths;
   TimeUnit m_blendTime, m_changeTime;
+
 public:
+
   ImageSlideShowApp();
-  virtual ~ImageSlideShowApp ();
+  virtual ~ImageSlideShowApp();
 
-  void initialize(BaseController * ctrl);
+  void initialize(BaseController *ctrl);
 
-  void processInput(const BaseInput::InputEvents &events,
-                    const BaseInput::InputEvents &eventsDebounced,
-                    TimeUnit deltaTime);
-  void draw(Image &frame);
+  void processInput(const BaseInput::InputEvents& events,
+                    TimeUnit                      deltaTime);
+  void draw(Image& frame);
   void continueApp();
 
 private:
-  std::shared_ptr<Image> loadImage(std::string path);
+
+  std::shared_ptr<Image>loadImage(std::string path);
 };
 
 
-#endif
+#endif // ifndef _H_IMAGE_SLIDE_SHOW_APP_

@@ -11,15 +11,19 @@
 
 class KeyboardDebouncer {
 private:
+
   BaseInput::InputEvents m_events;
+
 public:
-  KeyboardDebouncer ();
-  virtual ~KeyboardDebouncer ();
 
-  virtual void processInput(const BaseInput::InputEvents &events);
+  KeyboardDebouncer();
+  virtual ~KeyboardDebouncer();
 
-  virtual const BaseInput::InputEvents &getDebouncedEvents();
+  virtual void                          processInput(
+    const BaseInput::InputEvents& events);
+
+  virtual const BaseInput::InputEvents& getDebouncedEvents();
 };
 
 
-#endif
+#endif // ifndef _H_KEYBOARD_DEBOUNCER

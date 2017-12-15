@@ -29,6 +29,7 @@ add_executable(LEDTable
       applications/fractal.cpp
       applications/shaders.cpp
       applications/gameOfLife.cpp
+      applications/flappyBird.cpp
 
 )
 

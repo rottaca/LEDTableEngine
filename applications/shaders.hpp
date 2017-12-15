@@ -11,34 +11,51 @@
 
 #include "../engine/baseApplication.hpp"
 
-class ShaderApp: public BaseApplication {
+class ShaderApp : public BaseApplication {
 protected:
-  enum ShaderType{
-               WATER = 0,
-               CHESS,
-               WAVINGCOLOR,
-               END};
+
+  enum ShaderType {
+    WATER = 0,
+    CHESS,
+    WAVINGCOLOR,
+    END
+  };
 
   ShaderType m_shader;
 
 public:
+
   ShaderApp();
-  virtual ~ShaderApp ();
+  virtual ~ShaderApp();
 
-  void initialize(BaseController * ctrl);
+  void initialize(BaseController *ctrl);
 
-  void processInput(const BaseInput::InputEvents &events,
-                    const BaseInput::InputEvents &eventsDebounced,
-                    TimeUnit deltaTime);
-  void draw(Image &frame);
+  void processInput(const BaseInput::InputEvents& events,
+                    TimeUnit                      deltaTime);
+  void draw(Image& frame);
   void continueApp();
 
 private:
-  void waterShader(TimeUnit tm, size_t x, size_t y, uint8_t &r, uint8_t &g, uint8_t &b);
-  void chessboardShader(TimeUnit tm, size_t x, size_t y, uint8_t &r, uint8_t &g, uint8_t &b);
-  void wavingColors(TimeUnit tm, size_t x, size_t y, uint8_t &r, uint8_t &g, uint8_t &b);
 
+  void waterShader(TimeUnit tm,
+                   size_t   x,
+                   size_t   y,
+                   uint8_t& r,
+                   uint8_t& g,
+                   uint8_t& b);
+  void chessboardShader(TimeUnit tm,
+                        size_t   x,
+                        size_t   y,
+                        uint8_t& r,
+                        uint8_t& g,
+                        uint8_t& b);
+  void wavingColors(TimeUnit tm,
+                    size_t   x,
+                    size_t   y,
+                    uint8_t& r,
+                    uint8_t& g,
+                    uint8_t& b);
 };
 
 
-#endif
+#endif // ifndef _H_SHADERS_APP_

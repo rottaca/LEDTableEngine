@@ -33,14 +33,13 @@ void Snake::initialize(BaseController * ctrl){
 }
 
 void Snake::processInput(const BaseInput::InputEvents &events,
-                          const BaseInput::InputEvents &eventsDebounced,
-                          TimeUnit deltaTime){
-  if(BaseInput::isPressed(eventsDebounced,BaseInput::InputEventName::EXIT)){
+                                                    TimeUnit deltaTime){
+  if(BaseInput::isPressed(events,BaseInput::InputEventName::EXIT)){
     m_hasFinished = true;
     return;
   }
 	Pointi newDir = m_moveDir;
-	for( const auto&e: eventsDebounced){
+	for( const auto&e: events){
 		if(e.state != BaseInput::InputEventState::KEY_PRESSED)
 			continue;
 

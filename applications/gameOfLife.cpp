@@ -44,9 +44,8 @@ void GameOfLife::randomInitField(){
 void GameOfLife::continueApp(){
 }
 void GameOfLife::processInput(const BaseInput::InputEvents &events,
-                          const BaseInput::InputEvents &eventsDebounced,
-                          TimeUnit deltaTime){
-    if(BaseInput::isPressed(eventsDebounced,BaseInput::InputEventName::EXIT)){
+                                                    TimeUnit deltaTime){
+    if(BaseInput::isPressed(events,BaseInput::InputEventName::EXIT)){
       m_hasFinished = true;
       return;
     }

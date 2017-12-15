@@ -14,25 +14,25 @@
 class MenuEntryHandler;
 class BaseController;
 
-class TextDisplay: public BaseApplication {
+class TextDisplay : public BaseApplication {
 public:
 
-
 protected:
+
   MatrixScrollText m_scrollText;
   std::string m_text;
 
 public:
+
   TextDisplay();
-  virtual ~TextDisplay ();
+  virtual ~TextDisplay();
 
-  void initialize(BaseController * ctrl);
+  void initialize(BaseController *ctrl);
 
-  void processInput(const BaseInput::InputEvents &events,
-                    const BaseInput::InputEvents &eventsDebounced,
-                    TimeUnit deltaTime);
-  void draw(Image &frame);
+  void processInput(const BaseInput::InputEvents& events,
+                    TimeUnit                      deltaTime);
+  void draw(Image& frame);
   void setText(std::string text);
 };
 
-#endif
+#endif // ifndef _H_TEXT_DISPLAY_APP

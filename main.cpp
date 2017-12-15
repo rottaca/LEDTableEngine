@@ -19,6 +19,7 @@
 #include "applications/fractal.hpp"
 #include "applications/shaders.hpp"
 #include "applications/gameOfLife.hpp"
+#include "applications/flappyBird.hpp"
 
 extern char *optarg;
 extern int optind, opterr, optopt;
@@ -119,7 +120,9 @@ int main (int argc, char **argv)
     TextMenu::MenuEntry("Pong",
                     std::make_shared<AppLauncher>(c,std::make_shared<Pong>())),
     TextMenu::MenuEntry("Game of Life",
-                    std::make_shared<AppLauncher>(c,std::make_shared<GameOfLife>()))
+                    std::make_shared<AppLauncher>(c,std::make_shared<GameOfLife>())),
+    TextMenu::MenuEntry("Flappy Bird",
+                    std::make_shared<AppLauncher>(c,std::make_shared<FlappyBird>()))
   });
 
   // Effects

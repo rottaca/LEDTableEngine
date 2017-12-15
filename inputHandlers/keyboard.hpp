@@ -9,26 +9,29 @@
 #include <string>
 
 struct keyboard_state {
-    signed short keys[KEY_CNT];
+  signed short keys[KEY_CNT];
 };
 
 class cKeyboard {
-  private:
-    pthread_t thread;
-    bool active;
-    int keyboard_fd;
-    input_event *keyboard_ev;
-    keyboard_state *keyboard_st;
-    char name[256];
+private:
 
-  protected:
-  public:
-    cKeyboard();
-    ~cKeyboard();
-    bool start(std::string keyboardDev);
-    static void* loop(void* obj);
-    void readEv();
-    short getKeyState(short key);
+  pthread_t thread;
+  bool active;
+  int  keyboard_fd;
+  input_event *keyboard_ev;
+  keyboard_state *keyboard_st;
+  char name[256];
+
+protected:
+
+public:
+
+  cKeyboard();
+  ~cKeyboard();
+  bool         start(std::string keyboardDev);
+  static void* loop(void *obj);
+  void         readEv();
+  short        getKeyState(short key);
 };
 
-#endif
+#endif // ifndef KEYBOARD_H

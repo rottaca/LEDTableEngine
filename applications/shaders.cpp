@@ -16,14 +16,13 @@ void ShaderApp::initialize(BaseController * ctrl){
 void ShaderApp::continueApp(){
 }
 void ShaderApp::processInput(const BaseInput::InputEvents &events,
-                          const BaseInput::InputEvents &eventsDebounced,
-                          TimeUnit deltaTime){
-    if(BaseInput::isPressed(eventsDebounced,BaseInput::InputEventName::EXIT)){
+                                                    TimeUnit deltaTime){
+    if(BaseInput::isPressed(events,BaseInput::InputEventName::EXIT)){
       m_hasFinished = true;
       return;
     }
 
-    if(BaseInput::isPressed(eventsDebounced,BaseInput::InputEventName::ENTER)){
+    if(BaseInput::isPressed(events,BaseInput::InputEventName::ENTER)){
       m_shader = (ShaderType)((int)m_shader + 1);
       if(m_shader == END)
         m_shader = (ShaderType)0;

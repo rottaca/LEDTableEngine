@@ -1,5 +1,5 @@
-#ifndef _H_SNAKE_APP_
-#define _H_SNAKE_APP_
+#ifndef _H_FlappyBird_APP_
+#define _H_FlappyBird_APP_
 
 #include <cstdlib>
 #include <memory>
@@ -11,20 +11,29 @@
 #include "../engine/baseApplication.hpp"
 #include "../engine/matrixScrollText.hpp"
 
-class Snake : public BaseApplication {
+class FlappyBird : public BaseApplication {
 protected:
+
+  struct Wall {
+    ssize_t openingYMin;
+    ssize_t openingYMax;
+    float   posX;
+  };
 
   std::default_random_engine m_generator;
   std::uniform_int_distribution<int> m_posDist;
-  std::list<Pointi> m_snake;
-  Pointi   m_moveDir;
-  Pointi   m_foodPos;
+
+  float  m_birdY;
+  size_t m_birdX;
+  float  m_birdYSpeed;
+  size_t m_score;
+  std::list<Wall> m_walls;
   TimeUnit m_lastUpdateTime;
 
 public:
 
-  Snake();
-  virtual ~Snake();
+  FlappyBird();
+  virtual ~FlappyBird();
 
   void initialize(BaseController *ctrl);
 
@@ -34,4 +43,4 @@ public:
 };
 
 
-#endif // ifndef _H_SNAKE_APP_
+#endif // ifndef _H_FlappyBird_APP_

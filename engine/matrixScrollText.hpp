@@ -6,7 +6,8 @@
 
 class MatrixScrollText {
 private:
-  bmfont::Font m_font;
+
+  std::shared_ptr<bmfont::Font> m_font;
   TimeUnit m_lastStepUpdate;
   TimeUnit m_timeTextWarpInitialWait;
   TimeUnit m_timeTextWarpStart;
@@ -23,10 +24,13 @@ private:
   std::string m_text;
 
 public:
-  MatrixScrollText ();
-  virtual ~MatrixScrollText ();
 
-  void init(size_t height, size_t width);
+  MatrixScrollText();
+  virtual ~MatrixScrollText();
+
+  void init(size_t                       height,
+            size_t                       width,
+            std::shared_ptr<bmfont::Font>font);
   bool update(TimeUnit currTime);
   void draw(Image& img);
   void setText(std::string text);
@@ -35,4 +39,4 @@ public:
   void resetScrollState();
 };
 
-#endif
+#endif // ifndef _H_MATRIX_SCROLL_TEXT

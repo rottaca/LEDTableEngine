@@ -46,12 +46,11 @@ void ImageSlideShowApp::continueApp(){
 
 }
 void ImageSlideShowApp::processInput(const BaseInput::InputEvents &events,
-                          const BaseInput::InputEvents &eventsDebounced,
-                          TimeUnit deltaTime){
-    if(BaseInput::isPressed(eventsDebounced,BaseInput::InputEventName::ENTER)){
+                                                    TimeUnit deltaTime){
+    if(BaseInput::isPressed(events,BaseInput::InputEventName::ENTER)){
 
     }
-    if(BaseInput::isPressed(eventsDebounced,BaseInput::InputEventName::EXIT)){
+    if(BaseInput::isPressed(events,BaseInput::InputEventName::EXIT)){
       m_hasFinished = true;
       return;
     }
