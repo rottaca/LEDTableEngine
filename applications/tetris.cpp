@@ -37,11 +37,6 @@ void Tetris::initialize(BaseController *ctrl) {
 
 void Tetris::processInput(const BaseInput::InputEvents& events,
                           TimeUnit                      deltaTime) {
-  if (BaseInput::isPressed(events, BaseInput::InputEventName::EXIT)) {
-    m_hasFinished = true;
-    return;
-  }
-
   bool fastDown = false;
   bool rotate   = false;
   int  dX       = 0;
@@ -49,7 +44,7 @@ void Tetris::processInput(const BaseInput::InputEvents& events,
   for (const auto& e : events) {
     switch (e.name) {
     case BaseInput::InputEventName::UP :
-      rotate = true;
+      rotate = e.state == BaseInput::InputEventState::KEY_PRESSED;
       break;
 
     case BaseInput::InputEventName::LEFT:
@@ -71,6 +66,11 @@ void Tetris::processInput(const BaseInput::InputEvents& events,
       return;
     }
   }
+
+  if (rotate) {
+    m_fallingShape.rotate90();
+  }
+
   bool moveDown = false;
 
   if (fastDown) {
@@ -130,14 +130,20 @@ void Tetris::processInput(const BaseInput::InputEvents& events,
 
     if (collision) {
       for (auto& p : m_fallingShape.shape) {
+        if (p.y < 0) {
+          auto a = std::make_shared<TextDisplay>();
+          a->setText(std::string("Score: ") + std::to_string(m_score));
+          m_ctrl->addApplication(a, true);
+          m_hasFinished = true;
+          return;
+        }
+      }
+
+      for (auto& p : m_fallingShape.shape) {
         if ((p.x < 0) || (p.y < 0) || (p.x >= m_gameField.width) ||
             (p.y >= m_gameField.height))
         {
-          auto a = std::make_shared<TextDisplay>();
-          a->setText(std::string("Score: ") + std::to_string(m_score));
-          m_ctrl->addApplication(a,true);
-          m_hasFinished = true;
-          return;
+          continue;
         }
         m_gameField.data[p.x + m_gameField.width * p.y] = m_fallingShape.colorIdx;
       }

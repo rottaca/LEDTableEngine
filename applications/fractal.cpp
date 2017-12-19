@@ -72,11 +72,13 @@ void FractalApp::percentToRGB(float t, uint8_t& r, uint8_t& g, uint8_t& b) {
 }
 
 void FractalApp::draw_Mandelbrot(Image      & frame,
-                                                      // where to draw the image
+
+// where to draw the image
                                  double       cxmin,
                                  double       cxmax,
                                  double       cymin,
                                  double       cymax,
+
                                                               // the rect to
                                                               // draw in the
                                                               // complex plane

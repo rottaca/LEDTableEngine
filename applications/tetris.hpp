@@ -46,10 +46,12 @@ protected:
         c.x += p.x;
         c.y += p.y;
       }
+      c.x /= shape.size();
+      c.y /= shape.size();
 
       for (Pointi& p : shape) {
-        p.x = (p.y - c.y) + c.x;
-        p.y = (p.x - c.x) + c.y;
+        p.x = -(p.y - c.x) + c.x;
+        p.y = (p.x - c.y) + c.y;
       }
     }
   };
