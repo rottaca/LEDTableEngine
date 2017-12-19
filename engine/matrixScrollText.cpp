@@ -44,7 +44,7 @@ bool MatrixScrollText::update(TimeUnit currTime) {
       (((m_currScrollXPixels == 0) ||
         (m_currScrollXPixels == m_scrollXPixels)) &&
        (currTime - m_timeTextWarpStart >= m_timeTextWarpPerChar +
-  m_timeTextWarpInitialWait)))
+        m_timeTextWarpInitialWait)))
   {
     m_timeTextWarpStart = currTime;
     m_currScrollXPixels++;

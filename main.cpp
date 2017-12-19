@@ -20,6 +20,7 @@
 #include "applications/shaders.hpp"
 #include "applications/gameOfLife.hpp"
 #include "applications/flappyBird.hpp"
+#include "applications/tetris.hpp"
 
 extern char *optarg;
 extern int optind, opterr, optopt;
@@ -122,7 +123,9 @@ int main (int argc, char **argv)
     TextMenu::MenuEntry("Game of Life",
                     std::make_shared<AppLauncher>(c,std::make_shared<GameOfLife>())),
     TextMenu::MenuEntry("Flappy Bird",
-                    std::make_shared<AppLauncher>(c,std::make_shared<FlappyBird>()))
+                    std::make_shared<AppLauncher>(c,std::make_shared<FlappyBird>())),
+    TextMenu::MenuEntry("Tetris",
+                    std::make_shared<AppLauncher>(c,std::make_shared<Tetris>()))
   });
 
   // Effects

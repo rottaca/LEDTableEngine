@@ -30,6 +30,7 @@ add_executable(LEDTable
       applications/shaders.cpp
       applications/gameOfLife.cpp
       applications/flappyBird.cpp
+      applications/tetris.cpp
 
 )
 

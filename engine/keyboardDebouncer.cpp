@@ -2,21 +2,21 @@
 #include <algorithm>
 #include <iostream>
 
-bool operator <( const BaseInput::InputEvent& a,  const BaseInput::InputEvent &b)
+bool operator<(const BaseInput::InputEvent& a,  const BaseInput::InputEvent& b)
 {
-    return a.name < b.name;
-}
-bool operator ==( const BaseInput::InputEvent& a,  const BaseInput::InputEvent &b)
-{
-    return a.name == b.name;
+  return a.name < b.name;
 }
 
-KeyboardDebouncer::KeyboardDebouncer (){
+bool operator==(const BaseInput::InputEvent& a,  const BaseInput::InputEvent& b)
+{
+  return a.name == b.name;
 }
-KeyboardDebouncer::~KeyboardDebouncer (){
 
-}
-void KeyboardDebouncer::processInput(const BaseInput::InputEvents &events){
+KeyboardDebouncer::KeyboardDebouncer() {}
+
+KeyboardDebouncer::~KeyboardDebouncer() {}
+
+void KeyboardDebouncer::processInput(const BaseInput::InputEvents& events) {
   // std::cout << "RawInputs:" << std::endl;
   // for(const auto& e: events){
   //   std::cout << BaseInput::inputEventName2Str[e.name] <<
@@ -25,31 +25,33 @@ void KeyboardDebouncer::processInput(const BaseInput::InputEvents &events){
   // std::cout << std::endl;
   BaseInput::InputEvents newEvents, removedEvents, updatedEvents;
 
-  for(const auto& e: events){
+  for (const auto& e : events) {
     auto lower = std::lower_bound(m_events.begin(), m_events.end(), e);
-    if(lower != m_events.end() && lower->name == e.name){
+
+    if ((lower != m_events.end()) && (lower->name == e.name)) {
       lower->state = BaseInput::InputEventState::KEY_HOLD;
       updatedEvents.push_back(*lower);
-    }else{
+    } else {
       newEvents.push_back(e);
     }
   }
-  for(auto e = m_events.begin(); e != m_events.end(); ){
-    if(std::find(updatedEvents.begin(),updatedEvents.end(),*e) == updatedEvents.end()){
-      if(e->state == BaseInput::InputEventState::KEY_RELEASED){
+
+  for (auto e = m_events.begin(); e != m_events.end();) {
+    if (std::find(updatedEvents.begin(), updatedEvents.end(),
+                  *e) == updatedEvents.end()) {
+      if (e->state == BaseInput::InputEventState::KEY_RELEASED) {
         e = m_events.erase(e);
       }
-      else{
+      else {
         e->state = BaseInput::InputEventState::KEY_RELEASED;
         e++;
       }
-    }else{
+    } else {
       e++;
     }
   }
 
-  for(auto e: newEvents)
-    m_events.push_back(e);
+  for (auto e : newEvents) m_events.push_back(e);
 
   std::sort(m_events.begin(), m_events.end());
 
@@ -61,6 +63,6 @@ void KeyboardDebouncer::processInput(const BaseInput::InputEvents &events){
   // std::cout << std::endl;
 }
 
-const BaseInput::InputEvents &KeyboardDebouncer::getDebouncedEvents(){
-    return m_events;
+const BaseInput::InputEvents& KeyboardDebouncer::getDebouncedEvents() {
+  return m_events;
 }
