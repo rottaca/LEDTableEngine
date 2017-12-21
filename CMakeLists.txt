@@ -20,6 +20,7 @@ add_executable(LEDTable
       inputHandlers/keyboard.cpp
       inputHandlers/keyboardInput.cpp
 
+      applications/update.cpp
       applications/textMenu.cpp
       applications/textDisplay.cpp
       applications/testPatterns.cpp

@@ -11,6 +11,7 @@
 
 #include "inputHandlers/keyboardInput.hpp"
 
+#include "applications/update.hpp"
 #include "applications/testPatterns.hpp"
 #include "applications/textMenu.hpp"
 #include "applications/snake.hpp"
@@ -143,7 +144,9 @@ int main (int argc, char **argv)
   auto settings = std::make_shared<TextMenu>();
   auto settingsHandler = std::make_shared<SettingsMenuHandler>(c);
   settings->setMenuItems({
-    TextMenu::MenuEntry("Brightness: 1",settingsHandler)
+    TextMenu::MenuEntry("Brightness: 1",settingsHandler),
+    TextMenu::MenuEntry("Update Firmware",
+       std::make_shared<AppLauncher>(c,std::make_shared<UpdateApp>())),
   });
 
   // Main Menu
