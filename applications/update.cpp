@@ -4,9 +4,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-UpdateApp::UpdateApp() {
-
-}
+UpdateApp::UpdateApp() {}
 
 UpdateApp::~UpdateApp() {}
 
@@ -15,9 +13,10 @@ void UpdateApp::initialize(BaseController *ctrl) {
   m_colorPalette = {
     {   0,   0,   0 },
     { 255, 255, 255 },
-    { 0, 255, 0 },
-    { 255, 0, 0 },
+    {   0, 255,   0 },
+    { 255,   0,   0 },
   };
+
   for (int i = m_colorPalette.size(); i <= 255; i++) {
     m_colorPalette.push_back({ 0, 0, 0 });
   }
@@ -30,39 +29,44 @@ void UpdateApp::initialize(BaseController *ctrl) {
 }
 
 void UpdateApp::processInput(const BaseInput::InputEvents& events,
-                                  TimeUnit                      deltaTime) {
-
+                             TimeUnit                      deltaTime) {
   State newState = m_state;
-  if(m_state == DO_UPDATE){
-    newState = UPDATING;
+
+  if (m_state == DO_UPDATE) {
+    newState   = UPDATING;
     m_childPID = fork();
+
     if (m_childPID  < 0) {
       newState = ERROR;
-      std::cerr<< "Fork failed" << std::endl;
+      std::cerr << "Fork failed" << std::endl;
     }
+
     // Child
     else if (m_childPID == 0) {
-      std::cout<< "Starting update..." << std::endl;
+      std::cout << "Starting update..." << std::endl;
       int res = system("./../update.sh");
-      if(res > 0)
-        exit(1);
-      else
-        exit(0);
+
+      if (res > 0) exit(1);
+      else exit(0);
     }
+
     // Parent
     else {}
-  }else if(m_state == UPDATING){
+  } else if (m_state == UPDATING) {
     int returnStatus;
+
     // Check if child process terminated
     int ret = waitpid(m_childPID, &returnStatus, WNOHANG);
-    if(ret == -1){
+
+    if (ret == -1) {
       newState = ERROR;
-      std::cerr<< "waitpid error" << std::endl;
-    }else if(ret == 0){
+      std::cerr << "waitpid error" << std::endl;
+    } else if (ret == 0) {
       // Not yet finished
-    }else if(ret == m_childPID && WIFEXITED(returnStatus)){
-      std::cout << "Child exit status: " << WEXITSTATUS(returnStatus) << std::endl;
-      newState = WEXITSTATUS(returnStatus)==0?DONE:ERROR;
+    } else if ((ret == m_childPID) && WIFEXITED(returnStatus)) {
+      std::cout << "Child exit status: " << WEXITSTATUS(returnStatus) <<
+      std::endl;
+      newState   = WEXITSTATUS(returnStatus) == 0 ? DONE : ERROR;
       m_childPID = 0;
     }
   }
@@ -75,16 +79,18 @@ void UpdateApp::processInput(const BaseInput::InputEvents& events,
 
     switch (e.name) {
     case BaseInput::InputEventName::ENTER:
-      if(m_state == IDLE){
+
+      if (m_state == IDLE) {
         newState = DO_UPDATE;
-      }else if(m_state == DONE){
+      } else if (m_state == DONE) {
         // Force restart through start script
         exit(1);
-      }else if(m_state == ERROR){
+      } else if (m_state == ERROR) {
         // Don't exit automatically
         m_hasFinished = true;
       }
       break;
+
     case BaseInput::InputEventName::EXIT: {
       m_hasFinished = true;
       break;
@@ -92,20 +98,22 @@ void UpdateApp::processInput(const BaseInput::InputEvents& events,
     }
   }
 
-  if(newState != m_state){
+  if (newState != m_state) {
     switch (newState) {
-      case IDLE:
-      case DO_UPDATE:
-        m_scrollText.setText("Updating...");
-        break;
-      case DONE:
-        m_scrollText.setText("Done.");
-        m_scrollText.setColorPalette(2);
-        break;
-      case ERROR:
-        m_scrollText.setText("Error!");
-        m_scrollText.setColorPalette(3);
-        break;
+    case IDLE:
+    case DO_UPDATE:
+      m_scrollText.setText("Updating...");
+      break;
+
+    case DONE:
+      m_scrollText.setText("Done.");
+      m_scrollText.setColorPalette(2);
+      break;
+
+    case ERROR:
+      m_scrollText.setText("Error!");
+      m_scrollText.setColorPalette(3);
+      break;
     }
     m_state = newState;
   }

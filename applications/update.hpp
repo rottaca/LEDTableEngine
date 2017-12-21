@@ -13,6 +13,7 @@
 
 class UpdateApp : public BaseApplication {
 protected:
+
   enum State {
     IDLE,
     DO_UPDATE,
@@ -24,6 +25,7 @@ protected:
   MatrixScrollText m_scrollText;
   pid_t m_childPID;
   State m_state;
+
 public:
 
   UpdateApp();

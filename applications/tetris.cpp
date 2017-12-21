@@ -14,12 +14,40 @@ void Tetris::initialize(BaseController *ctrl) {
     {   0,   0, 255 }, // Color 1
     {   0, 255,   0 }, // Color 2
     { 255,   0,   0 }, // Color 3
-    { 255, 255, 255 }  // Text
+    { 255, 255,   0 }, // Color 4
+    {   0, 255, 255 }, // Color 5
+    { 255,   0, 255 }, // Color 6
   };
 
   for (int i = m_colorPalette.size(); i <= 255; i++) {
     m_colorPalette.push_back({ 0, 0, 0 });
   }
+
+  m_shapes = {
+    {
+      // Box
+      { Pointi(0, 0), Pointi(1, 0), Pointi(0, 1), Pointi(1, 1) }
+    },
+    {
+      // L
+      { Pointi(0, 0), Pointi(0, 1), Pointi(0, 2), Pointi(1, 2) },
+      { Pointi(0, 1), Pointi(1, 1), Pointi(2, 1), Pointi(2, 0) },
+      { Pointi(0, 0), Pointi(1, 0), Pointi(1, 1), Pointi(1, 2) },
+      { Pointi(0, 1), Pointi(0, 2), Pointi(1, 1), Pointi(2, 1) }
+    },
+    {
+      // z
+      { Pointi(0, 0), Pointi(1, 0), Pointi(1, 1), Pointi(2, 1) },
+      { Pointi(1, 0), Pointi(1, 1), Pointi(0, 1), Pointi(0, 2) },
+    },
+    {
+      // _|_
+      { Pointi(1, 0), Pointi(0, 1), Pointi(1, 1), Pointi(2, 1) },
+      { Pointi(1, 0), Pointi(0, 1), Pointi(1, 1), Pointi(1, 2) },
+      { Pointi(1, 1), Pointi(0, 0), Pointi(1, 0), Pointi(2, 0) },
+      { Pointi(0, 0), Pointi(0, 1), Pointi(0, 2), Pointi(1, 1) },
+    }
+  };
 
   m_gameField.resize(m_ctrl->getHeight(), m_ctrl->getWidth(), 1);
   memset(m_gameField.data, 0, m_gameField.size);
@@ -27,10 +55,6 @@ void Tetris::initialize(BaseController *ctrl) {
   m_lastUpdateTimeMove = 0;
   m_generator          = std::default_random_engine(m_ctrl->getTimeMs());
   m_posDist            = std::uniform_int_distribution<int>(0, m_ctrl->getWidth());
-  m_shapes             = {
-    { Pointi(0, 0), Pointi(1, 0), Pointi(0, 1), Pointi(1, 1) }, // Box
-    { Pointi(0, 0), Pointi(0, 1), Pointi(0, 2), Pointi(1, 2) }, // L
-  };
 
   m_fallingShape.update(m_shapes[0], 2);
 }
@@ -68,7 +92,7 @@ void Tetris::processInput(const BaseInput::InputEvents& events,
   }
 
   if (rotate) {
-    m_fallingShape.rotate90();
+    m_fallingShape.rotate();
   }
 
   bool moveDown = false;
@@ -90,24 +114,27 @@ void Tetris::processInput(const BaseInput::InputEvents& events,
 
   // Check movement to left and right
   if ((dX != 0) && (m_ctrl->getTimeMs() - m_lastUpdateTimeMove > 100.0)) {
-    m_lastUpdateTimeMove = m_ctrl->getTimeMs();
     bool moveX = true;
 
-    for (auto& p : m_fallingShape.shape) {
-      if ((p.x + dX < 0) || (p.x + dX >= m_gameField.width)) {
+    Pointi& pos = m_fallingShape.pos;
+
+    for (Pointi& p : m_fallingShape.currShape()) {
+      if ((p.x + pos.x + dX < 0) || (p.x + pos.x + dX >= m_gameField.width)) {
         moveX = false;
         break;
       }
 
-      if ((p.y < 0) || (p.y >= m_gameField.height)) continue;
+      if ((pos.y + p.y < 0) || (pos.y + p.y >= m_gameField.height)) continue;
 
-      if (m_gameField.data[p.x + dX + m_gameField.width * p.y] > 0) {
+      if (m_gameField.data[pos.x + p.x + dX + m_gameField.width *
+                           (pos.y + p.y)] > 0) {
         moveX = false;
         break;
       }
     }
 
     if (moveX) {
+      m_lastUpdateTimeMove = m_ctrl->getTimeMs();
       m_fallingShape.translate(dX, 0);
     }
   }
@@ -118,19 +145,23 @@ void Tetris::processInput(const BaseInput::InputEvents& events,
   if (m_fallingShape.isAlive) {
     bool collision = false;
 
-    for (auto& p : m_fallingShape.shape) {
-      if ((p.x < 0) || (p.y < 0) || (p.x >= m_gameField.width)) continue;
+    Pointi& pos = m_fallingShape.pos;
 
-      if ((p.y >= m_gameField.height - 1) ||
-          (m_gameField.data[p.x + m_gameField.width * (p.y + 1)] > 0)) {
+    for (Pointi& p : m_fallingShape.currShape()) {
+      if ((pos.x + p.x < 0) || (pos.y + p.y < 0) ||
+          (pos.x + p.x >= m_gameField.width)) continue;
+
+      if ((pos.y + p.y >= m_gameField.height - 1) ||
+          (m_gameField.data[pos.x + p.x + m_gameField.width *
+                            (pos.y + p.y + 1)] > 0)) {
         collision = true;
         break;
       }
     }
 
     if (collision) {
-      for (auto& p : m_fallingShape.shape) {
-        if (p.y < 0) {
+      for (Pointi& p : m_fallingShape.currShape()) {
+        if (pos.y + p.y < 0) {
           auto a = std::make_shared<TextDisplay>();
           a->setText(std::string("Score: ") + std::to_string(m_score));
           m_ctrl->addApplication(a, true);
@@ -139,13 +170,15 @@ void Tetris::processInput(const BaseInput::InputEvents& events,
         }
       }
 
-      for (auto& p : m_fallingShape.shape) {
-        if ((p.x < 0) || (p.y < 0) || (p.x >= m_gameField.width) ||
-            (p.y >= m_gameField.height))
+      for (Pointi& p : m_fallingShape.currShape()) {
+        if ((pos.x + p.x < 0) || (pos.y + p.y < 0) ||
+            (pos.x + p.x >= m_gameField.width) ||
+            (pos.y + p.y >= m_gameField.height))
         {
           continue;
         }
-        m_gameField.data[p.x + m_gameField.width * p.y] = m_fallingShape.colorIdx;
+        m_gameField.data[pos.x + p.x + m_gameField.width *
+                         (pos.y + p.y)] = m_fallingShape.colorIdx;
       }
       m_fallingShape.isAlive = false;
       m_score++;
@@ -178,8 +211,8 @@ void Tetris::processInput(const BaseInput::InputEvents& events,
   // Spawn a new item
   if (!m_fallingShape.isAlive) {
     int shapeIdx = m_posDist(m_generator) % m_shapes.size();
-    int posX     = 2 + m_posDist(m_generator) % (m_ctrl->getWidth() - 2);
-    int colIdx   = 1 + m_posDist(m_generator) % 3;
+    int posX     = 2 + m_posDist(m_generator) % (m_ctrl->getWidth() - 3);
+    int colIdx   = 1 + m_posDist(m_generator) % 6;
     m_fallingShape.update(m_shapes[shapeIdx], colIdx);
     m_fallingShape.translate(posX, -3);
   }
@@ -190,9 +223,9 @@ void Tetris::draw(Image& frame) {
   m_ctrl->clearFrame(0);
   memcpy(frame.data, m_gameField.data, m_gameField.size);
 
-  for (Pointi& p : m_fallingShape.shape) {
-    int x = p.x;
-    int y = p.y;
+  for (Pointi& p : m_fallingShape.currShape()) {
+    int x = p.x + m_fallingShape.pos.x;
+    int y = p.y + m_fallingShape.pos.y;
 
     if ((x < 0) || (x >= frame.width) || (y < 0) || (y >= frame.height)) {
       continue;
