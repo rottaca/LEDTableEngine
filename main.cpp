@@ -81,7 +81,7 @@ int main(int argc, char **argv)
 
   int opt;
 
-  while ((opt = getopt(argc, argv, "dc:i:k:")) != -1) {
+  while ((opt = getopt(argc, argv, "dc:i:k:I:")) != -1) {
     switch (opt) {
     case 'd':
       debug = true;
@@ -120,6 +120,10 @@ int main(int argc, char **argv)
 
     case 'k':
       keyboardDev = optarg;
+      break;
+
+    case 'I':
+      i2cDev = optarg;
       break;
 
     default:
