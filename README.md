@@ -19,7 +19,7 @@ At the moment, the following applications are implemented:
   - Pong
   - Tetris
   - Conway's Game Of Life
-  - Flappy FlappyBird
+  - FlappyBird
   - Fractal visualization
   - Image slide show with fading (from downsampeled image files, see res/imageSlideShowApp)
   - Shader App: Implemented effects are water shader, chess board and RGB color waves
