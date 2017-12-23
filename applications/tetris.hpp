@@ -17,6 +17,8 @@ protected:
   typedef std::vector<Pointi>Shape;
   typedef std::vector<Shape> ShapeDef;
   std::vector<ShapeDef> m_shapes;
+  Audio* m_soundClick;
+  Audio* m_soundCoin;
 
   struct ShapeState {
     Pointi   pos;
@@ -79,6 +81,7 @@ public:
   virtual ~Tetris();
 
   void initialize(BaseController *ctrl);
+  void deinitialize();
 
   void processInput(const BaseInput::InputEvents& events,
                     TimeUnit                      deltaTime);

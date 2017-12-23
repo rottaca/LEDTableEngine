@@ -8,8 +8,12 @@
 
 #include "controllers/desktopController.hpp"
 #include "controllers/matrixController.hpp"
+#include "engine/audio.h"
 
 #include "inputHandlers/keyboardInput.hpp"
+#ifdef HAVE_I2C_H_
+  #include "inputHandlers/gameControllerInput.hpp"
+#endif
 
 #include "applications/update.hpp"
 #include "applications/testPatterns.hpp"
@@ -73,6 +77,7 @@ int main(int argc, char **argv)
   size_t controllerIdx    = 0;
   size_t inputIdx         = 0;
   std::string keyboardDev = "/dev/input/by-path/platform-i8042-serio-0-event-kbd";
+  std::string i2cDev = "/dev/i2c-1";
 
   int opt;
 
@@ -99,7 +104,14 @@ int main(int argc, char **argv)
 
       if (strcmp(optarg, "keyboard") == 0) {
         inputIdx = 0;
-      } else {
+      }
+
+#ifdef HAVE_I2C_H_
+      else if (strcmp(optarg, "i2c") == 0) {
+        inputIdx = 1;
+      }
+#endif
+      else {
         std::cerr << "Unknwon argument for controller option: " << optarg <<
         std::endl;
         exit(1);
@@ -125,10 +137,14 @@ int main(int argc, char **argv)
   std::vector<std::shared_ptr<BaseInput> > inputs;
   inputs.push_back(std::make_shared<KeyboardInput>(keyboardDev));
 
+#ifdef HAVE_I2C_H_
+  inputs.push_back(std::make_shared<GameControllerInput>(i2cDev));
+#endif
+
   auto c = controllers[controllerIdx];
 
   if (!c->initialize(20, 15, inputs[inputIdx], debug)) {
-    std::cout << "Init of controller failed" << std::endl;
+    std::cout << "Init of controller failed! Leaving." << std::endl;
         exit(1);
   }
 
@@ -136,32 +152,20 @@ int main(int argc, char **argv)
   auto games = std::make_shared<TextMenu>();
   games->setMenuItems({
                         TextMenu::MenuEntry("Snake",
-                                            std::make_shared<AppLauncher>(c,
-                                                                          std::
-                                                                             make_shared
-                                                                          <Snake>())),
+                                            std::make_shared<AppLauncher>(c, std::make_shared<Snake>())),
                         TextMenu::MenuEntry("Pong",
-                                            std::make_shared<AppLauncher>(c,
-                                                                          std::
-                                                                             make_shared
-                                                                          <Pong>())),
+                                            std::make_shared<AppLauncher>(c, std::make_shared<Pong>())),
                         TextMenu::MenuEntry("Game of Life",
                                             std::make_shared<AppLauncher>(c,
-                                                                          std::
-                                                                             make_shared
-                                                                          <
+                                                                          std::make_shared<
                                                                             GameOfLife>())),
                         TextMenu::MenuEntry("Flappy Bird",
                                             std::make_shared<AppLauncher>(c,
-                                                                          std::
-                                                                             make_shared
-                                                                          <
+                                                                          std::make_shared<
                                                                             FlappyBird>())),
                         TextMenu::MenuEntry("Tetris",
                                             std::make_shared<AppLauncher>(c,
-                                                                          std::
-                                                                             make_shared
-                                                                          <Tetris>()))
+                                                                          std::make_shared<Tetris>()))
                       });
 
   // Effects
@@ -169,21 +173,15 @@ int main(int argc, char **argv)
   effects->setMenuItems({
                           TextMenu::MenuEntry("Slide Show",
                                               std::make_shared<AppLauncher>(c,
-                                                                            std::
-                                                                             make_shared
-                                                                            <
+                                                                            std::make_shared<
                                                                               ImageSlideShowApp>())),
                           TextMenu::MenuEntry("Fractals",
                                               std::make_shared<AppLauncher>(c,
-                                                                            std::
-                                                                             make_shared
-                                                                            <
+                                                                            std::make_shared<
                                                                               FractalApp>())),
                           TextMenu::MenuEntry("Shaders",
                                               std::make_shared<AppLauncher>(c,
-                                                                            std::
-                                                                             make_shared
-                                                                            <
+                                                                            std::make_shared<
                                                                               ShaderApp>()))
                         });
 
@@ -194,10 +192,8 @@ int main(int argc, char **argv)
                            TextMenu::MenuEntry("Brightness: 1", settingsHandler),
                            TextMenu::MenuEntry("Update Firmware",
                                                std::make_shared<AppLauncher>(c,
-                                                                             std
-                                                                             ::
-                                                                             make_shared
-                                                                             <UpdateApp>())),
+                                                                             std::make_shared<
+                                                                               UpdateApp>())),
                          });
 
   // Main Menu
@@ -205,9 +201,7 @@ int main(int argc, char **argv)
   a->setMenuItems({
                     TextMenu::MenuEntry("Test Pattern",
                                         std::make_shared<AppLauncher>(c,
-                                                                      std::
-                                                                             make_shared
-                                                                      <
+                                                                      std::make_shared<
                                                                         TestPatternApp>())),
                     TextMenu::MenuEntry("Effects",
                                         std::make_shared<AppLauncher>(c, effects)),

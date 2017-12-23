@@ -20,6 +20,8 @@ void BaseApplication::initialize(BaseController * ctrl){
   m_colorPalette.push_back({0,0,0});
   m_bufferColorMode = BufferColorMode::PALETTE;
 }
+void BaseApplication::deinitialize(){
+}
 void BaseApplication::pauseApp(){
   m_isPaused = true;
 }

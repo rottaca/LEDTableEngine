@@ -55,10 +55,16 @@ void Tetris::initialize(BaseController *ctrl) {
   m_lastUpdateTimeMove = 0;
   m_generator          = std::default_random_engine(m_ctrl->getTimeMs());
   m_posDist            = std::uniform_int_distribution<int>(0, m_ctrl->getWidth());
-
+  m_soundClick = createAudio("res/audio/sound/click_x.wav",0,SDL_MIX_MAXVOLUME);
+  m_soundCoin = createAudio("res/audio/sound/coin_flip.wav",0,SDL_MIX_MAXVOLUME);
+  playMusic("res/audio/music/Tetris.wav",SDL_MIX_MAXVOLUME);
   m_fallingShape.update(m_shapes[0], 2);
 }
 
+void Tetris::deinitialize(){
+  freeAudio(m_soundClick);
+  freeAudio(m_soundCoin);
+}
 void Tetris::processInput(const BaseInput::InputEvents& events,
                           TimeUnit                      deltaTime) {
   bool fastDown = false;
@@ -104,6 +110,7 @@ void Tetris::processInput(const BaseInput::InputEvents& events,
   } else {
     if (m_ctrl->getTimeMs() - m_lastUpdateTimeFall > 1000.0) {
       moveDown = true;
+      playSoundFromMemory(m_soundClick, SDL_MIX_MAXVOLUME);
     }
   }
 
@@ -181,6 +188,7 @@ void Tetris::processInput(const BaseInput::InputEvents& events,
                          (pos.y + p.y)] = m_fallingShape.colorIdx;
       }
       m_fallingShape.isAlive = false;
+      playSoundFromMemory(m_soundCoin, SDL_MIX_MAXVOLUME);
       m_score++;
     }
   }

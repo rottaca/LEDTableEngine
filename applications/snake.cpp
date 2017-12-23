@@ -30,8 +30,14 @@ void Snake::initialize(BaseController * ctrl){
   m_lastUpdateTime = 0;
   m_generator = std::default_random_engine(m_ctrl->getTimeMs());
   m_posDist = std::uniform_int_distribution<int>(0,m_ctrl->getSize()-1);
+
+  m_soundCoin = createAudio("res/audio/sound/coin_flip.wav",0,SDL_MIX_MAXVOLUME);
+  playMusic("res/audio/music/Fantasy_Game_Background_Looping.wav",SDL_MIX_MAXVOLUME*0.7f);
 }
 
+void Snake::deinitialize(){
+  freeAudio(m_soundCoin);
+}
 void Snake::processInput(const BaseInput::InputEvents &events,
                                                     TimeUnit deltaTime){
   if(BaseInput::isPressed(events,BaseInput::InputEventName::EXIT)){
@@ -90,6 +96,7 @@ void Snake::processInput(const BaseInput::InputEvents &events,
 	   m_snake.push_front(newPos);
 
 	   if(newPos == m_foodPos){
+       playSoundFromMemory(m_soundCoin, SDL_MIX_MAXVOLUME);
        int idx = m_posDist(m_generator);
 		   m_foodPos.x = idx % m_ctrl->getWidth();
 		   m_foodPos.y = idx / m_ctrl->getWidth();

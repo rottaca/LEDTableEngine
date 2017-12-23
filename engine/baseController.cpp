@@ -43,6 +43,13 @@ bool BaseController::initialize(size_t width, size_t height,
         if(!m_inputHandler->initialize())
           return false;
 
+        if(SDL_InitSubSystem(SDL_INIT_AUDIO) != 0)
+        {
+         std::cerr << "SDL_INIT_AUDIO Error: " << SDL_GetError() << std::endl;
+         SDL_Quit();
+         return false;
+        }
+        initAudio();
         return true;
 }
 const Palette& BaseController::getCurrentPalette(){
@@ -125,6 +132,8 @@ void BaseController::run(size_t fps){
                 avgInputProcTime = 0.9*avgInputProcTime + 0.1*(t2-t1);
 
                 if(m_queuedApplications.size() > 0) {
+                        endAudio();
+                        initAudio();
                         for(auto app : m_queuedApplications) {
                                 addApplicationDirect(app);
                         }
@@ -136,7 +145,10 @@ void BaseController::run(size_t fps){
                 while(m_applicationStack.size() > 0 &&
                       m_applicationStack.top()->hasFinished()) {
                         m_applicationStack.top()->pauseApp();
+                        endAudio();
+                        m_applicationStack.top()->deinitialize();
                         m_applicationStack.pop();
+                        initAudio();
                         if(m_applicationStack.size() > 0) {
                                 updateBufferColorMode();
                                 m_applicationStack.top()->continueApp();
@@ -213,7 +225,7 @@ void BaseController::updateBufferColorMode(){
         }
 }
 void BaseController::shutdown(){
-
+  m_inputHandler->deinitialize();
 }
 TimeUnit BaseController::getTimeMs(){
         auto now = std::chrono::high_resolution_clock::now();

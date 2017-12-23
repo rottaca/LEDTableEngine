@@ -15,6 +15,7 @@
 #include "keyboardDebouncer.hpp"
 #include "types.hpp"
 #include "font.hpp"
+#include "audio.h"
 
 class BaseInput;
 

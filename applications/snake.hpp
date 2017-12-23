@@ -21,12 +21,14 @@ protected:
   Pointi   m_foodPos;
   TimeUnit m_lastUpdateTime;
 
+  Audio* m_soundCoin;
 public:
 
   Snake();
   virtual ~Snake();
 
   void initialize(BaseController *ctrl);
+  void deinitialize();
 
   void processInput(const BaseInput::InputEvents& events,
                     TimeUnit                      deltaTime);

@@ -17,6 +17,9 @@ void BaseInput::setController(BaseController *ctrl) {
 bool BaseInput::initialize() {
   return true;
 }
+void BaseInput::deinitialize() {
+  
+}
 
 bool BaseInput::isReleased(const InputEvents& events, InputEventName name) {
   for (auto e : events) {

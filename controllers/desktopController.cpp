@@ -20,7 +20,7 @@ bool DesktopController::initialize(size_t width, size_t height,
 
    if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_EVENTS) != 0)
    {
-  	std::cout << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
+  	std::cerr << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
   	SDL_Quit();
   	return false;
    }
