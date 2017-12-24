@@ -11,8 +11,8 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#define I2C_CTRL_ADR_START 0x40
-#define I2C_CTRL_ADR_END 0x4E
+#define I2C_CTRL_ADR_START 0x20
+#define I2C_CTRL_ADR_END 0x27
 
 GameControllerInput::GameControllerInput(std::string i2cDev) {
   m_deviceHandle = 0;
@@ -46,29 +46,34 @@ BaseInput::InputEvents GameControllerInput::getInputEvents() {
         e.playerId = pId;
         e.state = InputEventState::KEY_PRESSED;
 
+        // With the used hardware setup and the PCF8574
+        // Key presses correspond zeros
+        // -> Invert res from 0xff to 0x00 for no presses
+        res = ~res;
+
         if(res & 0x01){
-          e.name = InputEventName::UP;
-          ie.push_back(e);
-        }else if(res & 0x02){
-          e.name = InputEventName::LEFT;
-          ie.push_back(e);
-        }else if(res & 0x04){
-          e.name = InputEventName::DOWN;
-          ie.push_back(e);
-        }else if(res & 0x08){
-          e.name = InputEventName::RIGHT;
-          ie.push_back(e);
-        }else if(res & 0x10){
-          e.name = InputEventName::EXIT;
-          ie.push_back(e);
-        }else if(res & 0x20){
-          e.name = InputEventName::ENTER;
-          ie.push_back(e);
-        }else if(res & 0x40){
           e.name = InputEventName::A;
           ie.push_back(e);
-        }else if(res & 0x80){
+        }else if(res & ~0x02){
           e.name = InputEventName::B;
+          ie.push_back(e);
+        }else if(res & 0x04){
+          e.name = InputEventName::EXIT;
+          ie.push_back(e);
+        }else if(res & 0x08){
+          e.name = InputEventName::ENTER;
+          ie.push_back(e);
+        }else if(res & 0x10){
+          e.name = InputEventName::DOWN;
+          ie.push_back(e);
+        }else if(res & 0x20){
+          e.name = InputEventName::UP;
+          ie.push_back(e);
+        }else if(res & 0x40){
+          e.name = InputEventName::LEFT;
+          ie.push_back(e);
+        }else if(res & 0x80){
+          e.name = InputEventName::RIGHT;
           ie.push_back(e);
         }
       }else{
