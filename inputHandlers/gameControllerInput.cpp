@@ -27,12 +27,14 @@ bool GameControllerInput::initialize() {
     return false;
 
   detectConnectedControllers();
+  return m_controllerId.size() > 0;
 }
 
 BaseInput::InputEvents GameControllerInput::getInputEvents() {
   BaseInput::InputEvents ie;
 
   for(int pId = 0; pId < m_controllerId.size(); pId++){
+    std::cout << "Read from dev " << m_controllerId[pId] << std::endl;
 
     if (ioctl(m_deviceHandle, I2C_SLAVE, m_controllerId[pId]) < 0)
       perror("ioctl() I2C_SLAVE failed\n");
@@ -49,30 +51,39 @@ BaseInput::InputEvents GameControllerInput::getInputEvents() {
         // With the used hardware setup and the PCF8574
         // Key presses correspond zeros
         // -> Invert res from 0xff to 0x00 for no presses
-        res = ~res;
-
-        if(res & 0x01){
+        std::cout << "Raw " << res << std::endl;
+        //res = ~res && 0xFF);
+        std::cout << "Input: " << (res & 0x01) << std::endl;
+        if((res & 0x01) == 0){
+          std::cout << "A" << std::endl;
           e.name = InputEventName::A;
           ie.push_back(e);
-        }else if(res & ~0x02){
+        }
+        if((res & 0x02) == 0){
           e.name = InputEventName::B;
           ie.push_back(e);
-        }else if(res & 0x04){
+        }
+        if((res & 0x04) == 0){
           e.name = InputEventName::EXIT;
           ie.push_back(e);
-        }else if(res & 0x08){
+        }
+        if((res & 0x08) == 0){
           e.name = InputEventName::ENTER;
           ie.push_back(e);
-        }else if(res & 0x10){
+        }
+        if((res & 0x10) == 0){
           e.name = InputEventName::DOWN;
           ie.push_back(e);
-        }else if(res & 0x20){
+        }
+        if((res & 0x20) == 0){
           e.name = InputEventName::UP;
           ie.push_back(e);
-        }else if(res & 0x40){
+        }
+        if((res & 0x40) == 0){
           e.name = InputEventName::LEFT;
           ie.push_back(e);
-        }else if(res & 0x80){
+        }
+        if((res & 0x80) == 0){
           e.name = InputEventName::RIGHT;
           ie.push_back(e);
         }
