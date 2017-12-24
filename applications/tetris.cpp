@@ -3,6 +3,49 @@
 #include <algorithm>
 #include "textDisplay.hpp"
 
+const std::vector<Tetris::ShapeDef> shapes = {
+  {
+    // Box
+    { Pointi(0, 0), Pointi(1, 0), Pointi(0, 1), Pointi(1, 1) }
+  },
+  {
+    // L
+    { Pointi(0, 0), Pointi(0, 1), Pointi(0, 2), Pointi(1, 2) },
+    { Pointi(0, 1), Pointi(1, 1), Pointi(2, 1), Pointi(2, 0) },
+    { Pointi(0, 0), Pointi(1, 0), Pointi(1, 1), Pointi(1, 2) },
+    { Pointi(0, 1), Pointi(0, 2), Pointi(1, 1), Pointi(2, 1) }
+  },
+  {
+    // L (mirrored)
+    { Pointi(1, 0), Pointi(1, 1), Pointi(0, 2), Pointi(1, 2) },
+    { Pointi(0, 1), Pointi(1, 1), Pointi(2, 1), Pointi(2, 2) },
+    { Pointi(0, 0), Pointi(0, 1), Pointi(0, 2), Pointi(1, 0) },
+    { Pointi(0, 0), Pointi(0, 1), Pointi(1, 1), Pointi(2, 1) }
+  },
+  {
+    // z
+    { Pointi(0, 0), Pointi(1, 0), Pointi(1, 1), Pointi(2, 1) },
+    { Pointi(1, 0), Pointi(1, 1), Pointi(0, 1), Pointi(0, 2) },
+  },
+  {
+    // z (mirrored)
+    { Pointi(0, 1), Pointi(1, 0), Pointi(1, 1), Pointi(2, 0) },
+    { Pointi(0, 0), Pointi(1, 1), Pointi(0, 1), Pointi(1, 2) },
+  },
+  {
+    // _|_
+    { Pointi(1, 0), Pointi(0, 1), Pointi(1, 1), Pointi(2, 1) },
+    { Pointi(1, 0), Pointi(0, 1), Pointi(1, 1), Pointi(1, 2) },
+    { Pointi(1, 1), Pointi(0, 0), Pointi(1, 0), Pointi(2, 0) },
+    { Pointi(0, 0), Pointi(0, 1), Pointi(0, 2), Pointi(1, 1) },
+  },
+  {
+    // |
+    { Pointi(0, 0), Pointi(1, 0), Pointi(2, 0), Pointi(3, 0) },
+    { Pointi(1, 0), Pointi(1, 1), Pointi(1, 2), Pointi(1, 3) }
+  }
+};
+
 Tetris::Tetris() {}
 
 Tetris::~Tetris() {}
@@ -23,32 +66,6 @@ void Tetris::initialize(BaseController *ctrl) {
     m_colorPalette.push_back({ 0, 0, 0 });
   }
 
-  m_shapes = {
-    {
-      // Box
-      { Pointi(0, 0), Pointi(1, 0), Pointi(0, 1), Pointi(1, 1) }
-    },
-    {
-      // L
-      { Pointi(0, 0), Pointi(0, 1), Pointi(0, 2), Pointi(1, 2) },
-      { Pointi(0, 1), Pointi(1, 1), Pointi(2, 1), Pointi(2, 0) },
-      { Pointi(0, 0), Pointi(1, 0), Pointi(1, 1), Pointi(1, 2) },
-      { Pointi(0, 1), Pointi(0, 2), Pointi(1, 1), Pointi(2, 1) }
-    },
-    {
-      // z
-      { Pointi(0, 0), Pointi(1, 0), Pointi(1, 1), Pointi(2, 1) },
-      { Pointi(1, 0), Pointi(1, 1), Pointi(0, 1), Pointi(0, 2) },
-    },
-    {
-      // _|_
-      { Pointi(1, 0), Pointi(0, 1), Pointi(1, 1), Pointi(2, 1) },
-      { Pointi(1, 0), Pointi(0, 1), Pointi(1, 1), Pointi(1, 2) },
-      { Pointi(1, 1), Pointi(0, 0), Pointi(1, 0), Pointi(2, 0) },
-      { Pointi(0, 0), Pointi(0, 1), Pointi(0, 2), Pointi(1, 1) },
-    }
-  };
-
   m_gameField.resize(m_ctrl->getHeight(), m_ctrl->getWidth(), 1);
   memset(m_gameField.data, 0, m_gameField.size);
   m_lastUpdateTimeFall = 0;
@@ -58,7 +75,7 @@ void Tetris::initialize(BaseController *ctrl) {
   m_soundClick = createAudio("res/audio/sound/click_x.wav",0,SDL_MIX_MAXVOLUME);
   m_soundCoin = createAudio("res/audio/sound/coin_flip.wav",0,SDL_MIX_MAXVOLUME);
   playMusic("res/audio/music/Tetris.wav",SDL_MIX_MAXVOLUME);
-  m_fallingShape.update(m_shapes[0], 2);
+  newShape();
 }
 
 void Tetris::deinitialize(){
@@ -218,11 +235,7 @@ void Tetris::processInput(const BaseInput::InputEvents& events,
 
   // Spawn a new item
   if (!m_fallingShape.isAlive) {
-    int shapeIdx = m_posDist(m_generator) % m_shapes.size();
-    int posX     = 2 + m_posDist(m_generator) % (m_ctrl->getWidth() - 3);
-    int colIdx   = 1 + m_posDist(m_generator) % 6;
-    m_fallingShape.update(m_shapes[shapeIdx], colIdx);
-    m_fallingShape.translate(posX, -3);
+    newShape();
   }
 }
 
@@ -240,4 +253,12 @@ void Tetris::draw(Image& frame) {
     }
     frame.data[x + y * frame.width] = m_fallingShape.colorIdx;
   }
+}
+
+void Tetris::newShape(){
+  int shapeIdx = m_posDist(m_generator) % shapes.size();
+  int posX     = 3 + m_posDist(m_generator) % (m_ctrl->getWidth() - 6);
+  int colIdx   = 1 + m_posDist(m_generator) % 6;
+  m_fallingShape.update(shapes[shapeIdx], colIdx);
+  m_fallingShape.translate(posX, -3);
 }

@@ -17,6 +17,7 @@ protected:
   std::array<Image, 2> m_gameField;
   size_t   m_currentFieldIdx;
   TimeUnit m_lastUpdateTime;
+  TimeUnit m_lastChangeTime;
   std::default_random_engine m_generator;
   std::uniform_int_distribution<int> m_dist;
 

@@ -12,11 +12,11 @@
 #include "../engine/matrixScrollText.hpp"
 
 class Tetris : public BaseApplication {
-protected:
-
+public:
   typedef std::vector<Pointi>Shape;
   typedef std::vector<Shape> ShapeDef;
-  std::vector<ShapeDef> m_shapes;
+
+protected:
   Audio* m_soundClick;
   Audio* m_soundCoin;
 
@@ -86,6 +86,8 @@ public:
   void processInput(const BaseInput::InputEvents& events,
                     TimeUnit                      deltaTime);
   void draw(Image& frame);
+private:
+  void newShape();
 };
 
 

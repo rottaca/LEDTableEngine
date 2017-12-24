@@ -26,7 +26,9 @@ void GameOfLife::initialize(BaseController *ctrl) {
 
   m_evolutionRules = Rules({ 3 }, { 3, 2 }, 0.4);
   m_lastUpdateTime = 0;
+  m_lastChangeTime = m_ctrl->getTimeMs();
   randomInitField();
+  playMusic("res/audio/music/pianoBackground.wav",SDL_MIX_MAXVOLUME*0.7f);
 }
 
 void GameOfLife::randomInitField() {
@@ -58,8 +60,8 @@ void GameOfLife::processInput(const BaseInput::InputEvents& events,
   }
 
   size_t nextField       = (m_currentFieldIdx + 1) % 2;
-  bool   livingCellFOund = false;
-
+  bool   livingCellFound = false;
+  bool  hasChanged = false;
   for (size_t y = 0; y < m_gameField[0].height; y++) {
     for (size_t x = 0; x < m_gameField[0].width; x++) {
       uint8_t c = m_gameField[m_currentFieldIdx](y, x, 0);
@@ -72,10 +74,11 @@ void GameOfLife::processInput(const BaseInput::InputEvents& events,
             m_evolutionRules.neighborsForLiving.end())
         {
           c++;
-          livingCellFOund = true;
+          livingCellFound = true;
         }
         else {
           c = 0;
+          hasChanged = true;
         }
       } else {
         if (std::find(
@@ -83,14 +86,16 @@ void GameOfLife::processInput(const BaseInput::InputEvents& events,
               m_evolutionRules.neighborsForBirth.end(), n) !=
             m_evolutionRules.neighborsForBirth.end()) {
           c               = 1;
-          livingCellFOund = true;
+          livingCellFound = true;
+          hasChanged = true;
         }
       }
       m_gameField[nextField](y, x, 0) = c;
     }
   }
-
-  if (!livingCellFOund) randomInitField();
+  if(hasChanged)
+    m_lastChangeTime = m_ctrl->getTimeMs();
+  if (!livingCellFound || m_ctrl->getTimeMs() - m_lastChangeTime > 5000) randomInitField();
   else m_currentFieldIdx = nextField;
 }
 
