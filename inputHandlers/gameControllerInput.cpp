@@ -34,7 +34,7 @@ BaseInput::InputEvents GameControllerInput::getInputEvents() {
   BaseInput::InputEvents ie;
 
   for(int pId = 0; pId < m_controllerId.size(); pId++){
-    std::cout << "Read from dev " << m_controllerId[pId] << std::endl;
+    //std::cout << "Read from dev " << m_controllerId[pId] << std::endl;
 
     if (ioctl(m_deviceHandle, I2C_SLAVE, m_controllerId[pId]) < 0)
       perror("ioctl() I2C_SLAVE failed\n");
@@ -51,9 +51,9 @@ BaseInput::InputEvents GameControllerInput::getInputEvents() {
         // With the used hardware setup and the PCF8574
         // Key presses correspond zeros
         // -> Invert res from 0xff to 0x00 for no presses
-        std::cout << "Raw " << res << std::endl;
+        //std::cout << "Raw " << res << std::endl;
         //res = ~res && 0xFF);
-        std::cout << "Input: " << (res & 0x01) << std::endl;
+        //std::cout << "Input: " << (res & 0x01) << std::endl;
         if((res & 0x01) == 0){
           std::cout << "A" << std::endl;
           e.name = InputEventName::A;
@@ -126,7 +126,7 @@ bool GameControllerInput::connectToDevice(std::string device){
 void GameControllerInput::detectConnectedControllers(){
   m_controllerId.clear();
   int port, res;
-  for (port = I2C_CTRL_ADR_START; port <= I2C_CTRL_ADR_END; port+=2)
+  for (port = I2C_CTRL_ADR_START; port <= I2C_CTRL_ADR_END; port++)
   {
     if (ioctl(m_deviceHandle, I2C_SLAVE, port) < 0)
       perror("ioctl() I2C_SLAVE failed\n");
