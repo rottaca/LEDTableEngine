@@ -2,6 +2,7 @@
 #include "../engine/baseController.hpp"
 #include <algorithm>
 #include "textDisplay.hpp"
+#include <sstream>
 
 Snake::Snake(){
 
@@ -15,21 +16,35 @@ void Snake::initialize(BaseController * ctrl){
   m_colorPalette = {
     {0,0,0},				// Background
     {0,0,255},			// Food
-    {0,255,0},			// Snake
     {255,0,0}, 			// Death
-    {255,255,255} 			// Text
+    {255,255,255}, 	// Text
+    {0,255,0},			// Snake 1
+    {0,255,255},			// Snake 2
+    {255,255,0},			// Snake 3
+    {255,0,255},			// Snake 4
   };
+
   for(int i = m_colorPalette.size(); i <= 255; i++){
     m_colorPalette.push_back({0,0,0});
   }
 
-  m_snake.clear();
-  m_snake.push_front(Pointi(ctrl->getWidth()/2, ctrl->getHeight()/2));
-  m_moveDir = Pointi(0, 1);
-  m_foodPos = Pointi(ctrl->getWidth()/2, ctrl->getHeight()/2 + 5);
-  m_lastUpdateTime = 0;
   m_generator = std::default_random_engine(m_ctrl->getTimeMs());
   m_posDist = std::uniform_int_distribution<int>(0,m_ctrl->getSize()-1);
+
+  m_foodPos.clear();
+  m_snakes.clear();
+  for (size_t i = 0; i < m_ctrl->getPlayerCount(); i++) {
+    SnakeData s;
+    s.moveDir = Pointi(0, 1);
+    s.snake.push_front(Pointi(3 + m_posDist(m_generator) % (ctrl->getWidth()-6),
+                              3 + m_posDist(m_generator) % (ctrl->getHeight()-6)));
+    m_snakes.push_back(s);
+
+    m_foodPos.push_back(Pointi(m_posDist(m_generator) % ctrl->getWidth() ,
+                               m_posDist(m_generator) % ctrl->getHeight()));
+  }
+
+  m_lastUpdateTime = 0;
 
   m_soundCoin = createAudio("res/audio/sound/coin_flip.wav",0,SDL_MIX_MAXVOLUME);
   playMusic("res/audio/music/Fantasy_Game_Background_Looping.wav",SDL_MIX_MAXVOLUME*0.7f);
@@ -44,74 +59,114 @@ void Snake::processInput(const BaseInput::InputEvents &events,
     m_hasFinished = true;
     return;
   }
-	Pointi newDir = m_moveDir;
+  std::vector<Pointi> newDirs;
+  for(SnakeData &s: m_snakes){
+    newDirs.push_back(s.moveDir);
+  }
+
 	for( const auto&e: events){
-		if(e.state != BaseInput::InputEventState::KEY_PRESSED)
+		if(e.state != BaseInput::InputEventState::KEY_PRESSED ||
+       e.playerId >= m_snakes.size())
 			continue;
 
 		switch(e.name){
 			case BaseInput::InputEventName::UP:
-				newDir.x = 0;
-				newDir.y = -1;
+				newDirs[e.playerId].x = 0;
+				newDirs[e.playerId].y = -1;
 				break;
 			case BaseInput::InputEventName::LEFT:
-				newDir.x = -1;
-				newDir.y = 0;
+				newDirs[e.playerId].x = -1;
+				newDirs[e.playerId].y = 0;
 				break;
 			case BaseInput::InputEventName::DOWN:
-				newDir.x = 0;
-				newDir.y = 1;
+				newDirs[e.playerId].x = 0;
+				newDirs[e.playerId].y = 1;
 				break;
 			case BaseInput::InputEventName::RIGHT:
-				newDir.x = 1;
-				newDir.y = 0;
+				newDirs[e.playerId].x = 1;
+				newDirs[e.playerId].y = 0;
 				break;
 			case BaseInput::InputEventName::EXIT:
 				m_hasFinished = true;
 				return;
 		}
-		if (newDir.x != -m_moveDir.x || newDir.y != -m_moveDir.y){
-			m_moveDir = newDir;
+		if (newDirs[e.playerId].x != -m_snakes[e.playerId].moveDir.x ||
+        newDirs[e.playerId].y != -m_snakes[e.playerId].moveDir.y) {
+			m_snakes[e.playerId].moveDir = newDirs[e.playerId];
 		}
 	}
-
-	if(m_ctrl->getTimeMs() - m_lastUpdateTime < 1000.0/(0.2*m_snake.size()+1)){
+  size_t snakeScoreSum = 0;
+  for(SnakeData &s:m_snakes){
+    snakeScoreSum += s.snake.size();
+  }
+  float speed = 1000.0/(0.2*snakeScoreSum/m_snakes.size()+1);
+	if(m_ctrl->getTimeMs() - m_lastUpdateTime < speed){
 		return;
 	}
 
 	m_lastUpdateTime = m_ctrl->getTimeMs();
 	m_requiresRedraw = true;
+  for (size_t i = 0; i < m_snakes.size(); i++) {
+    SnakeData &s = m_snakes[i];
+    Pointi newPos(s.snake.front().x+s.moveDir.x,
+  				 s.snake.front().y+s.moveDir.y);
 
-	Pointi newPos(m_snake.front().x+m_moveDir.x,
-				 m_snake.front().y+m_moveDir.y);
+    bool collision = false;
+    for(SnakeData &s2: m_snakes){
+      collision = std::find(s2.snake.begin(), s2.snake.end(), newPos) != s2.snake.end();
+      if(collision)
+        break;
+    }
 
-	if(newPos.x < 0 || newPos.x >= m_ctrl->getWidth() ||
-	   newPos.y < 0 || newPos.y >= m_ctrl->getHeight() ||
-	   (std::find(m_snake.begin(), m_snake.end(), newPos)!= m_snake.end())){
-       auto a = std::make_shared<TextDisplay>();
-       a->setText(std::string("Score: ") + std::to_string(m_snake.size()));
-       m_ctrl->addApplication(a,true);
-       m_hasFinished = true;
-   }else{
-	   m_snake.push_front(newPos);
+  	if(newPos.x < 0 || newPos.x >= m_ctrl->getWidth() ||
+  	   newPos.y < 0 || newPos.y >= m_ctrl->getHeight() ||
+  	   collision){
+         for (int j = m_snakes.size()-1; j >= 0; j--) {
+           SnakeData &s = m_snakes[j];
+           auto a = std::make_shared<TextDisplay>();
+           std::stringstream ss;
+           ss << "P" << j+1 << ": " << s.snake.size() << "Pts";
+           a->setText(ss.str());
+           m_ctrl->addApplication(a,true);
+         }
+         auto a = std::make_shared<TextDisplay>();
+         std::stringstream ss;
+         ss << "Player " << i+1 << " died!";
+         a->setText(ss.str());
+         m_ctrl->addApplication(a,true);
+         m_hasFinished = true;
+         return;
+     }else{
+  	   s.snake.push_front(newPos);
 
-	   if(newPos == m_foodPos){
-       playSoundFromMemory(m_soundCoin, SDL_MIX_MAXVOLUME);
-       int idx = m_posDist(m_generator);
-		   m_foodPos.x = idx % m_ctrl->getWidth();
-		   m_foodPos.y = idx / m_ctrl->getWidth();
-	   }else{
-		   m_snake.pop_back();
-	   }
-   }
+       auto foodIt = std::find(m_foodPos.begin(), m_foodPos.end(), newPos);
+
+  	   if(foodIt != m_foodPos.end()){
+         playSoundFromMemory(m_soundCoin, SDL_MIX_MAXVOLUME);
+         m_foodPos.erase(foodIt);
+         Pointi f;
+         int idx = m_posDist(m_generator);
+  		   f.x = idx % m_ctrl->getWidth();
+  		   f.y = idx / m_ctrl->getWidth();
+         m_foodPos.push_back(f);
+  	   }else{
+  		   s.snake.pop_back();
+  	   }
+     }
+  }
 }
 void Snake::draw(Image &frame){
   m_requiresRedraw = false;
 	m_ctrl->clearFrame(0);
 
-	frame.data[m_foodPos.x + m_foodPos.y*frame.width] = 1;
+  for(Pointi& food: m_foodPos){
+	   frame.data[food.x + food.y*frame.width] = 1;
+  }
 
-	for(Pointi p: m_snake){
-		frame.data[p.x + p.y*frame.width] = 2;
-	}
+	for(int i = 0; i < m_snakes.size(); i++){
+    SnakeData &s = m_snakes[i];
+  	for(Pointi &p: s.snake){
+  		frame.data[p.x + p.y*frame.width] = i + 4;
+  	}
+  }
 }

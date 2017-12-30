@@ -16,9 +16,13 @@ protected:
 
   std::default_random_engine m_generator;
   std::uniform_int_distribution<int> m_posDist;
-  std::list<Pointi> m_snake;
-  Pointi   m_moveDir;
-  Pointi   m_foodPos;
+  typedef std::list<Pointi> SnakeList;
+  struct SnakeData{
+    SnakeList snake;
+    Pointi   moveDir;
+  };
+  std::vector<SnakeData> m_snakes;
+  std::vector<Pointi>   m_foodPos;
   TimeUnit m_lastUpdateTime;
 
   Audio* m_soundCoin;

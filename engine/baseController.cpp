@@ -149,8 +149,8 @@ void BaseController::run(size_t fps){
                         endAudio();
                         m_applicationStack.top()->deinitialize();
                         m_applicationStack.pop();
-                        initAudio();
                         if(m_applicationStack.size() > 0) {
+                                initAudio();
                                 updateBufferColorMode();
                                 m_applicationStack.top()->continueApp();
                         }

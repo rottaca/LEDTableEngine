@@ -9,7 +9,7 @@ bool operator<(const BaseInput::InputEvent& a,  const BaseInput::InputEvent& b)
 
 bool operator==(const BaseInput::InputEvent& a,  const BaseInput::InputEvent& b)
 {
-  return a.name == b.name;
+  return a.name == b.name && a.playerId == b.playerId;
 }
 
 KeyboardDebouncer::KeyboardDebouncer() {}
@@ -28,7 +28,9 @@ void KeyboardDebouncer::processInput(const BaseInput::InputEvents& events) {
   for (const auto& e : events) {
     auto lower = std::lower_bound(m_events.begin(), m_events.end(), e);
 
-    if ((lower != m_events.end()) && (lower->name == e.name)) {
+    if ((lower != m_events.end()) &&
+        lower->name == e.name &&
+        lower->playerId == e.playerId) {
       lower->state = BaseInput::InputEventState::KEY_HOLD;
       updatedEvents.push_back(*lower);
     } else {
