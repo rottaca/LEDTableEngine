@@ -46,6 +46,7 @@ public:
                         TextMenu::MenuEntry& menuEntry,
                         size_t               idx) {
     switch (idx) {
+    // Brightness
     case 0: {
       float f = m_ctrl->getBrightness();
       f += 0.2;
@@ -57,6 +58,21 @@ public:
       std::stringstream stream;
       stream << "Brightness: ";
       stream << std::fixed << std::setprecision(1) << f;
+      menuEntry.name = stream.str();
+      break;
+    }
+    // Player Count
+    case 1: {
+      size_t p = m_ctrl->getPlayerCount();
+      p = (p+1) % (kMaxPlayerCount+1);
+      m_ctrl->setPlayerCount(p);
+      std::stringstream stream;
+      stream << "Players: ";
+      if(p == 0){
+        stream << "all";
+      }else{
+        stream << p;
+      }
       menuEntry.name = stream.str();
       break;
     }
@@ -194,6 +210,7 @@ int main(int argc, char **argv)
   auto settingsHandler = std::make_shared<SettingsMenuHandler>(c);
   settings->setMenuItems({
                            TextMenu::MenuEntry("Brightness: 1", settingsHandler),
+                           TextMenu::MenuEntry("Players: all", settingsHandler),
                            TextMenu::MenuEntry("Update Firmware",
                                                std::make_shared<AppLauncher>(c,
                                                                              std::make_shared<

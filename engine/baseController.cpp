@@ -27,6 +27,7 @@ bool BaseController::initialize(size_t width, size_t height,
         m_isRunning = true;
         m_bufferMode = BufferColorMode::PALETTE;
         m_brightness = 1;
+        m_playerCnt = 1;
         auto now = std::chrono::high_resolution_clock::now();
         m_refTimeStartUs = std::chrono::duration_cast<std::chrono::microseconds>(now.time_since_epoch()).count();
 

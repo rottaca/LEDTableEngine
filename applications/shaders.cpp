@@ -8,6 +8,7 @@ ShaderApp::~ShaderApp() {}
 void ShaderApp::initialize(BaseController *ctrl) {
   BaseApplication::initialize(ctrl);
   m_bufferColorMode = BufferColorMode::RGB;
+  m_shader = WATER;
 }
 
 void ShaderApp::continueApp() {}
@@ -20,9 +21,8 @@ void ShaderApp::processInput(const BaseInput::InputEvents& events,
   }
 
   if (BaseInput::isPressed(events, BaseInput::InputEventName::ENTER)) {
-    m_shader = (ShaderType)((int)m_shader + 1);
+    m_shader = (ShaderType)(((int)m_shader + 1) % END);
 
-    if (m_shader == END) m_shader = (ShaderType)0;
   }
 }
 
@@ -48,6 +48,8 @@ void ShaderApp::draw(Image& frame) {
       case WAVINGCOLOR:
         wavingColors(tm, ix, iy, *(p + 0), *(p + 1), *(p + 2));
         break;
+      default:
+       std::cerr << "invalid shader" << std::endl;
       }
       p += 3;
     }

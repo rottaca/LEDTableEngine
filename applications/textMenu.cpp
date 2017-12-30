@@ -71,7 +71,8 @@ void TextMenu::processInput(const BaseInput::InputEvents &events,
     m_requiresRedraw = m_scrollText.update(m_ctrl->getTimeMs());
 
     for(auto& e: events){
-      if(e.state != BaseInput::InputEventState::KEY_PRESSED){
+      if(e.state != BaseInput::InputEventState::KEY_PRESSED ||
+         e.playerId != 0){
         continue;
       }
       switch (e.name) {

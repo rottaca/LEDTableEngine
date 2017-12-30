@@ -28,6 +28,7 @@ protected:
   bool   m_debug, m_isRunning;
   BufferColorMode m_bufferMode;
   float m_brightness;
+  size_t m_playerCnt;
 
 private:
 
@@ -62,6 +63,14 @@ public:
 
   float getBrightness() {
     return m_brightness;
+  }
+
+  void setPlayerCount(size_t p) {
+    m_playerCnt = p;
+  }
+
+  size_t getPlayerCount() {
+    return m_playerCnt;
   }
 
   TimeUnit getTimeMs();

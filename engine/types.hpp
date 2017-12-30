@@ -7,6 +7,8 @@
 #include <assert.h>
 #include <memory>
 
+const size_t kMaxPlayerCount = 2;
+
 typedef int64_t               TimeUnit;
 typedef std::array<uint8_t, 3>ColorRGB;
 typedef std::vector<ColorRGB> Palette;
