@@ -6,8 +6,8 @@ template<typename T>int sgn(T val) {
   return (T(0) < val) - (val < T(0));
 }
 
-Pong::Pong(bool autoplay) {
-  m_autoplay = autoplay;
+Pong::Pong() {
+
 }
 
 Pong::~Pong() {}
@@ -65,12 +65,12 @@ void Pong::processInput(const BaseInput::InputEvents& events,
     m_lastUpdateTime = m_ctrl->getTimeMs();
 
     for (const auto& e : events) {
-      if (e.state != BaseInput::InputEventState::KEY_PRESSED) continue;
+      if (e.state != BaseInput::InputEventState::KEY_PRESSED && e.playerId > m_ctrl->getPlayerCount()) continue;
 
       switch (e.name) {
       case BaseInput::InputEventName::UP:
 
-        if (!m_autoplay && (m_playerPos[0] > m_playerHeight / 2)) m_playerPos[0]--;
+        if (m_playerPos[e.playerId] > m_playerHeight / 2) m_playerPos[e.playerId]--;
         break;
 
       case BaseInput::InputEventName::LEFT:
@@ -78,8 +78,7 @@ void Pong::processInput(const BaseInput::InputEvents& events,
 
       case BaseInput::InputEventName::DOWN:
 
-        if (!m_autoplay &&
-            (m_playerPos[0] < m_ctrl->getHeight() - 1 - m_playerHeight / 2)) m_playerPos[0]++;
+        if (m_playerPos[e.playerId] < m_ctrl->getHeight() - 1 - m_playerHeight / 2) m_playerPos[e.playerId]++;
         break;
 
       case BaseInput::InputEventName::RIGHT:
@@ -96,19 +95,20 @@ void Pong::processInput(const BaseInput::InputEvents& events,
       m_ballSpeed.y += m_speedIncrease * (m_ballSpeed.y > 0 ? 1 : -1);
     }
 
-    if (m_ballPos.x >= m_ctrl->getWidth() / 2) {
+    if (m_ballPos.x >= m_ctrl->getWidth() / 2 && m_ctrl->getPlayerCount() == 1) {
       m_playerPos[1] = std::min(
         std::max(
           m_playerPos[1] + sgn((int)m_ballPos.y - m_playerPos[1]),
           m_playerHeight / 2),
         (int)(m_ctrl->getHeight() - 1 - m_playerHeight / 2));
-    } else if (m_autoplay) {
-      m_playerPos[0] = std::min(
-        std::max(
-          m_playerPos[0] + sgn((int)m_ballPos.y - m_playerPos[0]),
-          m_playerHeight / 2),
-        (int)(m_ctrl->getHeight() - 1 - m_playerHeight / 2));
     }
+    // else if (m_autoplay) {
+    //   m_playerPos[0] = std::min(
+    //     std::max(
+    //       m_playerPos[0] + sgn((int)m_ballPos.y - m_playerPos[0]),
+    //       m_playerHeight / 2),
+    //     (int)(m_ctrl->getHeight() - 1 - m_playerHeight / 2));
+    // }
   }
 
 
