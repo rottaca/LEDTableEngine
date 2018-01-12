@@ -1,6 +1,10 @@
 # LEDTableEngine
 This repository contains a C++ implementation of a control engine for LED tables. It also contains a simulation environment for desktop applications. It contains different controllers, input handlers and applications and helper functions for any kind of game or visualization.
 
+### Images
+Here are a few images of the acual LED table, controlled by this engine.
+![Controller](webres/images/controller.jpg)
+
 ### Controllers
 The desktop controller uses SDL2 to display the matrix with on an upscaled display.
 The matrix controller outputs display data as TPM2 packets which are then transmitted to an WS2812B Controller chip that controls the actual LED matrix.
@@ -28,3 +32,10 @@ At the moment, the following applications are implemented:
 
 # Setup Instructions
 coming soon :)
+
+# More Images
+## Simulator
+![Menu](webres/images/menu.png)
+![screensaver](webres/images/screensaver.png)
+![gameoflife](webres/images/gameoflife.png)
+![pong](webres/images/pong.png)
