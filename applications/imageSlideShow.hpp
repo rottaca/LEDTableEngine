@@ -8,7 +8,7 @@ class ImageSlideShowApp : public led::BaseApplication {
 protected:
 
   led::TimeUnit m_lastImageChange;
-  float m_interpolate;
+  float  m_interpolate;
   size_t m_currImageIdx;
   std::vector<std::shared_ptr<led::Image> > m_images;
   std::vector<std::string> m_imageFilePaths;

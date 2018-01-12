@@ -29,7 +29,7 @@ namespace led {
  *      mplayer -identify music.wav
  *
  * On some GNU/Linux to convert any music to this or another specified format
- *use:
+ *****use:
  *      ffmpeg -i in.mp3 -acodec pcm_s16le -ac 2 -ar 48000 out.wav
  */
 
@@ -46,24 +46,24 @@ namespace led {
 #define AUDIO_SAMPLES 4096
 
 /* Max number of sounds that can be in the audio queue at anytime, stops too
-  much mixing */
+   much mixing */
 #define AUDIO_MAX_SOUNDS 25
 
 /* Flags OR'd together, which specify how SDL should behave when a device cannot
    offer a specific feature
  * If flag is set, SDL will change the format in the actual audio file structure
- *(as opposed to gDevice->want)
+ *****(as opposed to gDevice->want)
  *
  * Note: If you're having issues with Emscripten / EMCC play around with these
- *flags
+ *****flags
  *
  * 0                                    Allow no changes
  * SDL_AUDIO_ALLOW_FREQUENCY_CHANGE     Allow frequency changes (e.g.
- *AUDIO_FREQUENCY is 48k, but allow files to play at 44.1k
+ *****AUDIO_FREQUENCY is 48k, but allow files to play at 44.1k
  * SDL_AUDIO_ALLOW_FORMAT_CHANGE        Allow Format change (e.g. AUDIO_FORMAT
- *may be S32LSB, but allow wave files of S16LSB to play)
+ *****may be S32LSB, but allow wave files of S16LSB to play)
  * SDL_AUDIO_ALLOW_CHANNELS_CHANGE      Allow any number of channels (e.g.
- *AUDIO_CHANNELS being 2, allow actual 1)
+ *****AUDIO_CHANNELS being 2, allow actual 1)
  * SDL_AUDIO_ALLOW_ANY_CHANGE           Allow all changes above
  */
 #define SDL_AUDIO_ALLOW_CHANGES SDL_AUDIO_ALLOW_ANY_CHANGE
@@ -94,12 +94,12 @@ void addMusic(Audio *root,
 
 /*
  * Wrapper function for playMusic, playSound, playMusicFromMemory,
- *playSoundFromMemory
+ *****playSoundFromMemory
  *
  * @param filename      Provide a filename to load WAV from, or NULL if using
- *FromMemory
+ *****FromMemory
  * @param audio         Provide an Audio object if copying from memory, or NULL
- *if using a filename
+ *****if using a filename
  * @param sound         1 if looping (music), 0 otherwise (sound)
  * @param volume        See playSound for explanation
  *
@@ -123,7 +123,7 @@ void addAudio(Audio *root,
  * Audio callback function for OpenAudioDevice
  *
  * @param userdata      Points to linked list of sounds to play, first being a
- *placeholder
+ *****placeholder
  * @param stream        Stream to mix sound into
  * @param len           Length of sound to play
  *
@@ -156,8 +156,8 @@ void initAudio(void)
 {
   Audio *global;
 
-  gDevice     = new PrivateAudioDevice(); // (PrivateAudioDevice*)calloc(1,
-                                          // sizeof(PrivateAudioDevice));
+  gDevice = new PrivateAudioDevice(); // (PrivateAudioDevice*)calloc(1,
+                                      // sizeof(PrivateAudioDevice));
   gSoundCount = 0;
 
   if (gDevice == NULL)

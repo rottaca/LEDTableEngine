@@ -54,11 +54,11 @@ struct Audio
  *
  * @param filename      Filename for the WAVE file to load
  * @param loop          0 ends after playing once (sound), 1 repeats and fades
- *when other music added (music)
+ *****when other music added (music)
  * @param volume        Volume, read playSound()
  *
  * @return returns a new Audio or NULL on failure, you must call freeAudio() on
- *return Audio
+ *****return Audio
  *
  */
 Audio* createAudio(const char *filename,
@@ -78,7 +78,7 @@ void freeAudio(Audio *audio);
  *
  * @param filename      Filename to open, use getAbsolutePath
  * @param volume        Volume 0 - 128. SDL_MIX_MAXVOLUME constant for max
- *volume
+ *****volume
  *
  */
 void playSound(const char *filename,
@@ -97,7 +97,7 @@ void playMusic(const char *filename,
 /*
  * Plays a sound from a createAudio object (clones), only 1 at a time plays
  * Advantage to this method is no more disk reads, only once, data is stored and
- *constantly reused
+ *****constantly reused
  *
  * @param audio         Audio object to clone and use
  * @param volume        Volume read playSound for moree
@@ -109,7 +109,7 @@ void playSoundFromMemory(Audio *audio,
 /*
  * Plays a music from a createAudio object (clones), only 1 at a time plays
  * Advantage to this method is no more disk reads, only once, data is stored and
- *constantly reused
+ *****constantly reused
  *
  * @param audio         Audio object to clone and use
  * @param volume        Volume read playSound for moree
@@ -121,7 +121,7 @@ void playMusicFromMemory(Audio *audio,
 /*
  * Free all audio related variables
  * Note, this needs to be run even if initAudio fails, because it frees the
- *global audio device
+ *****global audio device
  *
  */
 void endAudio(void);

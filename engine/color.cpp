@@ -25,6 +25,38 @@ Palette createPaletteColorFade(ColorRGB c1, ColorRGB c2,
   return p;
 }
 
+Palette createPaletteDistinctColors(bool fillTo256) {
+  // Source: https://sashat.me/2017/01/11/list-of-20-simple-distinct-colors/
+  Palette p = {
+    {   0,    0,    0 }, //  0 Black
+    { 255,  255,  255 }, //  1 White
+    { 230,   25,   75 }, //  2 Red
+    {  60,  180,   75 }, //  3 Green
+    { 255,  225,   25 }, //  4 Yellow
+    {   0,  130,  200 }, //  5 Blue
+    { 245,  130,   48 }, //  6 Orange
+    { 145,   30,  180 }, //  7 Purple
+    {  70,  240,  240 }, //  8 Cyan
+    { 240,   50,  230 }, //  9 Magenta
+    { 210,  245,   60 }, // 10 Lime
+    { 250,  190,  190 }, // 11 Pink
+    {   0,  128,  128 }, // 12 Teal
+    { 230,  190,  255 }, // 13 Lavender
+    { 170,  110,   40 }, // 14 Brown
+    { 255,  250,  200 }, // 15 Beige
+    { 128,    0,    0 }, // 16 Maroon
+    { 170,  255,  195 }, // 17 Mint
+    { 128,  128,    0 }, // 18 Olive
+    { 255,  215,  180 }, // 19 Coral
+    {   0,    0,  128 }, // 20 Navy
+    { 128,  128,  128 }  // 21 Grey
+  };
+
+  if (fillTo256) fillPalette(p);
+
+  return p;
+}
+
 Palette createPaletteHSV(float hStart, float hStop, float S, float V, int steps, bool fillTo256) {
   Palette p;
   float   hRange = hStop - hStart;
@@ -36,15 +68,14 @@ Palette createPaletteHSV(float hStart, float hStop, float S, float V, int steps,
     p.push_back({ 255 * r, 255 * g, 255 * b });
   }
 
-  if (fillTo256) {
-    fillPalette(p);
-  }
+  if (fillTo256) fillPalette(p);
+
   return p;
 }
 
 void hsv2rgb(float h, float s, float v, float& r, float& g, float& b) {
   double hh, p, q, t, ff;
-  long i;
+  long   i;
 
   if (s <= 0.0) { // < is bogus, just shuts up warnings
     r = v;

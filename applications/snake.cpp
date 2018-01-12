@@ -13,12 +13,12 @@ void Snake::initialize(BaseController *ctrl) {
   BaseApplication::initialize(ctrl);
   m_colorPalette = {
     {   0,   0,   0 }, // Background
-    {   0,   0, 255 }, // Food
+    {  210, 245, 60 }, // Food
     { 255,   0,   0 }, // Death
     { 255, 255, 255 }, // Text
-    {   0, 255,   0 }, // Snake 1
-    {   0, 255, 255 }, // Snake 2
-    { 255, 255,   0 }, // Snake 3
+    { 70, 240, 240 }, // Snake 1
+    { 230, 25, 75  }, // Snake 2
+    { 255, 250, 200 }, // Snake 3
     { 255,   0, 255 }, // Snake 4
   };
 
@@ -32,7 +32,8 @@ void Snake::initialize(BaseController *ctrl) {
 
   for (size_t i = 0; i < m_ctrl->getPlayerCount(); i++) {
     SnakeData s;
-    s.moveDir = Pointi(0, 1);
+    s.currMoveDir = Pointi(0, 1);
+    s.nextMoveDir = Pointi(0, 1);
     s.snake.push_front(Pointi(3 + m_posDist(m_generator) % (ctrl->getWidth() - 6),
                               3 + m_posDist(m_generator) % (ctrl->getHeight() - 6)));
     m_snakes.push_back(s);
@@ -57,10 +58,10 @@ void Snake::processInput(const BaseInput::InputEvents& events,
     m_hasFinished = true;
     return;
   }
-  std::vector<Pointi> newDirs;
 
+  std::vector<Pointi> newDirs;
   for (SnakeData& s : m_snakes) {
-    newDirs.push_back(s.moveDir);
+    newDirs.push_back(s.currMoveDir);
   }
 
   for (const auto& e : events) {
@@ -93,11 +94,12 @@ void Snake::processInput(const BaseInput::InputEvents& events,
       return;
     }
 
-    if ((newDirs[e.playerId].x != -m_snakes[e.playerId].moveDir.x) ||
-        (newDirs[e.playerId].y != -m_snakes[e.playerId].moveDir.y)) {
-      m_snakes[e.playerId].moveDir = newDirs[e.playerId];
+    if ((newDirs[e.playerId].x != -m_snakes[e.playerId].currMoveDir.x) ||
+        (newDirs[e.playerId].y != -m_snakes[e.playerId].currMoveDir.y)) {
+        m_snakes[e.playerId].nextMoveDir = newDirs[e.playerId];
     }
   }
+
   size_t snakeScoreSum = 0;
 
   for (SnakeData& s : m_snakes) {
@@ -114,8 +116,9 @@ void Snake::processInput(const BaseInput::InputEvents& events,
 
   for (size_t i = 0; i < m_snakes.size(); i++) {
     SnakeData& s = m_snakes[i];
-    Pointi     newPos(s.snake.front().x + s.moveDir.x,
-                      s.snake.front().y + s.moveDir.y);
+    s.currMoveDir = s.nextMoveDir;
+    Pointi     newPos(s.snake.front().x + s.currMoveDir.x,
+                      s.snake.front().y + s.currMoveDir.y);
 
     bool collision = false;
 

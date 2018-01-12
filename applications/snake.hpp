@@ -12,7 +12,7 @@ protected:
   typedef std::list<led::Pointi>SnakeList;
   struct SnakeData {
     SnakeList   snake;
-    led::Pointi moveDir;
+    led::Pointi currMoveDir, nextMoveDir;
   };
   std::vector<SnakeData>   m_snakes;
   std::vector<led::Pointi> m_foodPos;

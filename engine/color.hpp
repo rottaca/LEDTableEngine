@@ -13,6 +13,9 @@ Palette createPaletteColorFade(ColorRGB c1,
                                ColorRGB c2,
                                int      steps,
                                bool     fillTo256 = true);
+
+Palette createPaletteDistinctColors(bool fillTo256 = true);
+
 Palette createPaletteHSV(float hStart,
                          float hStop,
                          float S,
