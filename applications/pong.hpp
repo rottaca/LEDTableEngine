@@ -11,7 +11,7 @@ protected:
 
   led::Pointf m_ballSpeed;
   led::Pointf m_ballPos;
-  int    m_playerHeight;
+  int m_playerHeight;
   std::array<int, 2>  m_playerPos;
   std::array<int, 2>  m_playerScore;
   std::array<bool, 2> m_playerWonRound;

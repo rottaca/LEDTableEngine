@@ -9,16 +9,17 @@ protected:
 
   std::default_random_engine m_generator;
   std::uniform_int_distribution<int> m_posDist;
-  typedef std::list<led::Pointi> SnakeList;
-  struct SnakeData{
-    SnakeList snake;
-    led::Pointi   moveDir;
+  typedef std::list<led::Pointi>SnakeList;
+  struct SnakeData {
+    SnakeList   snake;
+    led::Pointi moveDir;
   };
-  std::vector<SnakeData> m_snakes;
-  std::vector<led::Pointi>   m_foodPos;
+  std::vector<SnakeData>   m_snakes;
+  std::vector<led::Pointi> m_foodPos;
   led::TimeUnit m_lastUpdateTime;
 
-  led::Audio* m_soundCoin;
+  led::Audio *m_soundCoin;
+
 public:
 
   Snake();

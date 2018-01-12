@@ -2,7 +2,6 @@
 #include "baseController.hpp"
 
 namespace led {
-
 const char *BaseInput::inputEventState2Str[] =
 { "KEY_PRESSED", "KEY_RELEASED", "KEY_HOLD", "KEY_NONE" };
 const char *BaseInput::inputEventName2Str[] =
@@ -19,9 +18,8 @@ void BaseInput::setController(BaseController *ctrl) {
 bool BaseInput::initialize() {
   return true;
 }
-void BaseInput::deinitialize() {
 
-}
+void BaseInput::deinitialize() {}
 
 bool BaseInput::isReleased(const InputEvents& events, InputEventName name) {
   for (auto e : events) {

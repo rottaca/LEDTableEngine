@@ -4,11 +4,10 @@
 #include "types.hpp"
 
 namespace led {
+typedef std::array<uint8_t, 3>ColorRGB;
+typedef std::vector<ColorRGB> Palette;
 
-typedef std::array<uint8_t, 3> ColorRGB;
-typedef std::vector<ColorRGB>  Palette;
-
-void fillPalette(Palette &palette);
+void    fillPalette(Palette& palette);
 
 Palette createPaletteColorFade(ColorRGB c1,
                                ColorRGB c2,
@@ -26,7 +25,5 @@ void hsv2rgb(float  h,
              float& r,
              float& g,
              float& b);
-
-
 }
 #endif // ifndef _H_COLOR_

@@ -20,7 +20,7 @@ protected:
   size_t m_size;
   bool   m_debug, m_isRunning;
   BufferColorMode m_bufferMode;
-  float m_brightness;
+  float  m_brightness;
   size_t m_playerCnt;
 
 private:

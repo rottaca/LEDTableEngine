@@ -11,7 +11,7 @@ protected:
   struct FractalDef {
     led::Pointf center;
     led::Pointf dim;
-    float  zoomMin, zoomMax;
+    float       zoomMin, zoomMax;
     FractalDef() {}
 
     FractalDef(float cx,
@@ -47,7 +47,7 @@ public:
 
 private:
 
-  void draw_Mandelbrot(led::Image      & frame, // where to draw the image
+  void draw_Mandelbrot(led::Image & frame, // where to draw the image
                        double       cxmin,
                        double       cxmax,
                        double       cymin,

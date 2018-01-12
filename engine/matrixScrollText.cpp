@@ -1,7 +1,6 @@
 #include "matrixScrollText.hpp"
 
-namespace led{
-
+namespace led {
 MatrixScrollText::MatrixScrollText() {}
 
 MatrixScrollText::~MatrixScrollText() {}

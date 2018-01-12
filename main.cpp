@@ -6,8 +6,8 @@
 
 #include "inputHandlers/keyboardInput.hpp"
 #ifdef HAVE_I2C_H_
-  #include "inputHandlers/gameControllerInput.hpp"
-#endif
+  # include "inputHandlers/gameControllerInput.hpp"
+#endif // ifdef HAVE_I2C_H_
 
 #include "applications/update.hpp"
 #include "applications/testPatterns.hpp"
@@ -56,16 +56,18 @@ public:
       menuEntry.name = stream.str();
       break;
     }
+
     // Player Count
     case 1: {
       size_t p = m_ctrl->getPlayerCount();
-      p = (p+1) % (led::kMaxPlayerCount+1);
+      p = (p + 1) % (led::kMaxPlayerCount + 1);
       m_ctrl->setPlayerCount(p);
       std::stringstream stream;
       stream << "Players: ";
-      if(p == 0){
+
+      if (p == 0) {
         stream << "all";
-      }else{
+      } else {
         stream << p;
       }
       menuEntry.name = stream.str();
@@ -88,7 +90,7 @@ int main(int argc, char **argv)
   size_t controllerIdx    = 0;
   size_t inputIdx         = 0;
   std::string keyboardDev = "/dev/input/by-path/platform-i8042-serio-0-event-kbd";
-  std::string i2cDev = "/dev/i2c-1";
+  std::string i2cDev      = "/dev/i2c-1";
 
   int opt;
 
@@ -121,7 +123,7 @@ int main(int argc, char **argv)
       else if (strcmp(optarg, "i2c") == 0) {
         inputIdx = 1;
       }
-#endif
+#endif // ifdef HAVE_I2C_H_
       else {
         std::cerr << "Unknwon argument for controller option: " << optarg <<
         std::endl;
@@ -154,7 +156,7 @@ int main(int argc, char **argv)
 
 #ifdef HAVE_I2C_H_
   inputs.push_back(std::make_shared<GameControllerInput>(i2cDev));
-#endif
+#endif // ifdef HAVE_I2C_H_
 
   auto c = controllers[controllerIdx];
 

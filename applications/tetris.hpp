@@ -7,20 +7,22 @@
 
 class Tetris : public led::BaseApplication {
 public:
+
   typedef std::vector<led::Pointi>Shape;
-  typedef std::vector<Shape> ShapeDef;
+  typedef std::vector<Shape>      ShapeDef;
 
 protected:
-  led::Audio* m_soundClick;
-  led::Audio* m_soundCoin;
+
+  led::Audio *m_soundClick;
+  led::Audio *m_soundCoin;
 
   struct ShapeState {
-    led::Pointi   pos;
-    led::Pointi   size;
-    bool     isAlive;
-    ShapeDef shape;
-    size_t   rotIdx;
-    uint8_t  colorIdx;
+    led::Pointi pos;
+    led::Pointi size;
+    bool        isAlive;
+    ShapeDef    shape;
+    size_t      rotIdx;
+    uint8_t     colorIdx;
     ShapeState() {
       isAlive  = false;
       colorIdx = 0;
@@ -65,7 +67,7 @@ protected:
   led::Image m_gameField;
   std::default_random_engine m_generator;
   std::uniform_int_distribution<int> m_posDist;
-  size_t   m_score;
+  size_t m_score;
   led::TimeUnit m_lastUpdateTimeFall;
   led::TimeUnit m_lastUpdateTimeMove;
 
@@ -80,7 +82,9 @@ public:
   void processInput(const led::BaseInput::InputEvents& events,
                     led::TimeUnit                      deltaTime);
   void draw(led::Image& frame);
+
 private:
+
   void newShape();
 };
 

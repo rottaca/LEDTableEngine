@@ -2,8 +2,7 @@
 #include <algorithm>
 #include <iostream>
 
-namespace led{
-
+namespace led {
 bool operator<(const BaseInput::InputEvent& a,  const BaseInput::InputEvent& b)
 {
   return a.name < b.name;
@@ -31,8 +30,8 @@ void KeyboardDebouncer::processInput(const BaseInput::InputEvents& events) {
     auto lower = std::lower_bound(m_events.begin(), m_events.end(), e);
 
     if ((lower != m_events.end()) &&
-        lower->name == e.name &&
-        lower->playerId == e.playerId) {
+        (lower->name == e.name) &&
+        (lower->playerId == e.playerId)) {
       lower->state = BaseInput::InputEventState::KEY_HOLD;
       updatedEvents.push_back(*lower);
     } else {

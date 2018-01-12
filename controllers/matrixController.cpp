@@ -21,7 +21,7 @@ bool MatrixController::initialize(size_t width, size_t height,
 
 void MatrixController::copyImageToBuffer(const led::Image& frame) {
   const led::Palette& palette = getCurrentPalette();
-  uint8_t *pixels        = m_frameDataPacket.dataPtr;
+  uint8_t *pixels             = m_frameDataPacket.dataPtr;
   uint8_t *p;
   size_t   idx = 0;
   led::ColorRGB c;

@@ -19,7 +19,6 @@ public:
 
   virtual const BaseInput::InputEvents& getDebouncedEvents();
 };
-
 }
 
 #endif // ifndef _H_KEYBOARD_DEBOUNCER

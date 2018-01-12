@@ -9,19 +9,20 @@
 #include "../engine/baseInput.hpp"
 #include "keyboard.hpp"
 
-class KeyboardInput :public led::BaseInput{
-
+class KeyboardInput : public led::BaseInput {
 public:
-  KeyboardInput (std::string keyboardDev);
-  virtual ~KeyboardInput ();
 
-  bool initialize();
+  KeyboardInput(std::string keyboardDev);
+  virtual ~KeyboardInput();
+
+  bool                        initialize();
   led::BaseInput::InputEvents getInputEvents();
 
 private:
-  cKeyboard m_keyboard;
+
+  cKeyboard   m_keyboard;
   std::string m_keyboardDevName;
 };
 
 
-#endif
+#endif // ifndef _H_KEYBOARD_INPUT_

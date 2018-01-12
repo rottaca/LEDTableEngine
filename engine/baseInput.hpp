@@ -17,17 +17,18 @@ public:
   struct InputEvent {
     InputEventState state;
     InputEventName  name;
-    int playerId;
-    InputEvent(){
-      state = InputEventState::KEY_NONE;
-      name = InputEventName::UP;
+    int             playerId;
+    InputEvent() {
+      state    = InputEventState::KEY_NONE;
+      name     = InputEventName::UP;
       playerId = 0;
     }
+
     InputEvent(InputEventState state,
                InputEventName  name,
-               int playerId) {
-      this->name  = name;
-      this->state = state;
+               int             playerId) {
+      this->name     = name;
+      this->state    = state;
       this->playerId = playerId;
     }
   };

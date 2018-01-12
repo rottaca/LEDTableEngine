@@ -29,38 +29,41 @@
 #include <SDL2/SDL.h>
 
 namespace led {
-
 /*
  * Queue structure for all loaded sounds
  *
  */
 struct Audio
 {
-    uint32_t length;
-    uint32_t lengthTrue;
-    uint8_t * bufferTrue;
-    uint8_t * buffer;
-    uint8_t loop;
-    uint8_t fade;
-    uint8_t free;
-    uint8_t volume;
+  uint32_t length;
+  uint32_t lengthTrue;
+  uint8_t *bufferTrue;
+  uint8_t *buffer;
+  uint8_t  loop;
+  uint8_t  fade;
+  uint8_t  free;
+  uint8_t  volume;
 
-    SDL_AudioSpec audio;
+  SDL_AudioSpec audio;
 
-    Audio * next;
+  Audio *next;
 };
 
 /*
  * Create a Audio object
  *
  * @param filename      Filename for the WAVE file to load
- * @param loop          0 ends after playing once (sound), 1 repeats and fades when other music added (music)
+ * @param loop          0 ends after playing once (sound), 1 repeats and fades
+ *when other music added (music)
  * @param volume        Volume, read playSound()
  *
- * @return returns a new Audio or NULL on failure, you must call freeAudio() on return Audio
+ * @return returns a new Audio or NULL on failure, you must call freeAudio() on
+ *return Audio
  *
  */
-Audio * createAudio(const char * filename, int loop, int volume);
+Audio* createAudio(const char *filename,
+                   int         loop,
+                   int         volume);
 
 /*
  * Frees as many chained Audios as given
@@ -68,16 +71,18 @@ Audio * createAudio(const char * filename, int loop, int volume);
  * @param audio     Chain of sounds to free
  *
  */
-void freeAudio(Audio * audio);
+void freeAudio(Audio *audio);
 
 /*
  * Play a wave file currently must be S16LE format 2 channel stereo
  *
  * @param filename      Filename to open, use getAbsolutePath
- * @param volume        Volume 0 - 128. SDL_MIX_MAXVOLUME constant for max volume
+ * @param volume        Volume 0 - 128. SDL_MIX_MAXVOLUME constant for max
+ *volume
  *
  */
-void playSound(const char * filename, int volume);
+void playSound(const char *filename,
+               int         volume);
 
 /*
  * Plays a new music, only 1 at a time plays
@@ -86,31 +91,37 @@ void playSound(const char * filename, int volume);
  * @param volume        Volume read playSound for moree
  *
  */
-void playMusic(const char * filename, int volume);
+void playMusic(const char *filename,
+               int         volume);
 
 /*
  * Plays a sound from a createAudio object (clones), only 1 at a time plays
- * Advantage to this method is no more disk reads, only once, data is stored and constantly reused
+ * Advantage to this method is no more disk reads, only once, data is stored and
+ *constantly reused
  *
  * @param audio         Audio object to clone and use
  * @param volume        Volume read playSound for moree
  *
  */
-void playSoundFromMemory(Audio * audio, int volume);
+void playSoundFromMemory(Audio *audio,
+                         int    volume);
 
 /*
  * Plays a music from a createAudio object (clones), only 1 at a time plays
- * Advantage to this method is no more disk reads, only once, data is stored and constantly reused
+ * Advantage to this method is no more disk reads, only once, data is stored and
+ *constantly reused
  *
  * @param audio         Audio object to clone and use
  * @param volume        Volume read playSound for moree
  *
  */
-void playMusicFromMemory(Audio * audio, int volume);
+void playMusicFromMemory(Audio *audio,
+                         int    volume);
 
 /*
  * Free all audio related variables
- * Note, this needs to be run even if initAudio fails, because it frees the global audio device
+ * Note, this needs to be run even if initAudio fails, because it frees the
+ *global audio device
  *
  */
 void endAudio(void);
@@ -132,6 +143,5 @@ void pauseAudio(void);
  *
  */
 void unpauseAudio(void);
-
 }
-#endif
+#endif // ifndef SIMPLE_AUDIO_

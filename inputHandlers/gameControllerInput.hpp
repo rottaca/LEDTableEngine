@@ -8,26 +8,27 @@
 #include <linux/i2c-dev.h>
 
 #include "../engine/baseInput.hpp"
-class GameControllerInput :public led::BaseInput{
+class GameControllerInput : public led::BaseInput {
 private:
+
   int m_deviceHandle;
   std::vector<int> m_controllerId;
   std::string m_i2cDevName;
 
 public:
-  GameControllerInput (std::string i2cDev);
-  virtual ~GameControllerInput ();
 
-  bool initialize();
+  GameControllerInput(std::string i2cDev);
+  virtual ~GameControllerInput();
+
+  bool                        initialize();
   led::BaseInput::InputEvents getInputEvents();
 
 private:
+
   void detectConnectedControllers();
   bool connectToDevice(std::string device);
   void disconnect();
-
-
 };
 
 
-#endif
+#endif // ifndef _H_GAMECTRL_INPUT_

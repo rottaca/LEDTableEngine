@@ -32,23 +32,23 @@ public:
 private:
 
   void waterShader(led::TimeUnit tm,
-                   size_t   x,
-                   size_t   y,
-                   uint8_t& r,
-                   uint8_t& g,
-                   uint8_t& b);
+                   size_t        x,
+                   size_t        y,
+                   uint8_t     & r,
+                   uint8_t     & g,
+                   uint8_t     & b);
   void chessboardShader(led::TimeUnit tm,
-                        size_t   x,
-                        size_t   y,
-                        uint8_t& r,
-                        uint8_t& g,
-                        uint8_t& b);
+                        size_t        x,
+                        size_t        y,
+                        uint8_t     & r,
+                        uint8_t     & g,
+                        uint8_t     & b);
   void wavingColors(led::TimeUnit tm,
-                    size_t   x,
-                    size_t   y,
-                    uint8_t& r,
-                    uint8_t& g,
-                    uint8_t& b);
+                    size_t        x,
+                    size_t        y,
+                    uint8_t     & r,
+                    uint8_t     & g,
+                    uint8_t     & b);
 };
 
 

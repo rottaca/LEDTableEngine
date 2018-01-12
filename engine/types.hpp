@@ -20,7 +20,7 @@
 namespace led {
 const size_t kMaxPlayerCount = 2;
 
-typedef int64_t               TimeUnit;
+typedef int64_t TimeUnit;
 
 enum BufferColorMode { RGB, PALETTE };
 

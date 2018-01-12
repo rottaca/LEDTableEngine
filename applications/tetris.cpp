@@ -6,46 +6,46 @@
 using namespace led;
 
 const std::vector<Tetris::ShapeDef> shapes = {
-  {
-    // Box
-    { Pointi(0, 0), Pointi(1, 0), Pointi(0, 1), Pointi(1, 1) }
-  },
-  {
-    // L
-    { Pointi(0, 0), Pointi(0, 1), Pointi(0, 2), Pointi(1, 2) },
-    { Pointi(0, 1), Pointi(1, 1), Pointi(2, 1), Pointi(2, 0) },
-    { Pointi(0, 0), Pointi(1, 0), Pointi(1, 1), Pointi(1, 2) },
-    { Pointi(0, 1), Pointi(0, 2), Pointi(1, 1), Pointi(2, 1) }
-  },
-  {
-    // L (mirrored)
-    { Pointi(1, 0), Pointi(1, 1), Pointi(0, 2), Pointi(1, 2) },
-    { Pointi(0, 1), Pointi(1, 1), Pointi(2, 1), Pointi(2, 2) },
-    { Pointi(0, 0), Pointi(0, 1), Pointi(0, 2), Pointi(1, 0) },
-    { Pointi(0, 0), Pointi(0, 1), Pointi(1, 1), Pointi(2, 1) }
-  },
-  {
-    // z
-    { Pointi(0, 0), Pointi(1, 0), Pointi(1, 1), Pointi(2, 1) },
-    { Pointi(1, 0), Pointi(1, 1), Pointi(0, 1), Pointi(0, 2) },
-  },
-  {
-    // z (mirrored)
-    { Pointi(0, 1), Pointi(1, 0), Pointi(1, 1), Pointi(2, 0) },
-    { Pointi(0, 0), Pointi(1, 1), Pointi(0, 1), Pointi(1, 2) },
-  },
-  {
-    // _|_
-    { Pointi(1, 0), Pointi(0, 1), Pointi(1, 1), Pointi(2, 1) },
-    { Pointi(1, 0), Pointi(0, 1), Pointi(1, 1), Pointi(1, 2) },
-    { Pointi(1, 1), Pointi(0, 0), Pointi(1, 0), Pointi(2, 0) },
-    { Pointi(0, 0), Pointi(0, 1), Pointi(0, 2), Pointi(1, 1) },
-  },
-  {
-    // |
-    { Pointi(0, 0), Pointi(1, 0), Pointi(2, 0), Pointi(3, 0) },
-    { Pointi(1, 0), Pointi(1, 1), Pointi(1, 2), Pointi(1, 3) }
-  }
+{
+  // Box
+  { Pointi(0, 0), Pointi(1, 0), Pointi(0, 1), Pointi(1, 1) }
+},
+{
+  // L
+  { Pointi(0, 0), Pointi(0, 1), Pointi(0, 2), Pointi(1, 2) },
+  { Pointi(0, 1), Pointi(1, 1), Pointi(2, 1), Pointi(2, 0) },
+  { Pointi(0, 0), Pointi(1, 0), Pointi(1, 1), Pointi(1, 2) },
+  { Pointi(0, 1), Pointi(0, 2), Pointi(1, 1), Pointi(2, 1) }
+},
+{
+  // L (mirrored)
+  { Pointi(1, 0), Pointi(1, 1), Pointi(0, 2), Pointi(1, 2) },
+  { Pointi(0, 1), Pointi(1, 1), Pointi(2, 1), Pointi(2, 2) },
+  { Pointi(0, 0), Pointi(0, 1), Pointi(0, 2), Pointi(1, 0) },
+  { Pointi(0, 0), Pointi(0, 1), Pointi(1, 1), Pointi(2, 1) }
+},
+{
+  // z
+  { Pointi(0, 0), Pointi(1, 0), Pointi(1, 1), Pointi(2, 1) },
+  { Pointi(1, 0), Pointi(1, 1), Pointi(0, 1), Pointi(0, 2) },
+},
+{
+  // z (mirrored)
+  { Pointi(0, 1), Pointi(1, 0), Pointi(1, 1), Pointi(2, 0) },
+  { Pointi(0, 0), Pointi(1, 1), Pointi(0, 1), Pointi(1, 2) },
+},
+{
+  // _|_
+  { Pointi(1, 0), Pointi(0, 1), Pointi(1, 1), Pointi(2, 1) },
+  { Pointi(1, 0), Pointi(0, 1), Pointi(1, 1), Pointi(1, 2) },
+  { Pointi(1, 1), Pointi(0, 0), Pointi(1, 0), Pointi(2, 0) },
+  { Pointi(0, 0), Pointi(0, 1), Pointi(0, 2), Pointi(1, 1) },
+},
+{
+  // |
+  { Pointi(0, 0), Pointi(1, 0), Pointi(2, 0), Pointi(3, 0) },
+  { Pointi(1, 0), Pointi(1, 1), Pointi(1, 2), Pointi(1, 3) }
+}
 };
 
 Tetris::Tetris() {}
@@ -72,16 +72,17 @@ void Tetris::initialize(BaseController *ctrl) {
   m_lastUpdateTimeMove = 0;
   m_generator          = std::default_random_engine(m_ctrl->getTimeMs());
   m_posDist            = std::uniform_int_distribution<int>(0, m_ctrl->getWidth());
-  m_soundClick = createAudio("res/audio/sound/click_x.wav",0,SDL_MIX_MAXVOLUME);
-  m_soundCoin = createAudio("res/audio/sound/coin_flip.wav",0,SDL_MIX_MAXVOLUME);
-  playMusic("res/audio/music/Tetris.wav",SDL_MIX_MAXVOLUME);
+  m_soundClick         = createAudio("res/audio/sound/click_x.wav", 0, SDL_MIX_MAXVOLUME);
+  m_soundCoin          = createAudio("res/audio/sound/coin_flip.wav", 0, SDL_MIX_MAXVOLUME);
+  playMusic("res/audio/music/Tetris.wav", SDL_MIX_MAXVOLUME);
   newShape();
 }
 
-void Tetris::deinitialize(){
+void Tetris::deinitialize() {
   freeAudio(m_soundClick);
   freeAudio(m_soundCoin);
 }
+
 void Tetris::processInput(const BaseInput::InputEvents& events,
                           TimeUnit                      deltaTime) {
   bool fastDown = false;
@@ -255,10 +256,11 @@ void Tetris::draw(Image& frame) {
   }
 }
 
-void Tetris::newShape(){
+void Tetris::newShape() {
   int shapeIdx = m_posDist(m_generator) % shapes.size();
   int posX     = 3 + m_posDist(m_generator) % (m_ctrl->getWidth() - 6);
   int colIdx   = 1 + m_posDist(m_generator) % 6;
+
   m_fallingShape.update(shapes[shapeIdx], colIdx);
   m_fallingShape.translate(posX, -3);
 }

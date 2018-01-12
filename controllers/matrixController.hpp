@@ -10,10 +10,10 @@ public:
   MatrixController();
   ~MatrixController();
 
-  bool initialize(size_t                    width,
-                  size_t                    height,
+  bool initialize(size_t                         width,
+                  size_t                         height,
                   std::shared_ptr<led::BaseInput>input,
-                  bool                      debug = false);
+                  bool                           debug = false);
 
 private:
 

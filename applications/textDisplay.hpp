@@ -5,9 +5,9 @@
 #include "../engine/font.hpp"
 #include "../engine/matrixScrollText.hpp"
 
-namespace led{
-  class MenuEntryHandler;
-  class BaseController;
+namespace led {
+class MenuEntryHandler;
+class BaseController;
 }
 
 class TextDisplay : public led::BaseApplication {
