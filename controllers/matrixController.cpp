@@ -6,7 +6,7 @@ MatrixController::MatrixController() {}
 MatrixController::~MatrixController() {}
 
 bool MatrixController::initialize(size_t width, size_t height,
-                                  std::shared_ptr<BaseInput>input, bool debug) {
+                                  std::shared_ptr<led::BaseInput>input, bool debug) {
   if (!BaseController::initialize(width, height, input, debug)) return false;
 
   m_tpm2 = std::make_shared<TPM2>();
@@ -19,12 +19,12 @@ bool MatrixController::initialize(size_t width, size_t height,
   return true;
 }
 
-void MatrixController::copyImageToBuffer(const Image& frame) {
-  const Palette& palette = getCurrentPalette();
+void MatrixController::copyImageToBuffer(const led::Image& frame) {
+  const led::Palette& palette = getCurrentPalette();
   uint8_t *pixels        = m_frameDataPacket.dataPtr;
   uint8_t *p;
   size_t   idx = 0;
-  ColorRGB c;
+  led::ColorRGB c;
 
   for (size_t y = 0; y < m_height; y++) {
     p = pixels + 3 * y;
@@ -34,7 +34,7 @@ void MatrixController::copyImageToBuffer(const Image& frame) {
       else p = pixels + 3 * (m_height - 1 - y + x * m_height);
 
       // Palette mode
-      if (m_bufferMode == BufferColorMode::PALETTE) {
+      if (m_bufferMode == led::BufferColorMode::PALETTE) {
         int p = frame.data[idx++];
         c = palette[p];
       }
@@ -52,7 +52,7 @@ void MatrixController::copyImageToBuffer(const Image& frame) {
   }
 }
 
-void MatrixController::showFrame(const Image& frame) {
+void MatrixController::showFrame(const led::Image& frame) {
   copyImageToBuffer(frame);
   m_tpm2->sendPacket(m_frameDataPacket);
 }

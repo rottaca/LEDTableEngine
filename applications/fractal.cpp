@@ -1,6 +1,6 @@
 #include "fractal.hpp"
 #include "../engine/baseController.hpp"
-
+using namespace led;
 FractalApp::FractalApp() {}
 
 FractalApp::~FractalApp() {}

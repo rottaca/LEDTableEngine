@@ -1,23 +1,15 @@
 #ifndef _H_GAME_OF_LIFE_APP_
 #define _H_GAME_OF_LIFE_APP_
 
-#include <cstdlib>
-#include <memory>
-#include <vector>
-#include <random>
-#include <array>
-#include <cstdlib>
-#include <complex>
-
 #include "../engine/baseApplication.hpp"
 
-class GameOfLife : public BaseApplication {
+class GameOfLife : public led::BaseApplication {
 protected:
 
-  std::array<Image, 2> m_gameField;
+  std::array<led::Image, 2> m_gameField;
   size_t   m_currentFieldIdx;
-  TimeUnit m_lastUpdateTime;
-  TimeUnit m_lastChangeTime;
+  led::TimeUnit m_lastUpdateTime;
+  led::TimeUnit m_lastChangeTime;
   std::default_random_engine m_generator;
   std::uniform_int_distribution<int> m_dist;
 
@@ -48,17 +40,17 @@ public:
   GameOfLife();
   virtual ~GameOfLife();
 
-  void initialize(BaseController *ctrl);
+  void initialize(led::BaseController *ctrl);
 
-  void processInput(const BaseInput::InputEvents& events,
-                    TimeUnit                      deltaTime);
-  void draw(Image& frame);
+  void processInput(const led::BaseInput::InputEvents& events,
+                    led::TimeUnit                      deltaTime);
+  void draw(led::Image& frame);
   void continueApp();
 
 private:
 
-  uint8_t checkNeighbours(Image& gameField,
-                          Pointi p);
+  uint8_t checkNeighbours(led::Image& gameField,
+                          led::Pointi p);
   void    randomInitField();
 };
 

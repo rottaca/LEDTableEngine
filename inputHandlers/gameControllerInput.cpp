@@ -30,8 +30,8 @@ bool GameControllerInput::initialize() {
   return m_controllerId.size() > 0;
 }
 
-BaseInput::InputEvents GameControllerInput::getInputEvents() {
-  BaseInput::InputEvents ie;
+led::BaseInput::InputEvents GameControllerInput::getInputEvents() {
+  led::BaseInput::InputEvents ie;
 
   for(int pId = 0; pId < m_controllerId.size(); pId++){
     //std::cout << "Read from dev " << m_controllerId[pId] << std::endl;

@@ -10,7 +10,7 @@ DesktopController::~DesktopController(){
 }
 
 bool DesktopController::initialize(size_t width, size_t height,
-                          std::shared_ptr<BaseInput> input, bool debug){
+                          std::shared_ptr<led::BaseInput> input, bool debug){
    if(!BaseController::initialize(width, height, input, debug))
      return false;
 
@@ -63,22 +63,22 @@ bool DesktopController::initialize(size_t width, size_t height,
    return true;
 
 }
-void DesktopController::copyImageToBuffer(const Image&frame){
+void DesktopController::copyImageToBuffer(const led::Image& frame){
    SDL_LockSurface(m_imageSurf);
 
    int rowstride = m_imageSurf->pitch;
    unsigned char* pixels = (unsigned char*)m_imageSurf->pixels;
-   const Palette& palette = getCurrentPalette();
+   const led::Palette& palette = getCurrentPalette();
 
 	size_t idx = 0;
-	ColorRGB c;
+	led::ColorRGB c;
 
     for (size_t y = 0; y < m_height; y++) {
 	   unsigned char* p = pixels + y*rowstride;
 	   for (size_t x = 0; x < m_width; x++) {
 
 	     // Palette mode
-	     if(m_bufferMode == BufferColorMode::PALETTE){
+	     if(m_bufferMode == led::BufferColorMode::PALETTE){
 		   int p = frame.data[idx++];
 		   c = palette[p];
 		 }
@@ -98,7 +98,7 @@ void DesktopController::copyImageToBuffer(const Image&frame){
    SDL_UnlockSurface(m_imageSurf);
 }
 
-void DesktopController::showFrame(const Image&frame){
+void DesktopController::showFrame(const led::Image& frame){
   // Wir holen uns so lange neue Ereignisse, bis es keine mehr gibt.
   SDL_Event event;
   while(SDL_PollEvent(&event))

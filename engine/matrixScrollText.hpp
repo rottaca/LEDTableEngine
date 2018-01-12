@@ -4,6 +4,7 @@
 #include "types.hpp"
 #include "font.hpp"
 
+namespace led {
 class MatrixScrollText {
 private:
 
@@ -38,5 +39,5 @@ public:
   void setColorPalette(uint8_t c);
   void resetScrollState();
 };
-
+}
 #endif // ifndef _H_MATRIX_SCROLL_TEXT

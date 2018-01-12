@@ -1,25 +1,21 @@
 #ifndef _H_TEXT_DISPLAY_APP
 #define _H_TEXT_DISPLAY_APP
 
-#include <cstdlib>
-#include <memory>
-#include <vector>
-#include <random>
-#include <array>
-
 #include "../engine/baseApplication.hpp"
 #include "../engine/font.hpp"
 #include "../engine/matrixScrollText.hpp"
 
-class MenuEntryHandler;
-class BaseController;
+namespace led{
+  class MenuEntryHandler;
+  class BaseController;
+}
 
-class TextDisplay : public BaseApplication {
+class TextDisplay : public led::BaseApplication {
 public:
 
 protected:
 
-  MatrixScrollText m_scrollText;
+  led::MatrixScrollText m_scrollText;
   std::string m_text;
 
 public:
@@ -27,11 +23,11 @@ public:
   TextDisplay();
   virtual ~TextDisplay();
 
-  void initialize(BaseController *ctrl);
+  void initialize(led::BaseController *ctrl);
 
-  void processInput(const BaseInput::InputEvents& events,
-                    TimeUnit                      deltaTime);
-  void draw(Image& frame);
+  void processInput(const led::BaseInput::InputEvents& events,
+                    led::TimeUnit                      deltaTime);
+  void draw(led::Image& frame);
   void setText(std::string text);
 };
 

@@ -3,7 +3,7 @@
 #include <dirent.h>
 
 #include "../engine/baseController.hpp"
-
+using namespace led;
 ImageSlideShowApp::ImageSlideShowApp() {
   DIR *dir;
   struct dirent *ent;

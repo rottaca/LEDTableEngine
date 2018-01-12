@@ -1,42 +1,35 @@
 #ifndef _H_SNAKE_APP_
 #define _H_SNAKE_APP_
 
-#include <cstdlib>
-#include <memory>
-#include <vector>
-#include <random>
-#include <array>
-#include <list>
-
 #include "../engine/baseApplication.hpp"
 #include "../engine/matrixScrollText.hpp"
 
-class Snake : public BaseApplication {
+class Snake : public led::BaseApplication {
 protected:
 
   std::default_random_engine m_generator;
   std::uniform_int_distribution<int> m_posDist;
-  typedef std::list<Pointi> SnakeList;
+  typedef std::list<led::Pointi> SnakeList;
   struct SnakeData{
     SnakeList snake;
-    Pointi   moveDir;
+    led::Pointi   moveDir;
   };
   std::vector<SnakeData> m_snakes;
-  std::vector<Pointi>   m_foodPos;
-  TimeUnit m_lastUpdateTime;
+  std::vector<led::Pointi>   m_foodPos;
+  led::TimeUnit m_lastUpdateTime;
 
-  Audio* m_soundCoin;
+  led::Audio* m_soundCoin;
 public:
 
   Snake();
   virtual ~Snake();
 
-  void initialize(BaseController *ctrl);
+  void initialize(led::BaseController *ctrl);
   void deinitialize();
 
-  void processInput(const BaseInput::InputEvents& events,
-                    TimeUnit                      deltaTime);
-  void draw(Image& frame);
+  void processInput(const led::BaseInput::InputEvents& events,
+                    led::TimeUnit                      deltaTime);
+  void draw(led::Image& frame);
 };
 
 

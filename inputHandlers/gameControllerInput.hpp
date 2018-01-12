@@ -8,7 +8,7 @@
 #include <linux/i2c-dev.h>
 
 #include "../engine/baseInput.hpp"
-class GameControllerInput :public BaseInput{
+class GameControllerInput :public led::BaseInput{
 private:
   int m_deviceHandle;
   std::vector<int> m_controllerId;
@@ -19,7 +19,7 @@ public:
   virtual ~GameControllerInput ();
 
   bool initialize();
-  BaseInput::InputEvents getInputEvents();
+  led::BaseInput::InputEvents getInputEvents();
 
 private:
   void detectConnectedControllers();

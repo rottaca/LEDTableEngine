@@ -9,14 +9,14 @@
 #include "../engine/baseInput.hpp"
 #include "keyboard.hpp"
 
-class KeyboardInput :public BaseInput{
+class KeyboardInput :public led::BaseInput{
 
 public:
   KeyboardInput (std::string keyboardDev);
   virtual ~KeyboardInput ();
 
   bool initialize();
-  BaseInput::InputEvents getInputEvents();
+  led::BaseInput::InputEvents getInputEvents();
 
 private:
   cKeyboard m_keyboard;

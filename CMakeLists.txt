@@ -9,8 +9,9 @@ SET(ENGINE_SRC
   engine/baseApplication.cpp
   engine/keyboardDebouncer.cpp
   engine/font.cpp
+  engine/color.cpp
   engine/matrixScrollText.cpp
-  engine/audio.c
+  engine/audio.cpp
  )
 
  SET(CTRL_SRC

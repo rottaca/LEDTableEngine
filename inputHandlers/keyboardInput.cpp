@@ -11,7 +11,7 @@ bool KeyboardInput::initialize() {
   return m_keyboard.start(m_keyboardDevName);
 }
 
-BaseInput::InputEvents KeyboardInput::getInputEvents() {
+led::BaseInput::InputEvents KeyboardInput::getInputEvents() {
   InputEvents ie;
   InputEvent e(BaseInput::InputEventState::KEY_PRESSED,
                           BaseInput::InputEventName::LEFT,0);

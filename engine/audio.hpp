@@ -18,7 +18,7 @@
  */
 
 /*
- * audio.h
+ * audio.hpp
  *
  * All audio related functions go here
  *
@@ -26,18 +26,15 @@
 #ifndef SIMPLE_AUDIO_
 #define SIMPLE_AUDIO_
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-
 #include <SDL2/SDL.h>
+
+namespace led {
 
 /*
  * Queue structure for all loaded sounds
  *
  */
-typedef struct sound
+struct Audio
 {
     uint32_t length;
     uint32_t lengthTrue;
@@ -50,8 +47,8 @@ typedef struct sound
 
     SDL_AudioSpec audio;
 
-    struct sound * next;
-} Audio;
+    Audio * next;
+};
 
 /*
  * Create a Audio object
@@ -63,7 +60,7 @@ typedef struct sound
  * @return returns a new Audio or NULL on failure, you must call freeAudio() on return Audio
  *
  */
-Audio * createAudio(const char * filename, uint8_t loop, int volume);
+Audio * createAudio(const char * filename, int loop, int volume);
 
 /*
  * Frees as many chained Audios as given
@@ -136,8 +133,5 @@ void pauseAudio(void);
  */
 void unpauseAudio(void);
 
-#ifdef __cplusplus
 }
-#endif
-
 #endif

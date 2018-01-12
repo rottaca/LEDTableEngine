@@ -1,17 +1,10 @@
 #ifndef _H_FlappyBird_APP_
 #define _H_FlappyBird_APP_
 
-#include <cstdlib>
-#include <memory>
-#include <vector>
-#include <random>
-#include <array>
-#include <list>
-
 #include "../engine/baseApplication.hpp"
 #include "../engine/matrixScrollText.hpp"
 
-class FlappyBird : public BaseApplication {
+class FlappyBird : public led::BaseApplication {
 protected:
 
   struct Wall {
@@ -28,18 +21,18 @@ protected:
   float  m_birdYSpeed;
   size_t m_score;
   std::list<Wall> m_walls;
-  TimeUnit m_lastUpdateTime;
+  led::TimeUnit m_lastUpdateTime;
 
 public:
 
   FlappyBird();
   virtual ~FlappyBird();
 
-  void initialize(BaseController *ctrl);
+  void initialize(led::BaseController *ctrl);
 
-  void processInput(const BaseInput::InputEvents& events,
-                    TimeUnit                      deltaTime);
-  void draw(Image& frame);
+  void processInput(const led::BaseInput::InputEvents& events,
+                    led::TimeUnit                      deltaTime);
+  void draw(led::Image& frame);
 };
 
 

@@ -6,12 +6,21 @@
 #include <iostream>
 #include <assert.h>
 #include <memory>
+#include <string>
+#include <cstring>
+#include <cstdlib>
+#include <stack>
+#include <vector>
+#include <thread>
+#include <random>
+#include <list>
 
+#include "color.hpp"
+
+namespace led {
 const size_t kMaxPlayerCount = 2;
 
 typedef int64_t               TimeUnit;
-typedef std::array<uint8_t, 3>ColorRGB;
-typedef std::vector<ColorRGB> Palette;
 
 enum BufferColorMode { RGB, PALETTE };
 
@@ -118,4 +127,5 @@ struct Image {
     release();
   }
 };
+}
 #endif // ifndef _H_TYPES_

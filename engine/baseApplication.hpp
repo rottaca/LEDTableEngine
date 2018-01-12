@@ -1,14 +1,11 @@
 #ifndef _H_BASE_APP_
 #define _H_BASE_APP_
 
-#include <cstdlib>
-#include <memory>
-#include <vector>
-
-#include "baseInput.hpp"
 #include "types.hpp"
-#include "audio.h"
+#include "audio.hpp"
+#include "baseInput.hpp"
 
+namespace led {
 class BaseController;
 
 class BaseApplication {
@@ -41,24 +38,7 @@ public:
 
 protected:
 
-  Palette createPaletteColorFade(ColorRGB c1,
-                                 ColorRGB c2,
-                                 int      steps,
-                                 bool     fillTo256 = true);
-  Palette createPaletteHSV(float hStart,
-                           float hStop,
-                           float S,
-                           float V,
-                           int   steps,
-                           bool  fillTo256 = true);
-
-  void hsv2rgb(float  h,
-               float  s,
-               float  v,
-               float& r,
-               float& g,
-               float& b);
 };
-
+}
 
 #endif // ifndef _H_BASE_APP_

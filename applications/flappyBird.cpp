@@ -2,7 +2,7 @@
 #include "../engine/baseController.hpp"
 #include <algorithm>
 #include "textDisplay.hpp"
-
+using namespace led;
 FlappyBird::FlappyBird() {}
 
 FlappyBird::~FlappyBird() {}
@@ -17,9 +17,7 @@ void FlappyBird::initialize(BaseController *ctrl) {
     { 255, 255,255 }                    // Text
   };
 
-  for (int i = m_colorPalette.size(); i <= 255; i++) {
-    m_colorPalette.push_back({ 0, 0, 0 });
-  }
+  fillPalette(m_colorPalette);
 
   m_birdY      = ctrl->getHeight() / 2.0;
   m_birdYSpeed = 0;

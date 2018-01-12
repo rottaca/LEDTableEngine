@@ -1,5 +1,7 @@
 #include "matrixScrollText.hpp"
 
+namespace led{
+
 MatrixScrollText::MatrixScrollText() {}
 
 MatrixScrollText::~MatrixScrollText() {}
@@ -63,4 +65,5 @@ void MatrixScrollText::draw(Image& img) {
                m_paddingX - (float)m_currScrollXPixels,
                img.height / 2.0 - m_currTextSize.y / 2.0,
                m_color);
+}
 }

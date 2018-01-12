@@ -1,12 +1,6 @@
 #ifndef _H_DESKTOP_CONTROLLER_
 #define _H_DESKTOP_CONTROLLER_
 
-#include <cstdlib>
-#include <memory>
-#include <stack>
-#include <vector>
-#include <chrono>
-
 // SDL-Header einbinden
 #ifdef WIN32
 # include <SDL.h>
@@ -16,7 +10,7 @@
 
 #include "../engine/baseController.hpp"
 
-class DesktopController : public BaseController {
+class DesktopController : public led::BaseController {
 public:
 
   DesktopController();
@@ -24,14 +18,14 @@ public:
 
   bool initialize(size_t                    width,
                   size_t                    height,
-                  std::shared_ptr<BaseInput>input,
+                  std::shared_ptr<led::BaseInput>input,
                   bool                      debug = false);
 
 private:
 
-  void showFrame(const Image& frame);
+  void showFrame(const led::Image& frame);
   void shutdown();
-  void copyImageToBuffer(const Image& frame);
+  void copyImageToBuffer(const led::Image& frame);
 
   int m_upscaleWidth, m_upscaleHeight;
   SDL_Window   *m_window;

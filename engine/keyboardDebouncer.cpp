@@ -2,6 +2,8 @@
 #include <algorithm>
 #include <iostream>
 
+namespace led{
+
 bool operator<(const BaseInput::InputEvent& a,  const BaseInput::InputEvent& b)
 {
   return a.name < b.name;
@@ -67,4 +69,5 @@ void KeyboardDebouncer::processInput(const BaseInput::InputEvents& events) {
 
 const BaseInput::InputEvents& KeyboardDebouncer::getDebouncedEvents() {
   return m_events;
+}
 }

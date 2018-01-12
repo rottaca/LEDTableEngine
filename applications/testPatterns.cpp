@@ -1,6 +1,8 @@
 #include "testPatterns.hpp"
 #include "../engine/baseController.hpp"
 
+using namespace led;
+
 TestPatternApp::TestPatternApp() {
   m_font.loadFromFile("res/font/myfont.fnt");
 }

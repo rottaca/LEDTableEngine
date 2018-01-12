@@ -1,17 +1,11 @@
 #ifndef _H_SHADERS_APP_
 #define _H_SHADERS_APP_
 
-#include <cstdlib>
-#include <memory>
-#include <vector>
-#include <random>
-#include <array>
-#include <cstdlib>
 #include <complex>
 
 #include "../engine/baseApplication.hpp"
 
-class ShaderApp : public BaseApplication {
+class ShaderApp : public led::BaseApplication {
 protected:
 
   enum ShaderType {
@@ -28,28 +22,28 @@ public:
   ShaderApp();
   virtual ~ShaderApp();
 
-  void initialize(BaseController *ctrl);
+  void initialize(led::BaseController *ctrl);
 
-  void processInput(const BaseInput::InputEvents& events,
-                    TimeUnit                      deltaTime);
-  void draw(Image& frame);
+  void processInput(const led::BaseInput::InputEvents& events,
+                    led::TimeUnit                      deltaTime);
+  void draw(led::Image& frame);
   void continueApp();
 
 private:
 
-  void waterShader(TimeUnit tm,
+  void waterShader(led::TimeUnit tm,
                    size_t   x,
                    size_t   y,
                    uint8_t& r,
                    uint8_t& g,
                    uint8_t& b);
-  void chessboardShader(TimeUnit tm,
+  void chessboardShader(led::TimeUnit tm,
                         size_t   x,
                         size_t   y,
                         uint8_t& r,
                         uint8_t& g,
                         uint8_t& b);
-  void wavingColors(TimeUnit tm,
+  void wavingColors(led::TimeUnit tm,
                     size_t   x,
                     size_t   y,
                     uint8_t& r,

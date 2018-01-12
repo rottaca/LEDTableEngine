@@ -2,7 +2,7 @@
 #include "../engine/baseController.hpp"
 #include <algorithm>
 #include <cstring>
-
+using namespace led;
 GameOfLife::GameOfLife() {}
 
 GameOfLife::~GameOfLife() {}

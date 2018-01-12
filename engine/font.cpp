@@ -13,6 +13,7 @@
 
 #include "font.hpp"
 
+namespace led {
 // Character to use when a character has not been found
 #define PLACEHOLDER_CHAR '?'
 
@@ -364,3 +365,4 @@ void Font::draw(Image             & img,
   }
 }
 } // namespace bmfont
+}

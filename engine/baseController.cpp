@@ -3,6 +3,8 @@
 #include <cstring>
 #include <assert.h>
 
+namespace led{
+
 #define FPS_INTERPOLATE (0.01)
 
 BaseController::BaseController(){
@@ -232,4 +234,5 @@ TimeUnit BaseController::getTimeMs(){
         auto now = std::chrono::high_resolution_clock::now();
         auto micros = std::chrono::duration_cast<std::chrono::microseconds>(now.time_since_epoch()).count();
         return (micros-m_refTimeStartUs)/1000.0;
+}
 }

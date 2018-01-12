@@ -1,7 +1,7 @@
 #include "pong.hpp"
 #include "../engine/baseController.hpp"
 #include <algorithm>
-
+using namespace led;
 template<typename T>int sgn(T val) {
   return (T(0) < val) - (val < T(0));
 }
@@ -22,9 +22,7 @@ void Pong::initialize(BaseController *ctrl) {
     { 255,   0,   0 }  // Death
   };
 
-  for (int i = m_colorPalette.size(); i <= 255; i++) {
-    m_colorPalette.push_back({ 0, 0, 0 });
-  }
+  fillPalette(m_colorPalette);
 
   float speedScale = 5;
   m_playerHeight  = 3;

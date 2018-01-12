@@ -4,6 +4,7 @@
 #include "textDisplay.hpp"
 #include <sstream>
 
+using namespace led;
 Snake::Snake(){
 
 }
@@ -19,14 +20,12 @@ void Snake::initialize(BaseController * ctrl){
     {255,0,0}, 			// Death
     {255,255,255}, 	// Text
     {0,255,0},			// Snake 1
-    {0,255,255},			// Snake 2
-    {255,255,0},			// Snake 3
-    {255,0,255},			// Snake 4
+    {0,255,255},		// Snake 2
+    {255,255,0},		// Snake 3
+    {255,0,255},		// Snake 4
   };
 
-  for(int i = m_colorPalette.size(); i <= 255; i++){
-    m_colorPalette.push_back({0,0,0});
-  }
+  fillPalette(m_colorPalette);
 
   m_generator = std::default_random_engine(m_ctrl->getTimeMs());
   m_posDist = std::uniform_int_distribution<int>(0,m_ctrl->getSize()-1);

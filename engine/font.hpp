@@ -17,6 +17,7 @@
 
 #include "types.hpp"
 
+namespace led {
 /**
         This is a simple C++ BMFont implementation.
    Adpated from https://github.com/Zylann/zCraft
@@ -252,5 +253,5 @@ private:
   bool parse(const std::string fpath);
 };
 } // namespace bmfont
-
+}
 #endif // _H_BMP_FONT_

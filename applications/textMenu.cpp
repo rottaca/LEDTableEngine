@@ -1,6 +1,8 @@
 #include "textMenu.hpp"
 #include "../engine/baseController.hpp"
 
+using namespace led;
+
 TextMenu::TextMenu(bool closable){
   m_isClosable = closable;
 }
@@ -19,9 +21,7 @@ void TextMenu::initialize(BaseController * ctrl){
     {255,232,8}
   };
 
-  for(int i = m_colorPalette.size(); i <= 255; i++){
-    m_colorPalette.push_back({0,0,0});
-  }
+  fillPalette(m_colorPalette);
 
   m_menuEntryIdx = 0;
   m_lastKeyPress = m_ctrl->getTimeMs();

@@ -1,11 +1,9 @@
 #ifndef _H_BASE_INPUT_
 #define _H_BASE_INPUT_
 
-#include <cstdlib>
-#include <memory>
-#include <vector>
-#include <string>
+#include "types.hpp"
 
+namespace led {
 class BaseController;
 
 class BaseInput {
@@ -56,6 +54,6 @@ public:
   static bool                    isHold(const InputEvents& events,
                                         InputEventName     name);
 };
-
+}
 
 #endif // ifndef _H_BASE_INPUT_

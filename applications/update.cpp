@@ -4,6 +4,8 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
+using namespace led;
+
 UpdateApp::UpdateApp() {}
 
 UpdateApp::~UpdateApp() {}
@@ -16,10 +18,7 @@ void UpdateApp::initialize(BaseController *ctrl) {
     {   0, 255,   0 },
     { 255,   0,   0 },
   };
-
-  for (int i = m_colorPalette.size(); i <= 255; i++) {
-    m_colorPalette.push_back({ 0, 0, 0 });
-  }
+  fillPalette(m_colorPalette);
 
   m_scrollText.init(m_ctrl->getHeight(),
                     m_ctrl->getWidth(), m_ctrl->getDefaultFont());

@@ -1,6 +1,7 @@
 #include "shaders.hpp"
 #include "../engine/baseController.hpp"
 
+using namespace led;
 ShaderApp::ShaderApp() {}
 
 ShaderApp::~ShaderApp() {}

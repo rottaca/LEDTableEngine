@@ -1,44 +1,37 @@
 #ifndef _H_PONG_APP_
 #define _H_PONG_APP_
 
-#include <cstdlib>
-#include <memory>
-#include <vector>
-#include <random>
-#include <array>
-#include <list>
-
 #include "../engine/baseApplication.hpp"
 
-class Pong : public BaseApplication {
+class Pong : public led::BaseApplication {
 protected:
 
   std::default_random_engine m_generator;
   std::uniform_real_distribution<float> m_randFloat;
 
-  Pointf m_ballSpeed;
-  Pointf m_ballPos;
+  led::Pointf m_ballSpeed;
+  led::Pointf m_ballPos;
   int    m_playerHeight;
   std::array<int, 2>  m_playerPos;
   std::array<int, 2>  m_playerScore;
   std::array<bool, 2> m_playerWonRound;
 
   float m_speedIncrease;
-  TimeUnit m_movementSpeed;
+  led::TimeUnit m_movementSpeed;
 
-  TimeUnit m_lastUpdateTime;
-  TimeUnit m_deathTime;
+  led::TimeUnit m_lastUpdateTime;
+  led::TimeUnit m_deathTime;
 
 public:
 
   Pong();
   virtual ~Pong();
 
-  void initialize(BaseController *ctrl);
+  void initialize(led::BaseController *ctrl);
 
-  void processInput(const BaseInput::InputEvents& events,
-                    TimeUnit                      deltaTime);
-  void draw(Image& frame);
+  void processInput(const led::BaseInput::InputEvents& events,
+                    led::TimeUnit                      deltaTime);
+  void draw(led::Image& frame);
 
 private:
 

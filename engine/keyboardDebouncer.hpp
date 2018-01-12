@@ -1,14 +1,9 @@
 #ifndef _H_KEYBOARD_DEBOUNCER
 #define _H_KEYBOARD_DEBOUNCER
 
-#include <cstdlib>
-#include <memory>
-#include <vector>
-#include <string>
-#include <map>
-
 #include "baseInput.hpp"
 
+namespace led {
 class KeyboardDebouncer {
 private:
 
@@ -25,5 +20,6 @@ public:
   virtual const BaseInput::InputEvents& getDebouncedEvents();
 };
 
+}
 
 #endif // ifndef _H_KEYBOARD_DEBOUNCER

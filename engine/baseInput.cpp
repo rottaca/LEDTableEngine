@@ -1,6 +1,8 @@
 #include "baseInput.hpp"
 #include "baseController.hpp"
 
+namespace led {
+
 const char *BaseInput::inputEventState2Str[] =
 { "KEY_PRESSED", "KEY_RELEASED", "KEY_HOLD", "KEY_NONE" };
 const char *BaseInput::inputEventName2Str[] =
@@ -18,7 +20,7 @@ bool BaseInput::initialize() {
   return true;
 }
 void BaseInput::deinitialize() {
-  
+
 }
 
 bool BaseInput::isReleased(const InputEvents& events, InputEventName name) {
@@ -42,4 +44,5 @@ bool BaseInput::isHold(const InputEvents& events, InputEventName name) {
     if ((e.name == name) && (e.state == InputEventState::KEY_HOLD)) return true;
   }
   return false;
+}
 }

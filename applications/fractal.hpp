@@ -1,22 +1,16 @@
 #ifndef _H_FRACTAL_APP_
 #define _H_FRACTAL_APP_
 
-#include <cstdlib>
-#include <memory>
-#include <vector>
-#include <random>
-#include <array>
-#include <cstdlib>
 #include <complex>
 
 #include "../engine/baseApplication.hpp"
 
-class FractalApp : public BaseApplication {
+class FractalApp : public led::BaseApplication {
 protected:
 
   struct FractalDef {
-    Pointf center;
-    Pointf dim;
+    led::Pointf center;
+    led::Pointf dim;
     float  zoomMin, zoomMax;
     FractalDef() {}
 
@@ -44,16 +38,16 @@ public:
   FractalApp();
   virtual ~FractalApp();
 
-  void initialize(BaseController *ctrl);
+  void initialize(led::BaseController *ctrl);
 
-  void processInput(const BaseInput::InputEvents& events,
-                    TimeUnit                      deltaTime);
-  void draw(Image& frame);
+  void processInput(const led::BaseInput::InputEvents& events,
+                    led::TimeUnit                      deltaTime);
+  void draw(led::Image& frame);
   void continueApp();
 
 private:
 
-  void draw_Mandelbrot(Image      & frame, // where to draw the image
+  void draw_Mandelbrot(led::Image      & frame, // where to draw the image
                        double       cxmin,
                        double       cxmax,
                        double       cymin,

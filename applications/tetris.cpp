@@ -3,6 +3,8 @@
 #include <algorithm>
 #include "textDisplay.hpp"
 
+using namespace led;
+
 const std::vector<Tetris::ShapeDef> shapes = {
   {
     // Box
@@ -62,9 +64,7 @@ void Tetris::initialize(BaseController *ctrl) {
     { 255,   0, 255 }, // Color 6
   };
 
-  for (int i = m_colorPalette.size(); i <= 255; i++) {
-    m_colorPalette.push_back({ 0, 0, 0 });
-  }
+  fillPalette(m_colorPalette);
 
   m_gameField.resize(m_ctrl->getHeight(), m_ctrl->getWidth(), 1);
   memset(m_gameField.data, 0, m_gameField.size);

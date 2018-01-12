@@ -1,16 +1,10 @@
 #ifndef _H_TESTPATTERN_APP_
 #define _H_TESTPATTERN_APP_
 
-#include <cstdlib>
-#include <memory>
-#include <vector>
-#include <random>
-#include <array>
-
 #include "../engine/baseApplication.hpp"
 #include "../engine/font.hpp"
 
-class TestPatternApp : public BaseApplication {
+class TestPatternApp : public led::BaseApplication {
 protected:
 
   enum PatternType { SINGLE_PIXEL, RANDOM, COLORFADE, COLORFADE_BW, FONT_TEST,
@@ -22,8 +16,8 @@ protected:
 
   PatternType m_patternType;
   float m_interpolate;
-  bmfont::Font m_font;
-  TimeUnit     m_lastStepUpdate;
+  led::bmfont::Font m_font;
+  led::TimeUnit     m_lastStepUpdate;
   size_t m_pos;
 
 public:
@@ -31,11 +25,11 @@ public:
   TestPatternApp();
   virtual ~TestPatternApp();
 
-  void initialize(BaseController *ctrl);
+  void initialize(led::BaseController *ctrl);
 
-  void processInput(const BaseInput::InputEvents& events,
-                    TimeUnit                      deltaTime);
-  void draw(Image& frame);
+  void processInput(const led::BaseInput::InputEvents& events,
+                    led::TimeUnit                      deltaTime);
+  void draw(led::Image& frame);
   void continueApp();
 };
 

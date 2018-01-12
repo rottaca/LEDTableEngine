@@ -1,40 +1,34 @@
 #ifndef _H_IMAGE_SLIDE_SHOW_APP_
 #define _H_IMAGE_SLIDE_SHOW_APP_
 
-#include <cstdlib>
-#include <memory>
-#include <vector>
-#include <random>
-#include <array>
-
 #include "../engine/baseApplication.hpp"
 #include "../engine/font.hpp"
 
-class ImageSlideShowApp : public BaseApplication {
+class ImageSlideShowApp : public led::BaseApplication {
 protected:
 
-  TimeUnit m_lastImageChange;
+  led::TimeUnit m_lastImageChange;
   float    m_interpolate;
   size_t   m_currImageIdx;
-  std::vector<std::shared_ptr<Image> > m_images;
+  std::vector<std::shared_ptr<led::Image> > m_images;
   std::vector<std::string> m_imageFilePaths;
-  TimeUnit m_blendTime, m_changeTime;
+  led::TimeUnit m_blendTime, m_changeTime;
 
 public:
 
   ImageSlideShowApp();
   virtual ~ImageSlideShowApp();
 
-  void initialize(BaseController *ctrl);
+  void initialize(led::BaseController *ctrl);
 
-  void processInput(const BaseInput::InputEvents& events,
-                    TimeUnit                      deltaTime);
-  void draw(Image& frame);
+  void processInput(const led::BaseInput::InputEvents& events,
+                    led::TimeUnit                      deltaTime);
+  void draw(led::Image& frame);
   void continueApp();
 
 private:
 
-  std::shared_ptr<Image>loadImage(std::string path);
+  std::shared_ptr<led::Image>loadImage(std::string path);
 };
 
 

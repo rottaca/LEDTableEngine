@@ -1,6 +1,8 @@
 #include "textDisplay.hpp"
 #include "../engine/baseController.hpp"
 
+using namespace led;
+
 TextDisplay::TextDisplay() {}
 
 TextDisplay::~TextDisplay() {}
@@ -11,10 +13,8 @@ void TextDisplay::initialize(BaseController *ctrl) {
     {   0,   0,   0 },
     { 255, 255, 255 },
   };
+  fillPalette(m_colorPalette);
 
-  for (int i = m_colorPalette.size(); i <= 255; i++) {
-    m_colorPalette.push_back({ 0, 0, 0 });
-  }
   m_scrollText.init(m_ctrl->getHeight(),
                     m_ctrl->getWidth(), m_ctrl->getDefaultFont());
   m_scrollText.setColorPalette(1);

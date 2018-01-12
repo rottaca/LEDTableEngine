@@ -1,22 +1,15 @@
 #ifndef _H_BASE_CONTROLLER_
 #define _H_BASE_CONTROLLER_
 
-#include <cstdlib>
-#include <memory>
-#include <stack>
-#include <vector>
-#include <chrono>
-#include <iostream>
-#include <thread>
-#include <assert.h>
+#include "types.hpp"
 
 #include "baseApplication.hpp"
 
 #include "keyboardDebouncer.hpp"
-#include "types.hpp"
 #include "font.hpp"
-#include "audio.h"
+#include "audio.hpp"
 
+namespace led {
 class BaseInput;
 
 class BaseController {
@@ -107,6 +100,6 @@ private:
   void createFrame();
   void addApplicationDirect(std::shared_ptr<BaseApplication>app);
 };
-
+}
 
 #endif // ifndef _H_BASE_CONTROLLER_

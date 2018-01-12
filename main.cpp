@@ -1,14 +1,8 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include <unistd.h>
-#include <cstring>
-#include <sstream>
-#include <iomanip> // setprecision
+#include <iomanip>
 
 #include "controllers/desktopController.hpp"
 #include "controllers/matrixController.hpp"
-#include "engine/audio.h"
+#include "engine/audio.hpp"
 
 #include "inputHandlers/keyboardInput.hpp"
 #ifdef HAVE_I2C_H_
@@ -30,15 +24,16 @@
 extern char *optarg;
 extern int   optind, opterr, optopt;
 
+using namespace led;
 
 class SettingsMenuHandler : public MenuEntryHandler {
 private:
 
-  std::shared_ptr<BaseController> m_ctrl;
+  std::shared_ptr<led::BaseController> m_ctrl;
 
 public:
 
-  SettingsMenuHandler(std::shared_ptr<BaseController>ctrl) {
+  SettingsMenuHandler(std::shared_ptr<led::BaseController>ctrl) {
     m_ctrl = ctrl;
   }
 
@@ -64,7 +59,7 @@ public:
     // Player Count
     case 1: {
       size_t p = m_ctrl->getPlayerCount();
-      p = (p+1) % (kMaxPlayerCount+1);
+      p = (p+1) % (led::kMaxPlayerCount+1);
       m_ctrl->setPlayerCount(p);
       std::stringstream stream;
       stream << "Players: ";
@@ -149,12 +144,12 @@ int main(int argc, char **argv)
   }
 
   // Controllers/Displays
-  std::vector<std::shared_ptr<BaseController> > controllers;
+  std::vector<std::shared_ptr<led::BaseController> > controllers;
   controllers.push_back(std::make_shared<DesktopController>());
   controllers.push_back(std::make_shared<MatrixController>());
 
   // Inputs
-  std::vector<std::shared_ptr<BaseInput> > inputs;
+  std::vector<std::shared_ptr<led::BaseInput> > inputs;
   inputs.push_back(std::make_shared<KeyboardInput>(keyboardDev));
 
 #ifdef HAVE_I2C_H_
