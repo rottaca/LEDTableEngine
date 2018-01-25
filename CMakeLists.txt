@@ -37,6 +37,7 @@ SET(INPUT_HANDLER_SRC
   applications/gameOfLife.cpp
   applications/flappyBird.cpp
   applications/tetris.cpp
+  applications/minesweeper.cpp
  )
 
 SET(CMAKE_CXX_STANDARD 11)

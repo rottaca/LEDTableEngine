@@ -55,7 +55,6 @@ led::BaseInput::InputEvents GameControllerInput::getInputEvents() {
         // res = ~res && 0xFF);
         // std::cout << "Input: " << (res & 0x01) << std::endl;
         if ((res & 0x01) == 0) {
-          std::cout << "A" << std::endl;
           e.name = InputEventName::A;
           ie.push_back(e);
         }

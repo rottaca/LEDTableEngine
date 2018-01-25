@@ -52,6 +52,18 @@ led::BaseInput::InputEvents KeyboardInput::getInputEvents() {
     ie.push_back(e);
   }
 
+  if (m_keyboard.getKeyState(KEY_R)) {
+    e.name     = BaseInput::InputEventName::A;
+    e.playerId = 0;
+    ie.push_back(e);
+  }
+
+  if (m_keyboard.getKeyState(KEY_F)) {
+    e.name     = BaseInput::InputEventName::B;
+    e.playerId = 0;
+    ie.push_back(e);
+  }
+
   if (m_keyboard.getKeyState(KEY_LEFT)) {
     e.name     = BaseInput::InputEventName::LEFT;
     e.playerId = 1;
@@ -84,6 +96,18 @@ led::BaseInput::InputEvents KeyboardInput::getInputEvents() {
 
   if (m_keyboard.getKeyState(KEY_ENTER)) {
     e.name     = BaseInput::InputEventName::ENTER;
+    e.playerId = 1;
+    ie.push_back(e);
+  }
+
+  if (m_keyboard.getKeyState(KEY_O)) {
+    e.name     = BaseInput::InputEventName::A;
+    e.playerId = 1;
+    ie.push_back(e);
+  }
+
+  if (m_keyboard.getKeyState(KEY_L)) {
+    e.name     = BaseInput::InputEventName::B;
     e.playerId = 1;
     ie.push_back(e);
   }
