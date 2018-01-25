@@ -18,7 +18,6 @@ protected:
     bool opened : 1;
     // Is bomb
     bool bomb: 1;
-    bool visible: 1;
   };
 
   led::Pointi m_cursorPos;

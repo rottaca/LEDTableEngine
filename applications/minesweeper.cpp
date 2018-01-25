@@ -42,7 +42,7 @@ void MineSweeper::initialize(BaseController *ctrl) {
   m_cursorPos.x = (w-2*PAD_X)/2;
   m_cursorPos.y = h/2;
 
-  initGameField(20,w-2*PAD_X,h);
+  initGameField(40,w-2*PAD_X,h);
 }
 bool MineSweeper::openField(int x, int y){
   size_t w = m_ctrl->getWidth()-2*PAD_X;
@@ -86,7 +86,6 @@ void MineSweeper::initGameField(size_t bombCnt, size_t w, size_t h){
   fs.bomb = false;
   fs.marked = false;
   fs.opened = false;
-  fs.visible = false;
   std::fill(m_gamefield.begin(), m_gamefield.end(),fs);
   for (size_t i = 0; i < bombCnt; i++) {
     size_t idx = m_posDist(m_generator);
@@ -161,7 +160,6 @@ void MineSweeper::processInput(const BaseInput::InputEvents& events,
 
     case BaseInput::InputEventName::A:
       mark = true;
-      std::cout << "A" <<std::endl;
       break;
 
     case BaseInput::InputEventName::ENTER:
