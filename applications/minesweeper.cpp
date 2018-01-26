@@ -7,6 +7,11 @@
 using namespace led;
 
 #define PAD_X (1)
+#define NEIGHBOR_CNT 8
+#define COL_IDX_CLOSED 9
+#define COL_IDX_MARKED 10
+#define COL_IDX_BOMB 11
+#define COL_IDX_CURSOR 12
 
 MineSweeper::MineSweeper() {}
 
@@ -15,17 +20,17 @@ MineSweeper::~MineSweeper() {}
 void MineSweeper::initialize(BaseController *ctrl) {
   BaseApplication::initialize(ctrl);
   m_colorPalette = {
-    {   255,   255,  255 }, // 0 Neighbor
-    {  255, 0, 77 }, // 1 Neighbor
-    {  255, 163, 0 }, // 2 Neighbor
-    {  255, 236, 39 }, // 3 Neighbor
-    {  0, 228, 54 }, // 4 Neighbor
-    {  41, 173, 255 }, // 5 Neighbor
-    {  131, 118, 156}, // 6 Neighbor
-    {  255, 119, 168 }, // 7 Neighbor
-    {  255, 204, 170 }, // 8 Neighbor
+    {   255,247,236 }, // 0 Neighbor
+    {  254,232,200 }, // 1 Neighbor
+    {  253,212,158 }, // 2 Neighbor
+    {  253,187,132 }, // 3 Neighbor
+    {  252,141,89 }, // 4 Neighbor
+    {  239,101,72 }, // 5 Neighbor
+    {  215,48,31}, // 6 Neighbor
+    {  179,0,0 }, // 7 Neighbor
+    {  127,0,0 }, // 8 Neighbor
     {   0,   0,  0 }, // Closed
-    {  128, 128, 128 }, // Marked
+    {  0, 0, 255 }, // Marked
     {  255, 0, 0 }, // Bomb
     {  0, 255, 0 }, // Cursor
   };
@@ -184,7 +189,6 @@ void MineSweeper::processInput(const BaseInput::InputEvents& events,
   } else if(mark){
     size_t w = m_ctrl->getWidth()-2*PAD_X;
     m_gamefield[m_cursorPos.x + m_cursorPos.y*w].marked = !m_gamefield[m_cursorPos.x + m_cursorPos.y*w].marked;
-    std::cout << m_gamefield[m_cursorPos.x + m_cursorPos.y*w].marked << std::endl;
   }else if(m_hasFinished && m_gameOver){
     auto a       = std::make_shared<TextDisplay>();
     std::stringstream ss;
@@ -216,34 +220,34 @@ void MineSweeper::draw(Image& frame) {
   uint8_t* p = frame.data;
   size_t idx = 0;
   for (size_t y = 0; y < frame.height; y++) {
-    int barOffset = frame.height/2 - 4;
-    if(y >= barOffset && y <= 8 + barOffset)
+    int barOffset = (frame.height-NEIGHBOR_CNT)/2;
+    if(y >= barOffset && y <= NEIGHBOR_CNT + barOffset)
       *p = y - barOffset;
     p+=PAD_X;
     for (size_t x = 0; x < frame.width-2*PAD_X; x++) {
       if(m_gameOver){
         if(m_gamefield[idx].bomb){
-          *p = 11;
+          *p = COL_IDX_BOMB;
         }else{
-          *p = 9;
+          *p = COL_IDX_CLOSED;
         }
       }else if (m_gamefield[idx].opened){
         *p = m_gamefield[idx].neighborBombs;
       }else if(m_gamefield[idx].marked){
-        *p = 10;
+        *p = COL_IDX_MARKED;
       }else{
-        *p = 9;
+        *p = COL_IDX_CLOSED;
       }
       idx++;
       p++;
     }
 
-    if(y >= barOffset && y <= 8 + barOffset)
+    if(y >= barOffset && y <= NEIGHBOR_CNT + barOffset)
       *p = y - barOffset;
     p+=PAD_X;
   }
 
   if(m_cursorVisible){
-    frame.data[m_cursorPos.x + PAD_X + m_cursorPos.y*frame.width] = 12;
+    frame.data[m_cursorPos.x + PAD_X + m_cursorPos.y*frame.width] = COL_IDX_CURSOR;
   }
 }
