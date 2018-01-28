@@ -20,19 +20,19 @@ MineSweeper::~MineSweeper() {}
 void MineSweeper::initialize(BaseController *ctrl) {
   BaseApplication::initialize(ctrl);
   m_colorPalette = {
-    {   255,247,236 }, // 0 Neighbor
-    {  254,232,200 }, // 1 Neighbor
-    {  253,212,158 }, // 2 Neighbor
-    {  253,187,132 }, // 3 Neighbor
-    {  252,141,89 }, // 4 Neighbor
-    {  239,101,72 }, // 5 Neighbor
-    {  215,48,31}, // 6 Neighbor
-    {  179,0,0 }, // 7 Neighbor
-    {  127,0,0 }, // 8 Neighbor
+    {   255,255,255 }, // 0 Neighbor
+    {  31, 140, 255 }, // 1 Neighbor
+    {  30, 253, 255 }, // 2 Neighbor
+    {  29, 255, 142 }, // 3 Neighbor
+    {  29, 255, 28 }, // 4 Neighbor
+    {  142, 255, 28 }, // 5 Neighbor
+    {  255, 252, 27}, // 6 Neighbor
+    {  255, 137, 26 }, // 7 Neighbor
+    {  255, 25, 29 }, // 8 Neighbor
     {   0,   0,  0 }, // Closed
-    {  0, 0, 255 }, // Marked
+    {  255, 27, 192 }, // Marked
     {  255, 0, 0 }, // Bomb
-    {  0, 255, 0 }, // Cursor
+    {  128, 128, 128 }, // Cursor
   };
 
   fillPalette(m_colorPalette);
@@ -47,7 +47,7 @@ void MineSweeper::initialize(BaseController *ctrl) {
   m_cursorPos.x = (w-2*PAD_X)/2;
   m_cursorPos.y = h/2;
 
-  initGameField(40,w-2*PAD_X,h);
+  initGameField(30,w-2*PAD_X,h);
 }
 bool MineSweeper::openField(int x, int y){
   size_t w = m_ctrl->getWidth()-2*PAD_X;

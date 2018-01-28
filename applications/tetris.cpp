@@ -70,6 +70,7 @@ void Tetris::initialize(BaseController *ctrl) {
   memset(m_gameField.data, 0, m_gameField.size);
   m_lastUpdateTimeFall = 0;
   m_lastUpdateTimeMove = 0;
+  m_score = 0;
   m_generator          = std::default_random_engine(m_ctrl->getTimeMs());
   m_posDist            = std::uniform_int_distribution<int>(0, m_ctrl->getWidth());
   m_soundClick         = createAudio("res/audio/sound/click_x.wav", 0, SDL_MIX_MAXVOLUME);
