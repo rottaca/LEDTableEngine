@@ -1,6 +1,8 @@
 # LEDTableEngine
 This repository contains a C++ implementation of a control engine for LED tables. It also contains a simulation environment for desktop applications. It contains different controllers, input handlers and applications and helper functions for any kind of game or visualization.
 
+The full documentation has been moved to https://github.com/rottaca/LEDTableEngine/wiki.
+
 ### Images
 Here are a few images of the acual LED table, controlled by this engine.
 ![Controller](webres/images/controller.jpg)
@@ -30,9 +32,6 @@ At the moment, the following applications are implemented:
   - Shader App: Implemented effects are water shader, chess board and RGB color waves
   - Update App: This app automatically pulls this project and compiles the executable. On success, the Engine restarts if correctly installed (see below).
   - Test pattern (Color gradients, random dots)
-
-# Setup Instructions
-coming soon :)
 
 # More Images
 ## Simulator
