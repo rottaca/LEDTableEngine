@@ -23,7 +23,7 @@ sleep 10
 echo ">>>>>>> Try to find the I2C device ....."
 startParams=""
 # Check if i2c file exists
-if [ -f $i2cDev ];then
+if [ -e "$i2cDev" ];then
   startParams="-i i2c -I $i2cDev"
   echo ">>>>>>> I2C device exists....."
 else
