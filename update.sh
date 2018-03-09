@@ -14,7 +14,7 @@ echo "Stash changes"
 r=$(git stash save $t)
 # check if the value exists
 v=$(echo $r|grep $t)
-if [ "$v" ]; then
+if [ -z "$v" ]; then
   echo "Nothing to stash"
 fi
 
