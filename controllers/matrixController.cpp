@@ -1,4 +1,5 @@
 #include "matrixController.hpp"
+#include "../configuration.h"
 #include <cmath>
 
 MatrixController::MatrixController() {}
@@ -11,7 +12,7 @@ bool MatrixController::initialize(size_t width, size_t height,
 
   m_tpm2 = std::make_shared<TPM2>();
 
-  if (!m_tpm2->connect("/dev/ttyACM0")) {
+  if (!m_tpm2->connect(LED_USB_CONTROLLER_DEV)) {
     return false;
   }
   m_frameDataPacket = m_tpm2->createTPM2DataPacket(width * height * 3);

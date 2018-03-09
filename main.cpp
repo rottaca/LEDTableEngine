@@ -1,5 +1,6 @@
 #include <iomanip>
 
+#include "configuration.h"
 #include "controllers/desktopController.hpp"
 #include "controllers/matrixController.hpp"
 #include "engine/audio.hpp"
@@ -161,7 +162,7 @@ int main(int argc, char **argv)
 
   auto c = controllers[controllerIdx];
 
-  if (!c->initialize(20, 15, inputs[inputIdx], debug)) {
+  if (!c->initialize(PIXEL_MATRIX_WIDTH, PIXEL_MATRIX_HEIGHT, inputs[inputIdx], debug)) {
     std::cout << "Init of controller failed! Leaving." << std::endl;
         exit(1);
   }
@@ -234,6 +235,6 @@ int main(int argc, char **argv)
                   });
 
   c->addApplication(a);
-  c->run(25);
+  c->run(UPDATE_RATE);
   return 0;
 }

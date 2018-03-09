@@ -23,7 +23,7 @@ bool cKeyboard::start(std::string keyboardDev) {
     std::cerr << "Couldn't open keyboard event file " << keyboardDev << "." <<
     std::endl;
 
-    // return false;
+    return false;
   }
   return true;
 }

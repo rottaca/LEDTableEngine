@@ -1,6 +1,6 @@
 
 #include "gameControllerInput.hpp"
-
+#include "../configuration.h"
 #include <iostream>
 #include <unistd.h>
 #include <stdio.h>
@@ -11,8 +11,6 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#define I2C_CTRL_ADR_START 0x20
-#define I2C_CTRL_ADR_END 0x27
 
 GameControllerInput::GameControllerInput(std::string i2cDev) {
   m_deviceHandle = 0;
