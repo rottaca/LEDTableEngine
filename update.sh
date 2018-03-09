@@ -14,9 +14,6 @@ echo "Stash changes"
 r=$(git stash save $t)
 # check if the value exists
 v=$(echo $r|grep $t)
-if [ -z "$v" ]; then
-  echo "Nothing to stash"
-fi
 
 echo "Pull project"
 git pull --no-commit
