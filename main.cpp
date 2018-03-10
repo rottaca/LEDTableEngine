@@ -1,6 +1,6 @@
 #include <iomanip>
 
-#include "LEDTableEngine/configuration.hpp"
+#include "LEDTableEngine/configuration.hpp" 
 #include "LEDTableEngine/controllers/desktopController.hpp"
 #include "LEDTableEngine/controllers/matrixController.hpp"
 #include "LEDTableEngine/core/audio.hpp"
