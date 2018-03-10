@@ -22,22 +22,33 @@ const size_t kMaxPlayerCount = 2;
 
 typedef int64_t TimeUnit;
 
-enum BufferColorMode { RGB, PALETTE };
+// /**
+/**
+ * BufferColorMode describes the content of the frame buffer
+ */
+enum BufferColorMode {
+  // RGB-Buffer requires the App to handle the framebuffer with 3 color
+  // channels. A bit more complex, but more flexible.
+  RGB,
+  // Palette color mode. Buffer is only a single-channel indexed image.
+  // The corresponding colorpalette specifies the mapping from index to RGB.
+  PALETTE
+};
 
-template<typename T>
-struct Point {
+/**
+ * A simple template point data strucutre.
+ */
+template<typename T> struct Point {
   T x, y;
   Point() {
     x = 0;
     y = 0;
   }
-
   Point(T x,
         T y) {
     this->x = x;
     this->y = y;
   }
-
   bool operator==(const Point<T>& r) const
   {
     return x == r.x && y == r.y;
@@ -51,7 +62,9 @@ struct Point {
 typedef Point<int>  Pointi;
 typedef Point<float>Pointf;
 
-
+/**
+ * A very simple image class implementation
+ */
 struct Image {
   uint8_t *data;
   size_t   width;

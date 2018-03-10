@@ -8,16 +8,47 @@ class BaseController;
 
 class BaseInput {
 public:
-
-  enum InputEventState { KEY_PRESSED, KEY_RELEASED, KEY_HOLD, KEY_NONE, TYPE_CNT };
+  /**
+   * A enum of all possible key states
+   */
+  enum InputEventState {
+    KEY_PRESSED,    // Key pressed initially
+    KEY_RELEASED,   // Key released
+    KEY_HOLD,       // Key is still pressed
+    KEY_NONE,       // Key has been released the last time
+    TYPE_CNT        // Used to query the number of possible states
+  };
+  /**
+   * Array of strings to convert the enums to printable text
+   */
   static const char *inputEventState2Str[];
-  enum InputEventName { UP, LEFT, DOWN, RIGHT, ENTER, EXIT, A, B, NAME_CNT  };
+  /**
+   * Names of all possible keys
+   */
+  enum InputEventName {
+    UP,
+    LEFT,
+    DOWN,
+    RIGHT,
+    ENTER,
+    EXIT,
+    A,
+    B,
+    NAME_CNT        // Used to query the numer of possible keys
+  };
+  /**
+   * Array of strings to convert the enums to printable text
+   */
   static const char *inputEventName2Str[];
 
+  /**
+   * Stores the state, player id and name of a key event
+   */
   struct InputEvent {
     InputEventState state;
     InputEventName  name;
     int             playerId;
+
     InputEvent() {
       state    = InputEventState::KEY_NONE;
       name     = InputEventName::UP;
@@ -32,10 +63,10 @@ public:
       this->playerId = playerId;
     }
   };
+  // List of individual input events
   typedef std::vector<InputEvent>InputEvents;
 
 private:
-
   BaseController *m_ctrl;
 
 public:
