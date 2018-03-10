@@ -6,9 +6,9 @@
 #include "LEDTableEngine/core/audio.hpp"
 
 #include "LEDTableEngine/inputHandlers/keyboardInput.hpp"
-#ifdef HAVE_I2C_H_
-  # include "inputHandlers/gameControllerInput.hpp"
-#endif // ifdef HAVE_I2C_H_
+#ifdef LED_HAVE_I2C_H_
+  # include "LEDTableEngine/inputHandlers/gameControllerInput.hpp"
+#endif // ifdef LED_HAVE_I2C_H_
 
 #include "LEDTableApps/update.hpp"
 #include "LEDTableApps/testPatterns.hpp"
@@ -121,11 +121,11 @@ int main(int argc, char **argv)
         inputIdx = 0;
       }
 
-#ifdef HAVE_I2C_H_
+#ifdef LED_HAVE_I2C_H_
       else if (strcmp(optarg, "i2c") == 0) {
         inputIdx = 1;
       }
-#endif // ifdef HAVE_I2C_H_
+#endif // ifdef LED_HAVE_I2C_H_
       else {
         std::cerr << "Unknwon argument for controller option: " << optarg <<
         std::endl;
@@ -156,9 +156,9 @@ int main(int argc, char **argv)
   std::vector<std::shared_ptr<led::BaseInput> > inputs;
   inputs.push_back(std::make_shared<KeyboardInput>(keyboardDev));
 
-#ifdef HAVE_I2C_H_
+#ifdef LED_HAVE_I2C_H_
   inputs.push_back(std::make_shared<GameControllerInput>(i2cDev));
-#endif // ifdef HAVE_I2C_H_
+#endif // ifdef LED_HAVE_I2C_H_
 
   auto c = controllers[controllerIdx];
 

@@ -2,9 +2,6 @@
 #include <iostream>
 
 TPM2::TPM2(){
-
-
-
 }
 TPM2::~TPM2(){
 }
