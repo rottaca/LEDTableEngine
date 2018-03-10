@@ -1,6 +1,6 @@
 #include <iomanip>
 
-#include "LEDTableEngine/configuration.hpp" 
+#include "LEDTableEngine/configuration.hpp"
 #include "LEDTableEngine/controllers/desktopController.hpp"
 #include "LEDTableEngine/controllers/matrixController.hpp"
 #include "LEDTableEngine/core/audio.hpp"
@@ -185,9 +185,10 @@ int main(int argc, char **argv)
                         TextMenu::MenuEntry("Tetris",
                                             std::make_shared<AppLauncher>(c,
                                                                           std::make_shared<Tetris>())),
-                      TextMenu::MenuEntry("Minesweeper",
-                                          std::make_shared<AppLauncher>(c,
-                                                                        std::make_shared<MineSweeper>()))
+                        TextMenu::MenuEntry("Minesweeper",
+                                            std::make_shared<AppLauncher>(c,
+                                                                          std::make_shared<
+                                                                            MineSweeper>()))
                       });
 
   // Effects

@@ -6,8 +6,10 @@
 namespace led {
 // Datatype for an RGB color
 typedef std::array<uint8_t, 3>ColorRGB;
+
 // Datatype for a Palette (vector of RGB colors)
-typedef std::vector<ColorRGB> Palette;
+typedef std::vector<ColorRGB>Palette;
+
 /**
  * Appends so many black colors to the palette, that the
  * palette size equals 256.
@@ -22,6 +24,7 @@ Palette createPaletteColorFade(ColorRGB c1,
                                ColorRGB c2,
                                int      steps,
                                bool     fillTo256 = true);
+
 /**
  * Creates a palette with 22 predefined colors.
  */
@@ -36,6 +39,7 @@ Palette createPaletteHSV(float hStart,
                          float V,
                          int   steps,
                          bool  fillTo256 = true);
+
 /**
  * Converts an HSV color to RGB.
  */

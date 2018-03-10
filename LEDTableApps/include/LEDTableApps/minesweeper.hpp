@@ -6,18 +6,22 @@
 
 class MineSweeper : public led::BaseApplication {
 protected:
+
   /**
    * Stores the state of each game field
    */
-  struct FieldState{
+  struct FieldState {
     // 4 Bits for number of adjacent bombs (0 - 8)
     uint8_t neighborBombs : 4;
+
     // Marked by user?
     bool marked : 1;
+
     // Field opened?
     bool opened : 1;
+
     // Is bomb
-    bool bomb: 1;
+    bool bomb : 1;
   };
 
   led::Pointi m_cursorPos;
@@ -26,8 +30,8 @@ protected:
   std::uniform_int_distribution<int> m_posDist;
 
   led::TimeUnit m_lastBlinkTime;
-  bool m_cursorVisible;
-  bool m_gameOver;
+  bool   m_cursorVisible;
+  bool   m_gameOver;
   size_t m_steps;
 
 public:
@@ -43,9 +47,13 @@ public:
   void draw(led::Image& frame);
 
 private:
-  void initGameField(size_t bombCnt, size_t w, size_t h);
 
-  bool openField(int x, int y);
+  void initGameField(size_t bombCnt,
+                     size_t w,
+                     size_t h);
+
+  bool openField(int x,
+                 int y);
 
   bool gameWon();
 };

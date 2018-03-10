@@ -6,7 +6,7 @@
 
 class Snake : public led::BaseApplication {
 protected:
- 
+
   std::default_random_engine m_generator;
   std::uniform_int_distribution<int> m_posDist;
   typedef std::list<led::Pointi>SnakeList;

@@ -14,14 +14,14 @@ Snake::~Snake() {}
 void Snake::initialize(BaseController *ctrl) {
   BaseApplication::initialize(ctrl);
   m_colorPalette = {
-    {   0,   0,   0 }, // Background
-    {  210, 245, 60 }, // Food
-    { 255,   0,   0 }, // Death
-    { 255, 255, 255 }, // Text
-    { 70, 240, 240 }, // Snake 1
-    { 230, 25, 75  }, // Snake 2
-    { 255, 250, 200 }, // Snake 3
-    { 255,   0, 255 }, // Snake 4
+    {    0,   0,   0 }, // Background
+    {  210, 245,  60 }, // Food
+    {  255,   0,   0 }, // Death
+    {  255, 255, 255 }, // Text
+    {   70, 240, 240 }, // Snake 1
+    {  230,  25, 75  }, // Snake 2
+    {  255, 250, 200 }, // Snake 3
+    {  255,   0, 255 }, // Snake 4
   };
 
   fillPalette(m_colorPalette);
@@ -62,6 +62,7 @@ void Snake::processInput(const BaseInput::InputEvents& events,
   }
 
   std::vector<Pointi> newDirs;
+
   for (SnakeData& s : m_snakes) {
     newDirs.push_back(s.currMoveDir);
   }
@@ -98,7 +99,7 @@ void Snake::processInput(const BaseInput::InputEvents& events,
 
     if ((newDirs[e.playerId].x != -m_snakes[e.playerId].currMoveDir.x) ||
         (newDirs[e.playerId].y != -m_snakes[e.playerId].currMoveDir.y)) {
-        m_snakes[e.playerId].nextMoveDir = newDirs[e.playerId];
+      m_snakes[e.playerId].nextMoveDir = newDirs[e.playerId];
     }
   }
 
@@ -119,8 +120,8 @@ void Snake::processInput(const BaseInput::InputEvents& events,
   for (size_t i = 0; i < m_snakes.size(); i++) {
     SnakeData& s = m_snakes[i];
     s.currMoveDir = s.nextMoveDir;
-    Pointi     newPos(s.snake.front().x + s.currMoveDir.x,
-                      s.snake.front().y + s.currMoveDir.y);
+    Pointi newPos(s.snake.front().x + s.currMoveDir.x,
+                  s.snake.front().y + s.currMoveDir.y);
 
     bool collision = false;
 
