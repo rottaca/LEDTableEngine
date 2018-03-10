@@ -1,27 +1,27 @@
 #include <iomanip>
 
-#include "configuration.h"
-#include "controllers/desktopController.hpp"
-#include "controllers/matrixController.hpp"
-#include "engine/audio.hpp"
+#include "LEDTableEngine/configuration.hpp"
+#include "LEDTableEngine/controllers/desktopController.hpp"
+#include "LEDTableEngine/controllers/matrixController.hpp"
+#include "LEDTableEngine/core/audio.hpp"
 
-#include "inputHandlers/keyboardInput.hpp"
+#include "LEDTableEngine/inputHandlers/keyboardInput.hpp"
 #ifdef HAVE_I2C_H_
   # include "inputHandlers/gameControllerInput.hpp"
 #endif // ifdef HAVE_I2C_H_
 
-#include "applications/update.hpp"
-#include "applications/testPatterns.hpp"
-#include "applications/textMenu.hpp"
-#include "applications/snake.hpp"
-#include "applications/imageSlideShow.hpp"
-#include "applications/pong.hpp"
-#include "applications/fractal.hpp"
-#include "applications/shaders.hpp"
-#include "applications/gameOfLife.hpp"
-#include "applications/flappyBird.hpp"
-#include "applications/tetris.hpp"
-#include "applications/minesweeper.hpp"
+#include "LEDTableApps/update.hpp"
+#include "LEDTableApps/testPatterns.hpp"
+#include "LEDTableApps/textMenu.hpp"
+#include "LEDTableApps/snake.hpp"
+#include "LEDTableApps/imageSlideShow.hpp"
+#include "LEDTableApps/pong.hpp"
+#include "LEDTableApps/fractal.hpp"
+#include "LEDTableApps/shaders.hpp"
+#include "LEDTableApps/gameOfLife.hpp"
+#include "LEDTableApps/flappyBird.hpp"
+#include "LEDTableApps/tetris.hpp"
+#include "LEDTableApps/minesweeper.hpp"
 
 extern char *optarg;
 extern int   optind, opterr, optopt;
