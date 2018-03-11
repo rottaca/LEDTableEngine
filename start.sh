@@ -43,7 +43,7 @@ if [ ! -z "$startParams" ]; then
   echo ">>>>>>> Starting main ...."
   cd $DIR/build
   restartCounter=0
-  until DISPLAY=:0 stdbuf -oL -eL ./LEDTable -c matrix $startParams; do
+  until DISPLAY=:0 stdbuf -oL -eL ./LEDTableMain -c matrix $startParams; do
     restartCounter=$((restartCounter + 1))
     if [ "$restartCounter" -eq "10" ]; then
       echo ">>>>>>> Restart failed!"

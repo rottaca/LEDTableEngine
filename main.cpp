@@ -1,27 +1,27 @@
 #include <iomanip>
 
-#include "configuration.h"
-#include "controllers/desktopController.hpp"
-#include "controllers/matrixController.hpp"
-#include "engine/audio.hpp"
+#include "LEDTableEngine/configuration.hpp"
+#include "LEDTableEngine/controllers/desktopController.hpp"
+#include "LEDTableEngine/controllers/matrixController.hpp"
+#include "LEDTableEngine/core/audio.hpp"
 
-#include "inputHandlers/keyboardInput.hpp"
-#ifdef HAVE_I2C_H_
-  # include "inputHandlers/gameControllerInput.hpp"
-#endif // ifdef HAVE_I2C_H_
+#include "LEDTableEngine/inputHandlers/keyboardInput.hpp"
+#ifdef LED_HAVE_I2C_H_
+  # include "LEDTableEngine/inputHandlers/gameControllerInput.hpp"
+#endif // ifdef LED_HAVE_I2C_H_
 
-#include "applications/update.hpp"
-#include "applications/testPatterns.hpp"
-#include "applications/textMenu.hpp"
-#include "applications/snake.hpp"
-#include "applications/imageSlideShow.hpp"
-#include "applications/pong.hpp"
-#include "applications/fractal.hpp"
-#include "applications/shaders.hpp"
-#include "applications/gameOfLife.hpp"
-#include "applications/flappyBird.hpp"
-#include "applications/tetris.hpp"
-#include "applications/minesweeper.hpp"
+#include "LEDTableApps/update.hpp"
+#include "LEDTableApps/testPatterns.hpp"
+#include "LEDTableApps/textMenu.hpp"
+#include "LEDTableApps/snake.hpp"
+#include "LEDTableApps/imageSlideShow.hpp"
+#include "LEDTableApps/pong.hpp"
+#include "LEDTableApps/fractal.hpp"
+#include "LEDTableApps/shaders.hpp"
+#include "LEDTableApps/gameOfLife.hpp"
+#include "LEDTableApps/flappyBird.hpp"
+#include "LEDTableApps/tetris.hpp"
+#include "LEDTableApps/minesweeper.hpp"
 
 extern char *optarg;
 extern int   optind, opterr, optopt;
@@ -121,11 +121,11 @@ int main(int argc, char **argv)
         inputIdx = 0;
       }
 
-#ifdef HAVE_I2C_H_
+#ifdef LED_HAVE_I2C_H_
       else if (strcmp(optarg, "i2c") == 0) {
         inputIdx = 1;
       }
-#endif // ifdef HAVE_I2C_H_
+#endif // ifdef LED_HAVE_I2C_H_
       else {
         std::cerr << "Unknwon argument for controller option: " << optarg <<
         std::endl;
@@ -156,9 +156,9 @@ int main(int argc, char **argv)
   std::vector<std::shared_ptr<led::BaseInput> > inputs;
   inputs.push_back(std::make_shared<KeyboardInput>(keyboardDev));
 
-#ifdef HAVE_I2C_H_
+#ifdef LED_HAVE_I2C_H_
   inputs.push_back(std::make_shared<GameControllerInput>(i2cDev));
-#endif // ifdef HAVE_I2C_H_
+#endif // ifdef LED_HAVE_I2C_H_
 
   auto c = controllers[controllerIdx];
 
@@ -185,9 +185,10 @@ int main(int argc, char **argv)
                         TextMenu::MenuEntry("Tetris",
                                             std::make_shared<AppLauncher>(c,
                                                                           std::make_shared<Tetris>())),
-                      TextMenu::MenuEntry("Minesweeper",
-                                          std::make_shared<AppLauncher>(c,
-                                                                        std::make_shared<MineSweeper>()))
+                        TextMenu::MenuEntry("Minesweeper",
+                                            std::make_shared<AppLauncher>(c,
+                                                                          std::make_shared<
+                                                                            MineSweeper>()))
                       });
 
   // Effects
