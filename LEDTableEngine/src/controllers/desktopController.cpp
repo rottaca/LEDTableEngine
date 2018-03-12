@@ -2,15 +2,15 @@
 #include <cmath>
 #include <cstring>
 
-DesktopController::DesktopController() {}
+DesktopController::DesktopController(float upscaling) : m_upscale(upscaling) {}
 
 DesktopController::~DesktopController() {}
 
 bool DesktopController::initialize(size_t width, size_t height,
-                                   std::shared_ptr<led::BaseInput>input, bool debug) {
+                                   std::shared_ptr<led::BaseInput>input,
+                                   bool debug) {
   if (!BaseController::initialize(width, height, input, debug)) return false;
 
-  m_upscale       = 30;
   m_upscaleWidth  = width * m_upscale;
   m_upscaleHeight = height * m_upscale;
 
@@ -28,7 +28,7 @@ bool DesktopController::initialize(size_t width, size_t height,
   if (!m_window)
   {
     // Fehler! Fehlermeldung ausgeben und Programm beenden.
-    std::cerr << "Konnte SDL-Fenster nicht erzeugen! Fehler: " << SDL_GetError() << std::endl;
+    std::cerr << "Couldn't create SDL-Window! Error: " << SDL_GetError() << std::endl;
     return false;
   }
   m_renderer = SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED);
@@ -36,7 +36,7 @@ bool DesktopController::initialize(size_t width, size_t height,
   if (!m_renderer)
   {
     // Fehler! Fehlermeldung ausgeben und Programm beenden.
-    std::cerr << "Konnte SDL-Renderer nicht erzeugen! Fehler: " << SDL_GetError() << std::endl;
+    std::cerr << "Couldn't create SDL-Renderer! Error: " << SDL_GetError() << std::endl;
     return false;
   }
 

@@ -91,6 +91,7 @@ int main(int argc, char **argv)
   bool   debug            = false;
   size_t controllerIdx    = 0;
   size_t inputIdx         = 0;
+  float  desktopUpscale   = 20;
   std::string keyboardDev = "/dev/input/by-path/platform-i8042-serio-0-event-kbd";
   std::string i2cDev      = "/dev/i2c-1";
 
@@ -149,7 +150,7 @@ int main(int argc, char **argv)
 
   // Controllers/Displays
   std::vector<std::shared_ptr<led::BaseController> > controllers;
-  controllers.push_back(std::make_shared<DesktopController>());
+  controllers.push_back(std::make_shared<DesktopController>(desktopUpscale));
   controllers.push_back(std::make_shared<MatrixController>());
 
   // Inputs

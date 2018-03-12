@@ -1,7 +1,6 @@
 #ifndef _H_DESKTOP_CONTROLLER_
 #define _H_DESKTOP_CONTROLLER_
 
-// SDL-Header einbinden
 #ifdef WIN32
 # include <SDL.h>
 #else // ifdef WIN32
@@ -13,7 +12,7 @@
 class DesktopController : public led::BaseController {
 public:
 
-  DesktopController();
+  DesktopController(float upscaling);
   ~DesktopController();
 
   bool initialize(size_t                         width,

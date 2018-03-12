@@ -27,7 +27,7 @@
 // and change the values here accordingly.
 // If you are not sure, you can use i2ctools to find your device by calling
 // > sudo i2cdetect -r 1
-// Have a look at its documentation.
+// Please have a look at the documentation.
 
 // Start address for the device scan
 #define I2C_CTRL_ADR_START 0x20

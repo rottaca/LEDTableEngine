@@ -33,13 +33,11 @@ led::BaseInput::InputEvents GameControllerInput::getInputEvents() {
   led::BaseInput::InputEvents ie;
 
   for (int pId = 0; pId < m_controllerId.size(); pId++) {
-    // std::cout << "Read from dev " << m_controllerId[pId] << std::endl;
 
     if (ioctl(m_deviceHandle, I2C_SLAVE, m_controllerId[pId]) < 0) perror(
         "ioctl() I2C_SLAVE failed\n");
     else
     {
-      /* kann gelesen werden? */
       int res = i2c_smbus_read_byte(m_deviceHandle);
 
       if (res >= 0) {
@@ -47,12 +45,8 @@ led::BaseInput::InputEvents GameControllerInput::getInputEvents() {
         e.playerId = pId;
         e.state    = InputEventState::KEY_PRESSED;
 
-        // With the used hardware setup and the PCF8574
-        // Key presses correspond zeros
-        // -> Invert res from 0xff to 0x00 for no presses
-        // std::cout << "Raw " << res << std::endl;
-        // res = ~res && 0xFF);
-        // std::cout << "Input: " << (res & 0x01) << std::endl;
+        // With the used hardware setup and the PCF8574,
+        // Key presses result in zeros
         if ((res & 0x01) == 0) {
           e.name = InputEventName::A;
           ie.push_back(e);
@@ -122,10 +116,11 @@ bool GameControllerInput::connectToDevice(std::string device) {
     exit(1);
   }
 
-  /* Ergebnis untersuchen */
   if (funcs & I2C_FUNC_I2C) std::cout << "I2C available" << std::endl;
+  else return false;
 
-  if (funcs & (I2C_FUNC_SMBUS_BYTE)) std::cout << "I2C_FUNC_SMBUS_BYTE available" << std::endl;
+  if (funcs & I2C_FUNC_SMBUS_BYTE) std::cout << "I2C_FUNC_SMBUS_BYTE available" << std::endl;
+  else return false;
 
   return true;
 }
@@ -139,7 +134,6 @@ void GameControllerInput::detectConnectedControllers() {
     if (ioctl(m_deviceHandle, I2C_SLAVE, port) < 0) perror("ioctl() I2C_SLAVE failed\n");
     else
     {
-      /* kann gelesen werden? */
       res = i2c_smbus_read_byte(m_deviceHandle);
 
       if (res >= 0) {
