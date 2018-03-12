@@ -33,7 +33,6 @@ led::BaseInput::InputEvents GameControllerInput::getInputEvents() {
   led::BaseInput::InputEvents ie;
 
   for (int pId = 0; pId < m_controllerId.size(); pId++) {
-
     if (ioctl(m_deviceHandle, I2C_SLAVE, m_controllerId[pId]) < 0) perror(
         "ioctl() I2C_SLAVE failed\n");
     else

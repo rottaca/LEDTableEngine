@@ -22,6 +22,7 @@
 #include "LEDTableApps/flappyBird.hpp"
 #include "LEDTableApps/tetris.hpp"
 #include "LEDTableApps/minesweeper.hpp"
+#include "LEDTableApps/clock.hpp"
 
 extern char *optarg;
 extern int   optind, opterr, optopt;
@@ -206,7 +207,11 @@ int main(int argc, char **argv)
                           TextMenu::MenuEntry("Shaders",
                                               std::make_shared<AppLauncher>(c,
                                                                             std::make_shared<
-                                                                              ShaderApp>()))
+                                                                              ShaderApp>())),
+                          TextMenu::MenuEntry("Clock",
+                                              std::make_shared<AppLauncher>(c,
+                                                                            std::make_shared<
+                                                                              ClockApp>()))
                         });
 
   // Settings
