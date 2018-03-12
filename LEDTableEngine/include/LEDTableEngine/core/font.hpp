@@ -19,8 +19,10 @@
 
 namespace led {
 /**
-        This is a simple C++ BMFont implementation.
-   Adpated from https://github.com/Zylann/zCraft
+   This is a simple C++ BMFont implementation, adpated from
+   https://github.com/Zylann/zCraft.
+   Only the namespace and the draw(...) functions are modified,
+   as they are required to draw to the internal image buffers.
  **/
 
 namespace bmfont {
