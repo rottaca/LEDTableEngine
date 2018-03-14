@@ -5,14 +5,20 @@ PROJECT(${PROJECT})
 
 SET(ENGINE_SRC
   src/core/baseController.cpp
+
   src/core/baseInput.cpp
-  src/core/baseApplication.cpp
   src/core/keyboardDebouncer.cpp
+
+  src/core/baseApplication.cpp
+  src/core/shaderApplication.cpp
+
   src/core/font.cpp
-  src/core/color.cpp
   src/core/matrixScrollText.cpp
-  src/core/audio.cpp
+  
+  src/core/color.cpp
   src/core/rasterizer.cpp
+
+  src/core/audio.cpp
  )
 
 SET(CTRL_SRC
