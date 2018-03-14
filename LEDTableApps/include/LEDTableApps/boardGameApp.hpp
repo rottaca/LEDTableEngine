@@ -12,14 +12,17 @@ public:
   void initialize(led::BaseController *ctrl);
 
 protected:
+
   void renderPixel(led::TimeUnit tm,
                    size_t        x,
                    size_t        y,
                    uint8_t     & r,
                    uint8_t     & g,
                    uint8_t     & b,
-                   size_t shaderId);
+                   size_t        shaderId);
+
 private:
+
   void chessboardShader(led::TimeUnit tm,
                         size_t        x,
                         size_t        y,
