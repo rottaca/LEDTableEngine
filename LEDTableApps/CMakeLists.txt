@@ -17,6 +17,7 @@ SET(APP_SRC
   src/flappyBird.cpp
   src/tetris.cpp
   src/minesweeper.cpp
+  src/clock.cpp
 )
 
 SET(CMAKE_CXX_STANDARD 11)

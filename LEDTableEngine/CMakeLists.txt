@@ -12,6 +12,7 @@ SET(ENGINE_SRC
   src/core/color.cpp
   src/core/matrixScrollText.cpp
   src/core/audio.cpp
+  src/core/rasterizer.cpp
  )
 
 SET(CTRL_SRC
