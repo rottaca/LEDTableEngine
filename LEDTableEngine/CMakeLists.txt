@@ -32,15 +32,17 @@ INCLUDE(FindPkgConfig)
 PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
 PKG_SEARCH_MODULE(SDL2IMAGE REQUIRED SDL2_image>=2.0.0)
 
-INCLUDE (CheckIncludeFiles)
-CHECK_INCLUDE_FILES("linux/i2c-dev.h" I2C_FOUND)
-IF(I2C_FOUND)
-  MESSAGE(STATUS "I2C-tools found. I2C controller support enabeled.")
+# Check if lib2c-dev is installed
+# Otherwise only the wrong header file is available
+INCLUDE(CheckSymbolExists)
+CHECK_SYMBOL_EXISTS(I2C_FUNC_I2C "linux/i2c-dev.h" I2C_LIB_FOUND)
+IF(I2C_LIB_FOUND)
+  MESSAGE(STATUS "lib2c-dev found. I2C controller support enabeled.")
   LIST(APPEND INPUT_HANDLER_SRC
     src/inputHandlers/gameControllerInput.cpp
   )
 ELSE()
-  MESSAGE(STATUS "I2C-tools not found! I2C controller support disabeled.")
+  MESSAGE(STATUS "lib2c-dev not found! I2C controller support disabeled.")
 ENDIF()
 
 ADD_LIBRARY(${PROJECT} STATIC
