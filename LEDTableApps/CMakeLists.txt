@@ -12,12 +12,13 @@ SET(APP_SRC
   src/imageSlideShow.cpp
   src/pong.cpp
   src/fractal.cpp
-  src/shaders.cpp
+  src/animations.cpp
   src/gameOfLife.cpp
   src/flappyBird.cpp
   src/tetris.cpp
   src/minesweeper.cpp
   src/clock.cpp
+  src/boardGameApp.cpp
 )
 
 SET(CMAKE_CXX_STANDARD 11)

@@ -17,7 +17,8 @@
 #include "LEDTableApps/imageSlideShow.hpp"
 #include "LEDTableApps/pong.hpp"
 #include "LEDTableApps/fractal.hpp"
-#include "LEDTableApps/shaders.hpp"
+#include "LEDTableApps/animations.hpp"
+#include "LEDTableApps/boardGameApp.hpp"
 #include "LEDTableApps/gameOfLife.hpp"
 #include "LEDTableApps/flappyBird.hpp"
 #include "LEDTableApps/tetris.hpp"
@@ -204,10 +205,14 @@ int main(int argc, char **argv)
                                               std::make_shared<AppLauncher>(c,
                                                                             std::make_shared<
                                                                               FractalApp>())),
-                          TextMenu::MenuEntry("Shaders",
+                          TextMenu::MenuEntry("Board Games",
                                               std::make_shared<AppLauncher>(c,
                                                                             std::make_shared<
-                                                                              ShaderApp>())),
+                                                                              BoardGameApp>())),
+                          TextMenu::MenuEntry("Animations",
+                                              std::make_shared<AppLauncher>(c,
+                                                                            std::make_shared<
+                                                                              AnimationApp>())),
                           TextMenu::MenuEntry("Clock",
                                               std::make_shared<AppLauncher>(c,
                                                                             std::make_shared<
