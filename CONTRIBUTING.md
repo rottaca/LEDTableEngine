@@ -1,7 +1,7 @@
 Great to hear, if you are interested in contributing to this project! Please follow the workflow below.
 
 ## Workflow
-- Create a new branch of the form \<type\>/\<desc\>, that is based on the current master. Different types are e.g.:
+- Create a new branch of the form \<type\>/\<issue-id\>-\<desc\>, that is based on the current master. Different types are e.g.:
   - feature
   - bugfix
   - refactor
