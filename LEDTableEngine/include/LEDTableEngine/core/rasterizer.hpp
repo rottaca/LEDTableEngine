@@ -38,14 +38,15 @@ public:
   void drawCircle(Image& img,
                   Pointi center,
                   int    radius);
+
   /**
    * Draws a line by using the midpoint line algorithm.
    * Set the color with the setColor function but pay
    * attention to the color buffer mode (RGB, Palette)!
    */
   void drawLine(Image& img,
-                  Pointi a,
-                  Pointi b);
+                Pointi a,
+                Pointi b);
 
 private:
 

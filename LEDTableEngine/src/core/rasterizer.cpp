@@ -22,6 +22,7 @@ void Rasterizer::drawCircle(Image& img, Pointi center, int radius) {
 
   for (size_t i = 0; i < img.channels; i++) {
         img(radius + center.y,  center.x,           i) = m_color[i];
+
     if (radius > 0) {
         img(center.y,           radius + center.x,  i) = m_color[i];
         img(-radius + center.y, center.x,           i) = m_color[i];
@@ -57,35 +58,39 @@ void Rasterizer::drawCircle(Image& img, Pointi center, int radius) {
     }
   }
 }
+
 void Rasterizer::drawLine(Image& img,
-           Pointi a,
-           Pointi b)
+                          Pointi a,
+                          Pointi b)
 {
   Pointi p = a;
   Pointi delta;
-  delta.x = abs(b.x-a.x);
-  delta.y = -abs(b.y-a.y);
+
+  delta.x = abs(b.x - a.x);
+  delta.y = -abs(b.y - a.y);
   Pointi s;
-  s.x = a.x<b.x?1:-1;
-  s.y = a.y<b.y?1:-1;
-  int err = delta.x+delta.y;
+  s.x = a.x < b.x ? 1 : -1;
+  s.y = a.y < b.y ? 1 : -1;
+  int err = delta.x + delta.y;
   int e2;
 
-  while(1){
+  while (1) {
     for (size_t i = 0; i < img.channels; i++) {
-      img(p.y,p.x,i) = m_color[i];
-    }
-    if(p == b) break;
-    e2 = 2*err;
-    if(e2 > delta.y){
-      err += delta.y;
-      p.x+=s.x;
-    }
-    if(e2 < delta.x){
-      err += delta.x;
-      p.y+=s.y;
+        img(p.y, p.x, i) = m_color[i];
     }
 
+    if (p == b) break;
+    e2 = 2 * err;
+
+    if (e2 > delta.y) {
+      err += delta.y;
+      p.x += s.x;
+    }
+
+    if (e2 < delta.x) {
+      err += delta.x;
+      p.y += s.y;
+    }
   }
 }
 }
