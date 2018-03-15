@@ -9,7 +9,12 @@ class ClockApp : public led::BaseApplication {
 protected:
 
   led::Rasterizer m_rasterizer;
+  enum DisplayMode{
+    DIGITAL,
+    ANALOG
+  };
 
+  DisplayMode m_displayMode;
 public:
 
   ClockApp();
