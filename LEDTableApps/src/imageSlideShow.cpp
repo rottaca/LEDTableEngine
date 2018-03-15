@@ -39,16 +39,19 @@ void ImageSlideShowApp::initialize(BaseController *ctrl) {
 
   for (std::string f : m_imageFilePaths) {
     auto img = loadImage("res/ImageSlideShowApp/" + f);
-    if(!img){
-      std::cerr << "Failed to load image "<< f <<std::endl;
+
+    if (!img) {
+      std::cerr << "Failed to load image " << f << std::endl;
     }
 
-    if(img->height != ctrl->getHeight() || img->width != ctrl->getWidth()){
-      std::cerr << "Image " << f << " could be loaded, but its dimension ("<<img->width<<"x"<<img->height<<") ";
-      std::cerr << "does not match the display resolution ("<<ctrl->getWidth()<<"x"<<ctrl->getHeight()<<")"<<std::endl;
-      std::cerr << "If you changed the display resolution, use the provided " <<std::endl;
-      std::cerr << "convertImage.sh script in res/ImageSlideShowApp. "<<std::endl;
-    }else{
+    if ((img->height != ctrl->getHeight()) || (img->width != ctrl->getWidth())) {
+      std::cerr << "Image " << f << " could be loaded, but its dimension (" << img->width << "x" <<
+      img->height << ") ";
+      std::cerr << "does not match the display resolution (" << ctrl->getWidth() << "x" <<
+      ctrl->getHeight() << ")" << std::endl;
+      std::cerr << "If you changed the display resolution, use the provided " << std::endl;
+      std::cerr << "convertImage.sh script in res/ImageSlideShowApp. " << std::endl;
+    } else {
       m_images.push_back(img);
     }
   }

@@ -50,6 +50,27 @@ public:
                 Pointi a,
                 Pointi b);
 
+  /**
+   * Draws an axis aligned rectangle.
+   * Set the color with the setColor function but pay
+   * attention to the color buffer mode (RGB, Palette)!
+   */
+  void drawRectAA(Image& img,
+                  Pointi UL,
+                  Pointi LR);
+
+  /**
+   * Draws an rectangle.
+   * Set the color with the setColor function but pay
+   * attention to the color buffer mode (RGB, Palette)!
+   * This implementation uses the Midpoint Line algorithm.
+   */
+  void drawRect(Image& img,
+                Pointi p1,
+                Pointi p2,
+                Pointi p3,
+                Pointi p4);
+
 private:
 
   // Current color. If Palette color mode is used by an image,
