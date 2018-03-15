@@ -1,5 +1,12 @@
 #include <LEDTableEngine/core/rasterizer.hpp>
 
+/**
+ * Set a pixel, if the pixel position is inside the image.
+ */
+#define SET_PX_IF_VALID(IM, Y, X, I, V) \
+  { if (X >= 0 && X < IM.width &&       \
+        Y >= 0 && Y < IM.height) { IM(Y, X, I) = V; } }
+
 namespace led {
 void Rasterizer::setColor(uint8_t color) {
   for (size_t i = 0; i < 3; i++) {
@@ -19,14 +26,13 @@ void Rasterizer::drawCircle(Image& img, Pointi center, int radius) {
 
   int P = 1 - radius;
 
-
   for (size_t i = 0; i < img.channels; i++) {
-        img(radius + center.y,  center.x,           i) = m_color[i];
+        SET_PX_IF_VALID(img, radius + center.y,  center.x,           i, m_color[i]);
 
     if (radius > 0) {
-        img(center.y,           radius + center.x,  i) = m_color[i];
-        img(-radius + center.y, center.x,           i) = m_color[i];
-        img(center.y,           -radius + center.x, i) = m_color[i];
+        SET_PX_IF_VALID(img, center.y,           radius + center.x,  i, m_color[i]);
+        SET_PX_IF_VALID(img, -radius + center.y, center.x,           i, m_color[i]);
+        SET_PX_IF_VALID(img, center.y,           -radius + center.x, i, m_color[i]);
     }
   }
 
@@ -44,16 +50,16 @@ void Rasterizer::drawCircle(Image& img, Pointi center, int radius) {
     if (p.x < p.y) break;
 
     for (size_t i = 0; i < img.channels; i++) {
-        img(p.y + center.y,  p.x + center.x,  i) = m_color[i];
-        img(p.y + center.y,  -p.x + center.x, i) = m_color[i];
-        img(-p.y + center.y, p.x + center.x,  i) = m_color[i];
-        img(-p.y + center.y, -p.x + center.x, i) = m_color[i];
+        SET_PX_IF_VALID(img, p.y + center.y,  p.x + center.x,  i, m_color[i]);
+        SET_PX_IF_VALID(img, p.y + center.y,  -p.x + center.x, i, m_color[i]);
+        SET_PX_IF_VALID(img, -p.y + center.y,    p.x + center.x,  i, m_color[i]);
+        SET_PX_IF_VALID(img, -p.y + center.y,    -p.x + center.x, i, m_color[i]);
 
       if (p.x != p.y) {
-        img(p.x + center.y,  p.y + center.x,  i) = m_color[i];
-        img(p.x + center.y,  -p.y + center.x, i) = m_color[i];
-        img(-p.x + center.y, p.y + center.x,  i) = m_color[i];
-        img(-p.x + center.y, -p.y + center.x, i) = m_color[i];
+        SET_PX_IF_VALID(img, p.x + center.y,  p.y + center.x,  i, m_color[i]);
+        SET_PX_IF_VALID(img, p.x + center.y,  -p.y + center.x, i, m_color[i]);
+        SET_PX_IF_VALID(img, -p.x + center.y, p.y + center.x,  i, m_color[i]);
+        SET_PX_IF_VALID(img, -p.x + center.y, -p.y + center.x, i, m_color[i]);
       }
     }
   }
@@ -76,7 +82,7 @@ void Rasterizer::drawLine(Image& img,
 
   while (1) {
     for (size_t i = 0; i < img.channels; i++) {
-        img(p.y, p.x, i) = m_color[i];
+        SET_PX_IF_VALID(img, p.y, p.x, i, m_color[i]);
     }
 
     if (p == b) break;

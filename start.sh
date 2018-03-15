@@ -8,7 +8,8 @@
 
 # The i2c device file, that has to be used
 # to connect to the game controllers
-i2cDev="/dev/i2c-1"
+# e.g. /dev/i2c-1
+i2cDev=""
 
 DIR=$(dirname $(readlink -f $0))
 #echo $DIR
@@ -29,8 +30,8 @@ if [ -e "$i2cDev" ];then
 else
   echo ">>>>>>> Failed to find valid i2c device ....."
   echo ">>>>>>> Try to find keyboard instead ....."
-  # Automatically find keyboard file
-  keybardDev=$(find /dev/input/by-path/ -name "*kbd*" | head -1)
+  # Automatically find first keyboard file
+  keybardDev=$(ls /dev/input/by-path/*kbd* | head -1)
   if [ -z "$keybardDev" ]; then
     echo ">>>>>>> Failed to find valid keyboard event file!"
   else
