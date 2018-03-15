@@ -39,8 +39,18 @@ void ImageSlideShowApp::initialize(BaseController *ctrl) {
 
   for (std::string f : m_imageFilePaths) {
     auto img = loadImage("res/ImageSlideShowApp/" + f);
+    if(!img){
+      std::cerr << "Failed to load image "<< f <<std::endl;
+    }
 
-    if (img) m_images.push_back(img);
+    if(img->height != ctrl->getHeight() || img->width != ctrl->getWidth()){
+      std::cerr << "Image " << f << " could be loaded, but its dimension ("<<img->width<<"x"<<img->height<<") ";
+      std::cerr << "does not match the display resolution ("<<ctrl->getWidth()<<"x"<<ctrl->getHeight()<<")"<<std::endl;
+      std::cerr << "If you changed the display resolution, use the provided " <<std::endl;
+      std::cerr << "convertImage.sh script in res/ImageSlideShowApp. "<<std::endl;
+    }else{
+      m_images.push_back(img);
+    }
   }
 }
 
@@ -77,8 +87,6 @@ void ImageSlideShowApp::draw(Image& frame) {
   auto& imgCurr = m_images[m_currImageIdx];
   auto& imgLast = m_images[lastIdx];
 
-  assert(imgCurr->size == frame.size);
-
   for (size_t i = 0; i < frame.size; i++) {
     frame.data[i] = imgCurr->data[i] * m_interpolate +
                     imgLast->data[i] * (1.0 - m_interpolate);
@@ -95,8 +103,8 @@ std::shared_ptr<Image>ImageSlideShowApp::loadImage(std::string path)
               << "Couldn't load image file \"" << path << "\"" << std::endl;
     return nullptr;
   }
-  std::shared_ptr<Image> img = std::make_shared<Image>(surf->w,
-                                                       surf->h,
+  std::shared_ptr<Image> img = std::make_shared<Image>(surf->h,
+                                                       surf->w,
                                                        surf->pitch / surf->w);
   assert(img->channels == 3);
 

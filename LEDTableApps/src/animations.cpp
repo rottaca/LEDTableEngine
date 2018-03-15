@@ -15,6 +15,7 @@ void AnimationApp::initialize(BaseController *ctrl) {
 
   srand(ctrl->getTimeMs());
   m_waveDefs.clear();
+
   // Generate a few random wave definitions
   for (size_t i = 0; i < 5; i++) {
     WaveDef wd;
@@ -95,6 +96,7 @@ void AnimationApp::wavingColors2(TimeUnit tm, size_t x, size_t y, uint8_t& r, ui
                                  uint8_t& b) {
   double tm_float = tm / 1000.0;
   float  h        = 0;
+
   // Superposition of sin functions
   for (const WaveDef& w : m_waveDefs) {
     h += w.amp * sin(x * w.freq.x + y * w.freq.y + w.shift.x * tm_float + w.shift.y * tm_float);

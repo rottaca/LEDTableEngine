@@ -22,6 +22,7 @@ void BoardGameApp::renderPixel(led::TimeUnit tm,
     chessboardShader(tm, x, y, r, g, b);
     break;
   }
+
   // Only draw once, if there is no user input
   m_requiresRedraw = false;
 }
@@ -34,6 +35,7 @@ void BoardGameApp::chessboardShader(TimeUnit tm, size_t x, size_t y, uint8_t& r,
   int borderSize  = 2;
   int padX        = (m_ctrl->getWidth() - tilesPerDim) / 2;
   int padY        = (m_ctrl->getHeight() - tilesPerDim) / 2;
+
   // Render the border of the chess board
   if ((x >= padX) && (x <= m_ctrl->getWidth() - 1 - padX) &&
       (y >= padY) && (y <= m_ctrl->getHeight() - 1 - padY)) {
@@ -47,9 +49,10 @@ void BoardGameApp::chessboardShader(TimeUnit tm, size_t x, size_t y, uint8_t& r,
       b = c2[2];
     }
   }
+
   // Render the actual chess field
   else if (((x >= padX - borderSize) && (x <= m_ctrl->getWidth() - 1 + borderSize - padX)) &&
-             ((y >= padY - borderSize) && (y <= m_ctrl->getHeight() - 1 + borderSize - padY))) {
+           ((y >= padY - borderSize) && (y <= m_ctrl->getHeight() - 1 + borderSize - padY))) {
     r = 210;
     g = 105;
     b = 30;

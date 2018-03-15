@@ -34,6 +34,7 @@ public:
    * Draws a circle by using the midpoint circle algorithm.
    * Set the color with the setColor function but pay
    * attention to the color buffer mode (RGB, Palette)!
+   * This implementation uses the Midpoint Circle algorithm.
    */
   void drawCircle(Image& img,
                   Pointi center,
@@ -43,6 +44,7 @@ public:
    * Draws a line by using the midpoint line algorithm.
    * Set the color with the setColor function but pay
    * attention to the color buffer mode (RGB, Palette)!
+   * This implementation uses the Midpoint Line algorithm.
    */
   void drawLine(Image& img,
                 Pointi a,

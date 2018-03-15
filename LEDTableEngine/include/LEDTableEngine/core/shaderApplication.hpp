@@ -25,6 +25,7 @@ public:
   virtual void draw(led::Image& frame);
 
 protected:
+
   /**
    * Implement this function!
    * The function will be called once for each pixel.
