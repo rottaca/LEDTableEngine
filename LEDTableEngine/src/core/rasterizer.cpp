@@ -52,8 +52,8 @@ void Rasterizer::drawCircle(Image& img, Pointi center, int radius) {
     for (size_t i = 0; i < img.channels; i++) {
         SET_PX_IF_VALID(img, p.y + center.y,  p.x + center.x,  i, m_color[i]);
         SET_PX_IF_VALID(img, p.y + center.y,  -p.x + center.x, i, m_color[i]);
-        SET_PX_IF_VALID(img, -p.y + center.y,    p.x + center.x,  i, m_color[i]);
-        SET_PX_IF_VALID(img, -p.y + center.y,    -p.x + center.x, i, m_color[i]);
+        SET_PX_IF_VALID(img, -p.y + center.y, p.x + center.x,  i, m_color[i]);
+        SET_PX_IF_VALID(img, -p.y + center.y, -p.x + center.x, i, m_color[i]);
 
       if (p.x != p.y) {
         SET_PX_IF_VALID(img, p.x + center.y,  p.y + center.x,  i, m_color[i]);
@@ -98,5 +98,25 @@ void Rasterizer::drawLine(Image& img,
       p.y += s.y;
     }
   }
+}
+
+void Rasterizer::drawRectAA(Image& img,
+                            Pointi UL,
+                            Pointi LR) {
+  drawLine(img, UL,                 Pointi(UL.x, LR.y));
+  drawLine(img, Pointi(UL.x, LR.y), LR);
+  drawLine(img, LR,                 Pointi(LR.x, UL.y));
+  drawLine(img, Pointi(LR.x, UL.y), UL);
+}
+
+void Rasterizer::drawRect(Image& img,
+                          Pointi p1,
+                          Pointi p2,
+                          Pointi p3,
+                          Pointi p4) {
+  drawLine(img, p1, p2);
+  drawLine(img, p2, p3);
+  drawLine(img, p3, p4);
+  drawLine(img, p4, p1);
 }
 }
