@@ -6,13 +6,14 @@ The documentation has been moved to https://github.com/rottaca/LEDTableEngine/wi
 
 # Here are a few images
 
-[[/webres/images/IMG_5816.JPG]]
-[[/webres/images/IMG_5793.JPG]]
-[[/webres/images/IMG_5797.JPG]]
-[[/webres/images/IMG_5800.JPG]]
-[[/webres/images/IMG_5827.JPG]]
-[[/webres/images/IMG_5848.JPG]]
-[[/webres/images/IMG_5853.JPG]]
+
+![](/webres/images/IMG_5816.JPG)
+![](/webres/images/IMG_5797.JPG)
+![](/webres/images/IMG_5800.JPG)
+![](/webres/images/IMG_5827.JPG)
+![](/webres/images/IMG_5848.JPG)
+![](/webres/images/IMG_5853.JPG)
+![](/webres/images/IMG_5793.JPG)
 
 # 3rd-Party Components
 - Font parser/renderer implementation adapted from Zylann: https://github.com/Zylann/zCraft
