@@ -11,10 +11,11 @@ AnimationApp::AnimationApp() {}
 AnimationApp::~AnimationApp() {}
 
 void AnimationApp::initialize(BaseController *ctrl) {
-  ShaderApplication::initialize(ctrl, 3);
+  ShaderApplication::initialize(ctrl, 4);
 
   srand(ctrl->getTimeMs());
   m_waveDefs.clear();
+  m_rainDropDefs.clear();
 
   // Generate a few random wave definitions
   for (size_t i = 0; i < 5; i++) {
@@ -23,6 +24,16 @@ void AnimationApp::initialize(BaseController *ctrl) {
     wd.freq  = led::Pointf(RAND_FLOAT(-0.4, 0.4), RAND_FLOAT(-0.4, 0.4));
     wd.shift = led::Pointf(RAND_FLOAT(-3, 3), RAND_FLOAT(-3, 3));
     m_waveDefs.push_back(wd);
+  }
+
+  for (size_t i = 0; i < 1; i++) {
+    RainDropDef rd;
+    rd.amp   = 500;
+    rd.freq  = RAND_FLOAT(0.01,0.03);
+    rd.speed  = RAND_FLOAT(1,3);
+    rd.sigma  = 200;
+    rd.pos = led::Pointf(RAND_FLOAT(0,ctrl->getWidth()-1),RAND_FLOAT(0,ctrl->getHeight()-1));
+    m_rainDropDefs.push_back(rd);
   }
 }
 
@@ -42,8 +53,11 @@ void AnimationApp::renderPixel(led::TimeUnit tm,
     wavingColors(tm, x, y, r, g, b);
     break;
 
-  case 2:
-    wavingColors2(tm, x, y, r, g, b);
+    case 2:
+      wavingColors2(tm, x, y, r, g, b);
+      break;
+  case 3:
+    rainDrops(tm, x, y, r, g, b);
     break;
   }
 }
@@ -111,4 +125,28 @@ void AnimationApp::wavingColors2(TimeUnit tm, size_t x, size_t y, uint8_t& r, ui
   r = tr * 255;
   g = tg * 255;
   b = tb * 255;
+}
+
+float gaussian(float x, float sigma){
+  double pi = 3.1415926535897;
+  return 1.0/(std::sqrt(2*pi)*sigma)*std::exp(-(x*x)/(2*sigma*sigma));
+}
+
+void AnimationApp::rainDrops(TimeUnit tm, size_t x, size_t y, uint8_t& r, uint8_t& g,
+                                 uint8_t& b) {
+  double tm_float = tm / 1000.0;
+  float  v        = 0;
+
+  for (const RainDropDef& r : m_rainDropDefs) {
+    float dist = (x-r.pos.x)*(x-r.pos.x) + (y-r.pos.y)*(y-r.pos.y);
+    v += r.amp * (cos(r.freq*dist - r.speed*tm_float)*0.5 + 0.5) * gaussian(dist,r.sigma);
+  }
+  std::cout << v <<std::endl;
+  // Clamp to valid range
+  v = std::min(1.0f, std::max(v, 0.0f));
+  float tr, tg, tb;
+  hsv2rgb(220.0f - 20*v + 10*(1-v), 0.8f, 0.2+0.8*v, tr, tg, tb);
+  r = tr*255;
+  g = tg*255;
+  b = tb*255;
 }

@@ -12,8 +12,16 @@ protected:
     led::Pointf freq;
     led::Pointf shift;
   };
-
   std::vector<WaveDef> m_waveDefs;
+
+  struct RainDropDef {
+    led::Pointf pos;
+    float       amp;
+    float freq;
+    float sigma;
+    float speed;
+  };
+  std::vector<RainDropDef> m_rainDropDefs;
 
 public:
 
@@ -52,6 +60,12 @@ private:
                      uint8_t     & r,
                      uint8_t     & g,
                      uint8_t     & b);
+   void rainDrops(led::TimeUnit tm,
+                      size_t        x,
+                      size_t        y,
+                      uint8_t     & r,
+                      uint8_t     & g,
+                      uint8_t     & b);
 };
 
 
