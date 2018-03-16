@@ -7,10 +7,16 @@ MatrixScrollText::~MatrixScrollText() {}
 
 void MatrixScrollText::init(size_t                       height,
                             size_t                       width,
-                            std::shared_ptr<bmfont::Font>font) {
-  m_width  = width;
-  m_height = height;
-  m_font   = font;
+                            std::shared_ptr<bmfont::Font>font,
+                            TimeUnit                     initialWaitTime,
+                            TimeUnit                     warpTimePerChar) {
+  m_width                   = width;
+  m_height                  = height;
+  m_font                    = font;
+  m_timeTextWarpInitialWait = initialWaitTime;
+  m_timeTextWarpPerChar     = warpTimePerChar;
+  m_scrollXPixels           = 0;
+  m_paddingX                = 3;
   resetScrollState();
 }
 
@@ -30,29 +36,31 @@ void MatrixScrollText::setColorPalette(uint8_t c) {
 }
 
 void MatrixScrollText::resetScrollState() {
-  m_lastStepUpdate          = 0;
-  m_timeTextWarpInitialWait = 1000;
-  m_timeTextWarpStart       = 0;
-  m_timeTextWarpPerChar     = 100;
-  m_scrollXPixels           = 0;
-  m_currScrollXPixels       = 0;
-  m_paddingX                = 3;
+  m_timeLastCharWarp  = 0;
+  m_currScrollXPixels = 0;
 }
 
 bool MatrixScrollText::update(TimeUnit currTime) {
+  // If we don't have moved so far, set to current time
+  // and draw initially once
+  if (m_timeLastCharWarp == 0)
+  {
+    m_timeLastCharWarp = currTime;
+    return true;
+  }
+
+  // Move the text if one of the following conditions is fulfilled
+  // - 0 < m_currScrollXPixels < END and it is time to move to the next position
+  // - m_currScrollXPixels = 0 or = END and initial wait time is expired
   if (((m_currScrollXPixels != 0) && (m_currScrollXPixels != m_scrollXPixels) &&
-       (currTime - m_timeTextWarpStart >= m_timeTextWarpPerChar)) ||
-      (((m_currScrollXPixels == 0) ||
-        (m_currScrollXPixels == m_scrollXPixels)) &&
-       (currTime - m_timeTextWarpStart >= m_timeTextWarpPerChar +
+       (currTime - m_timeLastCharWarp >= m_timeTextWarpPerChar)) ||
+      (((m_currScrollXPixels == 0) || (m_currScrollXPixels == m_scrollXPixels)) &&
+       (currTime - m_timeLastCharWarp >= m_timeTextWarpPerChar +
         m_timeTextWarpInitialWait)))
   {
-    m_timeTextWarpStart = currTime;
-    m_currScrollXPixels++;
+    m_timeLastCharWarp  = currTime;
+    m_currScrollXPixels = (m_currScrollXPixels + 1) % (m_scrollXPixels + 1);
 
-    if (m_currScrollXPixels > m_scrollXPixels) {
-      m_currScrollXPixels = 0;
-    }
     return true;
   }
   return false;

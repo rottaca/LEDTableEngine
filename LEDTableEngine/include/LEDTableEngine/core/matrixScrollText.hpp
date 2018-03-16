@@ -9,9 +9,8 @@ class MatrixScrollText {
 private:
 
   std::shared_ptr<bmfont::Font> m_font;
-  TimeUnit m_lastStepUpdate;
   TimeUnit m_timeTextWarpInitialWait;
-  TimeUnit m_timeTextWarpStart;
+  TimeUnit m_timeLastCharWarp;
   TimeUnit m_timeTextWarpPerChar;
 
   Pointi m_currTextSize;
@@ -29,14 +28,54 @@ public:
   MatrixScrollText();
   virtual ~MatrixScrollText();
 
+  /**
+   * Initialize the matrix scroll text
+   * @param height          Height of the display
+   * @param width           Width of the display
+   * @param font            The font to be used
+   * @param initialWaitTime Initial time, to wait before the text moves
+   * @param warpTimePerChar The time between subsequent moves (per char)
+   */
   void init(size_t                       height,
             size_t                       width,
-            std::shared_ptr<bmfont::Font>font);
+            std::shared_ptr<bmfont::Font>font,
+            TimeUnit                     initialWaitTime = 500,
+            TimeUnit                     warpTimePerChar = 30);
+
+  /**
+   * Updates the scroll text state
+   * @param  currTime Requires the current time
+   * @return          Returns true, if rendering is required. Otherwise false.
+   */
   bool update(TimeUnit currTime);
+
+  /**
+   * Draw the actual scroll text centered in the image.
+   */
   void draw(Image& img);
+
+  /**
+   * Set a new text. This resets the scroll state.
+   */
   void setText(std::string text);
+
+  /**
+   * Set text color
+   * @param c RGB
+   */
   void setColorRGB(ColorRGB c);
+
+  /**
+   * Set text color
+   * @param c PaletteIndex
+   */
   void setColorPalette(uint8_t c);
+
+protected:
+
+  /**
+   * Reset the scroll state
+   */
   void resetScrollState();
 };
 }
