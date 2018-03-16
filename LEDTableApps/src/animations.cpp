@@ -141,7 +141,6 @@ void AnimationApp::rainDrops(TimeUnit tm, size_t x, size_t y, uint8_t& r, uint8_
     float dist = (x-r.pos.x)*(x-r.pos.x) + (y-r.pos.y)*(y-r.pos.y);
     v += r.amp * (cos(r.freq*dist - r.speed*tm_float)*0.5 + 0.5) * gaussian(dist,r.sigma);
   }
-  std::cout << v <<std::endl;
   // Clamp to valid range
   v = std::min(1.0f, std::max(v, 0.0f));
   float tr, tg, tb;
