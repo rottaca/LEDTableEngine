@@ -29,8 +29,8 @@ void AnimationApp::initialize(BaseController *ctrl) {
   for (size_t i = 0; i < 1; i++) {
     RainDropDef rd;
     rd.amp   = 500;
-    rd.freq  = RAND_FLOAT(0.01,0.03);
-    rd.speed  = RAND_FLOAT(1,3);
+    rd.freq  = RAND_FLOAT(0.01,0.05);
+    rd.speed  = RAND_FLOAT(1,5);
     rd.sigma  = 200;
     rd.pos = led::Pointf(RAND_FLOAT(0,ctrl->getWidth()-1),RAND_FLOAT(0,ctrl->getHeight()-1));
     m_rainDropDefs.push_back(rd);
@@ -144,7 +144,7 @@ void AnimationApp::rainDrops(TimeUnit tm, size_t x, size_t y, uint8_t& r, uint8_
   // Clamp to valid range
   v = std::min(1.0f, std::max(v, 0.0f));
   float tr, tg, tb;
-  hsv2rgb(220.0f - 20*v + 10*(1-v), 0.8f, 0.2+0.8*v, tr, tg, tb);
+  hsv2rgb(220.0f - 30*v + 15*(1-v), 0.8f, v, tr, tg, tb);
   r = tr*255;
   g = tg*255;
   b = tb*255;
