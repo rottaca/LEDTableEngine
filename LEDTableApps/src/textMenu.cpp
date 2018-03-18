@@ -24,8 +24,7 @@ void TextMenu::initialize(BaseController * ctrl){
   fillPalette(m_colorPalette);
 
   m_menuEntryIdx = 0;
-  m_lastKeyPress = m_ctrl->getTimeMs();
-  m_screenOff = false;
+  m_standbyAllowed = true;
 
   m_scrollText.init(m_ctrl->getHeight(), m_ctrl->getWidth(),m_ctrl->getDefaultFont());
   m_scrollText.setColorPalette(2);
@@ -34,8 +33,6 @@ void TextMenu::initialize(BaseController * ctrl){
 
 void TextMenu::continueApp(){
   m_ctrl->clearFrame(0);
-  m_lastKeyPress = m_ctrl->getTimeMs();
-  m_screenOff = false;
 
 }
 void TextMenu::updateTextData()
@@ -50,29 +47,10 @@ void TextMenu::setMenuItems(std::vector<MenuEntry> entries){
 void TextMenu::processInput(const BaseInput::InputEvents &events,
                           TimeUnit deltaTime){
     TimeUnit t = m_ctrl->getTimeMs();
-
-    if(events.size() > 0){
-      m_lastKeyPress = t;
-      if(m_screenOff){
-        m_screenOff = false;
-        return;
-      }
-    }
-
-    if(t - m_lastKeyPress > 10000){
-      if(!m_screenOff)
-        m_requiresRedraw = true;
-      m_screenOff = true;
-      return;
-    }else{
-      m_screenOff = false;
-    }
-
     m_requiresRedraw = m_scrollText.update(m_ctrl->getTimeMs());
 
     for(auto& e: events){
-      if(e.state != BaseInput::InputEventState::KEY_PRESSED ||
-         e.playerId != 0){
+      if(e.state != BaseInput::InputEventState::KEY_PRESSED){
         continue;
       }
       switch (e.name) {
@@ -112,10 +90,6 @@ void TextMenu::draw(Image &frame){
   m_requiresRedraw = false;
 
   m_ctrl->clearFrame({ColorPaleteIdx::BG});
-
-  if(m_screenOff)
-    return;
-
 
   // Upper arrow
   if(m_menuEntryIdx > 0){

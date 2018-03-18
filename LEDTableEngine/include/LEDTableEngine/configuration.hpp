@@ -13,6 +13,16 @@
 // The refresh rate for rendering the content.
 #define UPDATE_RATE (25)
 
+// Minimum time since the last user inputs
+// to switch to the standby mode (milliseconds)
+// This is only available, if the currently active
+// application supports this feature
+#define MINIMUM_AUTO_STANDBY_TIME_MS (20 * 1000)
+
+// Time between subsequent checks for new input events
+// if the engine is in standby mode
+#define STANDBY_CHECK_TIME_MS (1000)
+
 // The device file that allows the communication the
 // LED controller chip via a serial connection.
 // This name might change, if you use a different controller.

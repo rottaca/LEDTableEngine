@@ -1,5 +1,7 @@
 #include <LEDTableEngine/core/baseController.hpp>
 #include <LEDTableEngine/core/baseInput.hpp>
+#include <LEDTableEngine/configuration.hpp>
+
 #include <cstring>
 #include <assert.h>
 
@@ -26,6 +28,7 @@ bool BaseController::initialize(size_t width, size_t height,
   m_inputHandler = input;
   m_inputHandler->setController(this);
   m_isRunning  = true;
+  m_isStandby  = false;
   m_bufferMode = BufferColorMode::PALETTE;
   m_brightness = 1;
   m_playerCnt  = 1;
@@ -38,6 +41,8 @@ bool BaseController::initialize(size_t width, size_t height,
   m_queuedApplications.clear();
   createFrame();
   updateBufferColorMode();
+
+  m_lastKeyPress = getTimeMs();
 
   m_font = std::make_shared<bmfont::Font>();
   m_font->loadFromFile("res/font/myfont.fnt");
@@ -98,20 +103,28 @@ void BaseController::run(size_t fps) {
 
   updateBufferColorMode();
 
+  // //////////////////////
+  // The actual main loop
+  // //////////////////////
   while (m_isRunning && m_applicationStack.size() > 0) {
-    deltaTime = newTime - lastTime;
-    lastTime  = newTime;
-    newTime   = getTimeMs();
-
+    // First of all, compute a few times and time differences
+    deltaTime   = newTime - lastTime;
+    lastTime    = newTime;
+    newTime     = getTimeMs();
     avgLoopRate = (1 - FPS_INTERPOLATE) * avgLoopRate + FPS_INTERPOLATE * deltaTime;
 
+    // Gather new input events
     BaseInput::InputEvents events = m_inputHandler->getInputEvents();
+
+    // Debounce input events, independent from its source
+    // Convert continous key presses to a key hold event
     m_kdb.processInput(events);
+
+    // Extract debounced events
     BaseInput::InputEvents eventsDebounced = m_kdb.getDebouncedEvents();
 
     if (m_debug && (eventsDebounced.size() > 0)) {
-      std::cout << "Debounced Events:" << std::endl;
-
+      std::cout << "Debounced Events: ";
       for (const BaseInput::InputEvent& e : eventsDebounced) {
         std::cout << BaseInput::inputEventName2Str[e.name] <<
         "(" << BaseInput::inputEventState2Str[e.state] << "), ";
@@ -119,55 +132,103 @@ void BaseController::run(size_t fps) {
       std::cout << std::endl;
     }
 
-    TimeUnit t1 = getTimeMs();
-    m_applicationStack.top()->processInput(eventsDebounced, deltaTime);
-    TimeUnit t2 = getTimeMs();
+    // Don't do anything if standby is enabeled
+    if (!m_isStandby) {
+      // Send input events to currently active application
+      // and measure the processing time
+      TimeUnit t1 = getTimeMs();
+      m_applicationStack.top()->processInput(eventsDebounced, deltaTime);
+      TimeUnit t2 = getTimeMs();
 
-    if (m_applicationStack.top()->requiresRedraw()) {
-      m_applicationStack.top()->draw(m_frameBuffer);
-      showFrame(m_frameBuffer);
-      avgDispUpdateTime =
-        (1 - FPS_INTERPOLATE) * avgDispUpdateTime + FPS_INTERPOLATE * (getTimeMs() - t2);
-      avgDispUpdateRate =
-        (1 - FPS_INTERPOLATE) * avgDispUpdateRate + FPS_INTERPOLATE * (newTime - lastDisplayUpdate);
-      lastDisplayUpdate = newTime;
-    }
+      // Compute the lowpass filtered time, that was necessary to process the
+      // input events
+      avgInputProcTime = 0.9 * avgInputProcTime + 0.1 * (t2 - t1);
 
-    avgInputProcTime = 0.9 * avgInputProcTime + 0.1 * (t2 - t1);
+      // Redraw the frame, if the applications requires a redraw
+      if (m_applicationStack.top()->requiresRedraw()) {
+        // Draw application to frame
+        m_applicationStack.top()->draw(m_frameBuffer);
 
-    if (m_queuedApplications.size() > 0) {
-      endAudio();
-      initAudio();
+        // Render the frame to the render target
+        showFrame(m_frameBuffer);
 
-      for (auto app : m_queuedApplications) {
-        addApplicationDirect(app);
+        // And compute a few update rates
+        avgDispUpdateTime =
+          (1 - FPS_INTERPOLATE) * avgDispUpdateTime + FPS_INTERPOLATE * (getTimeMs() - t2);
+        avgDispUpdateRate =
+          (1 -
+           FPS_INTERPOLATE) * avgDispUpdateRate + FPS_INTERPOLATE * (newTime - lastDisplayUpdate);
+        lastDisplayUpdate = newTime;
       }
-      m_queuedApplications.clear();
-      updateBufferColorMode();
-      m_applicationStack.top()->continueApp();
-    }
 
-    while (m_applicationStack.size() > 0 &&
-           m_applicationStack.top()->hasFinished()) {
-      m_applicationStack.top()->pauseApp();
-      endAudio();
-      m_applicationStack.top()->deinitialize();
-      m_applicationStack.pop();
-
-      if (m_applicationStack.size() > 0) {
+      // Are there queued applications available ?
+      if (m_queuedApplications.size() > 0) {
+        // If yes, reset the audio controller
+        endAudio();
         initAudio();
+
+        // Add the applications to the stack
+        for (auto app : m_queuedApplications) {
+          addApplicationDirect(app);
+          if(m_debug) std::cout << "Added application to stack" << std::endl;
+        }
+        m_queuedApplications.clear();
+
+        // Update the color buffer mode and continue the application
         updateBufferColorMode();
+        if(m_debug) std::cout << "New color mode: " << ((m_bufferMode == PALETTE)?"PALETTE":"RGB") << std::endl;
         m_applicationStack.top()->continueApp();
       }
+
+      // If all remaining applications have to be deintialized,
+      // pause them, disable the audio, deinit dem and remove them.
+      while (m_applicationStack.size() > 0 &&
+             m_applicationStack.top()->hasFinished()) {
+        m_applicationStack.top()->pauseApp();
+        endAudio();
+        m_applicationStack.top()->deinitialize();
+        m_applicationStack.pop();
+
+        if (m_applicationStack.size() > 0) {
+          initAudio();
+          updateBufferColorMode();
+          m_applicationStack.top()->continueApp();
+        }
+      }
+
+      // Compute a few more timings
+      frameTime    = getTimeMs() - newTime;
+      avgFrameTime = (1 - FPS_INTERPOLATE) * avgFrameTime + FPS_INTERPOLATE * frameTime;
     }
 
-    frameTime    = getTimeMs() - newTime;
-    avgFrameTime = (1 - FPS_INTERPOLATE) * avgFrameTime + FPS_INTERPOLATE * frameTime;
+    // Is there something pressed?
+    if (eventsDebounced.size() > 0) {
+      m_isStandby    = false;
+      m_lastKeyPress = getTimeMs();
+    }
 
+    // Otherwise check, if we have to switch to the standby mode
+    else if ((getTimeMs() - m_lastKeyPress > MINIMUM_AUTO_STANDBY_TIME_MS)
+             && m_applicationStack.top()->allowsStandby()) {
+      if (!m_isStandby) {
+        m_applicationStack.top()->pauseApp();
+      }
+      m_isStandby = true;
+    }
+
+    TimeUnit deltaTime = fpsMs;
+
+    // Throttle the processing rate if we are in standby
+    if (m_isStandby) {
+      deltaTime = STANDBY_CHECK_TIME_MS;
+    }
+
+    // And check if we need to sleep for a bit,
+    // to keep our processing rate
     int sleepTime = 0;
 
-    if (frameTime < fpsMs) {
-      sleepTime = (int)(fpsMs - frameTime);
+    if (frameTime < deltaTime) {
+      sleepTime = (int)(deltaTime - frameTime);
       std::chrono::milliseconds sleepDur = std::chrono::milliseconds(sleepTime);
       std::this_thread::sleep_for(sleepDur);
     }

@@ -7,6 +7,7 @@ BaseApplication::BaseApplication() {
   m_requiresRedraw = true;
   m_hasFinished    = false;
   m_isPaused       = false;
+  m_standbyAllowed = false;
 }
 
 BaseApplication::~BaseApplication() {}
@@ -16,6 +17,7 @@ void BaseApplication::initialize(BaseController *ctrl) {
   m_requiresRedraw = true;
   m_hasFinished    = false;
   m_isPaused       = false;
+  m_standbyAllowed = false;
 
   // Set default color
   m_colorPalette.push_back({ 0, 0, 0 });
@@ -42,6 +44,10 @@ bool BaseApplication::requiresRedraw() {
 
 bool BaseApplication::hasFinished() {
   return m_hasFinished;
+}
+
+bool BaseApplication::allowsStandby() {
+  return m_standbyAllowed;
 }
 
 BufferColorMode BaseApplication::getBufferColorMode() {

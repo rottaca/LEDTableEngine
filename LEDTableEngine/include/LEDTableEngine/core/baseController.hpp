@@ -31,6 +31,9 @@ protected:
   // True, if the engine is running
   bool m_isRunning;
 
+  // True, if the engine is in standby
+  bool m_isStandby;
+
   // Color mode for the frame buffer.
   // May be RGB or indexed image (with palette).
   BufferColorMode m_bufferMode;
@@ -41,6 +44,9 @@ protected:
 
   // Number of currently active players
   size_t m_playerCnt;
+
+  // Time since the last input / keypress
+  TimeUnit m_lastKeyPress;
 
 private:
 

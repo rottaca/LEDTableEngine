@@ -29,10 +29,10 @@ void AnimationApp::initialize(BaseController *ctrl) {
   for (size_t i = 0; i < 1; i++) {
     RainDropDef rd;
     rd.amp   = 500;
-    rd.freq  = RAND_FLOAT(0.01,0.05);
-    rd.speed  = RAND_FLOAT(1,5);
-    rd.sigma  = 200;
-    rd.pos = led::Pointf(RAND_FLOAT(0,ctrl->getWidth()-1),RAND_FLOAT(0,ctrl->getHeight()-1));
+    rd.freq  = RAND_FLOAT(0.01, 0.05);
+    rd.speed = RAND_FLOAT(1, 5);
+    rd.sigma = 200;
+    rd.pos   = led::Pointf(RAND_FLOAT(0, ctrl->getWidth() - 1), RAND_FLOAT(0, ctrl->getHeight() - 1));
     m_rainDropDefs.push_back(rd);
   }
 }
@@ -53,9 +53,10 @@ void AnimationApp::renderPixel(led::TimeUnit tm,
     wavingColors(tm, x, y, r, g, b);
     break;
 
-    case 2:
-      wavingColors2(tm, x, y, r, g, b);
-      break;
+  case 2:
+    wavingColors2(tm, x, y, r, g, b);
+    break;
+
   case 3:
     rainDrops(tm, x, y, r, g, b);
     break;
@@ -127,25 +128,27 @@ void AnimationApp::wavingColors2(TimeUnit tm, size_t x, size_t y, uint8_t& r, ui
   b = tb * 255;
 }
 
-float gaussian(float x, float sigma){
+float gaussian(float x, float sigma) {
   double pi = 3.1415926535897;
-  return 1.0/(std::sqrt(2*pi)*sigma)*std::exp(-(x*x)/(2*sigma*sigma));
+
+  return 1.0 / (std::sqrt(2 * pi) * sigma) * std::exp(-(x * x) / (2 * sigma * sigma));
 }
 
 void AnimationApp::rainDrops(TimeUnit tm, size_t x, size_t y, uint8_t& r, uint8_t& g,
-                                 uint8_t& b) {
+                             uint8_t& b) {
   double tm_float = tm / 1000.0;
   float  v        = 0;
 
   for (const RainDropDef& r : m_rainDropDefs) {
-    float dist = (x-r.pos.x)*(x-r.pos.x) + (y-r.pos.y)*(y-r.pos.y);
-    v += r.amp * (cos(r.freq*dist - r.speed*tm_float)*0.5 + 0.5) * gaussian(dist,r.sigma);
+    float dist = (x - r.pos.x) * (x - r.pos.x) + (y - r.pos.y) * (y - r.pos.y);
+    v += r.amp * (cos(r.freq * dist - r.speed * tm_float) * 0.5 + 0.5) * gaussian(dist, r.sigma);
   }
+
   // Clamp to valid range
   v = std::min(1.0f, std::max(v, 0.0f));
   float tr, tg, tb;
-  hsv2rgb(220.0f - 30*v + 15*(1-v), 0.8f, v, tr, tg, tb);
-  r = tr*255;
-  g = tg*255;
-  b = tb*255;
+  hsv2rgb(220.0f - 30 * v + 15 * (1 - v), 0.8f, v, tr, tg, tb);
+  r = tr * 255;
+  g = tg * 255;
+  b = tb * 255;
 }
