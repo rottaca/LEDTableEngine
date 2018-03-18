@@ -136,7 +136,7 @@ void GameControllerInput::detectConnectedControllers() {
       res = i2c_smbus_read_byte(m_deviceHandle);
 
       if (res >= 0) {
-        std::cout << "i2c chip found at: " << ", val = " << res << std::endl;
+        std::cout << "i2c chip found at address: " << port << ", val = " << res << std::endl;
         m_controllerId.push_back(port);
       }
     }
