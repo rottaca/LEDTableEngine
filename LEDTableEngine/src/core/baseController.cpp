@@ -212,6 +212,14 @@ void BaseController::run(size_t fps) {
              && m_applicationStack.top()->allowsStandby()) {
       if (!m_isStandby) {
         m_applicationStack.top()->pauseApp();
+        // Clear screen before standby
+        if (m_frameBuffer.channels == 3) {
+          clearFrame({ 0, 0, 0 });
+        } else {
+          clearFrame(0);
+        }
+        // Render the frame to the render target
+        showFrame(m_frameBuffer);
       }
       m_isStandby = true;
     }
