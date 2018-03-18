@@ -19,7 +19,7 @@ protected:
   led::MatrixScrollText m_scrollText;
   pid_t m_childPID;
   State m_state;
-
+  int m_stdoutPipe[2];
 public:
 
   UpdateApp();

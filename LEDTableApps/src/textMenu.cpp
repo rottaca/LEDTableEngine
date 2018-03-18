@@ -17,7 +17,7 @@ void TextMenu::initialize(BaseController * ctrl){
     {255,0,0},
     {255,90,0},
     {255,154,0},
-    {255,206,0},
+    {255,206,0}, 
     {255,232,8}
   };
 
