@@ -80,6 +80,7 @@ void UpdateApp::processInput(const BaseInput::InputEvents& events,
       while(read(m_stdoutPipe[PIPE_READ], &c, 1) == 1 && c != '\n'){
         line.append(&c,1);
       }
+      std::cout << "CHILD: " << line << std::endl;
       if(line.find(">>>>>>>> Pull project") != std::string::npos){
         m_scrollText.setText("Downloading...");
       }else if(line.find(">>>>>>>> CMAKE...") != std::string::npos){
