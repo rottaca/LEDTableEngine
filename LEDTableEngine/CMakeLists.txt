@@ -14,7 +14,7 @@ SET(ENGINE_SRC
 
   src/core/font.cpp
   src/core/matrixScrollText.cpp
-  
+
   src/core/color.cpp
   src/core/rasterizer.cpp
 
@@ -59,7 +59,7 @@ ADD_LIBRARY(${PROJECT} STATIC
 
 TARGET_INCLUDE_DIRECTORIES(${PROJECT} PUBLIC include)
 
-IF(I2C_FOUND)
+IF(I2C_LIB_FOUND)
   TARGET_COMPILE_DEFINITIONS(${PROJECT} PUBLIC LED_HAVE_I2C_H_=1)
 ENDIF()
 

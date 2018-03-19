@@ -57,7 +57,7 @@ void UpdateApp::processInput(const BaseInput::InputEvents& events,
         exit(errno);
       }
       std::cout << "CHILD: Starting update..." << std::endl;
-      int res = system("./../update.sh");
+      int res = system("./../scripts/update.sh");
       exit(res);
     }
 
