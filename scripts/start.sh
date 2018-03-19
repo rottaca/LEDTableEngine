@@ -12,7 +12,7 @@
 i2cDev=""
 
 DIR="$(readlink -f $(dirname $(readlink -f $0))/..)"
-#echo $DIR
+
 # Redirect output to log file
 exec 2>&1
 exec >${DIR}/log.txt
@@ -44,7 +44,7 @@ if [ ! -z "$startParams" ]; then
   echo ">>>>>>> Starting main ...."
   cd $DIR/build
   restartCounter=0
-  until DISPLAY=:0 stdbuf -oL -eL ./LEDTableMain -c matrix $startParams; do
+  until DISPLAY=:0 stdbuf -oL -eL ./LEDTableMain -c matrix $startParams 2>&1; do
     restartCounter=$((restartCounter + 1))
     if [ "$restartCounter" -eq "10" ]; then
       echo ">>>>>>> Restart failed!"
