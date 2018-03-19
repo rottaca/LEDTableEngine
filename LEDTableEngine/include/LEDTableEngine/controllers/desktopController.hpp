@@ -12,26 +12,26 @@
 class DesktopController : public led::BaseController {
 public:
 
-  DesktopController(float upscaling);
-  ~DesktopController();
+    DesktopController(float upscaling);
+    ~DesktopController();
 
-  bool initialize(size_t                         width,
-                  size_t                         height,
-                  std::shared_ptr<led::BaseInput>input,
-                  bool                           debug = false);
+    bool initialize(size_t width,
+                    size_t height,
+                    std::shared_ptr<led::BaseInput>input,
+                    bool debug = false);
 
 private:
 
-  void showFrame(const led::Image& frame);
-  void shutdown();
-  void copyImageToBuffer(const led::Image& frame);
+    void showFrame(const led::Image& frame);
+    void shutdown();
+    void copyImageToBuffer(const led::Image& frame);
 
-  int m_upscaleWidth, m_upscaleHeight;
-  SDL_Window   *m_window;
-  SDL_Surface  *m_windowSurf;
-  SDL_Surface  *m_imageSurf;
-  SDL_Renderer *m_renderer;
-  float m_upscale;
+    int m_upscaleWidth, m_upscaleHeight;
+    SDL_Window   *m_window;
+    SDL_Surface  *m_windowSurf;
+    SDL_Surface  *m_imageSurf;
+    SDL_Renderer *m_renderer;
+    float m_upscale;
 };
 
 

@@ -12,16 +12,16 @@
 class KeyboardInput : public led::BaseInput {
 public:
 
-  KeyboardInput(std::string keyboardDev);
-  virtual ~KeyboardInput();
+    KeyboardInput(std::string keyboardDev);
+    virtual ~KeyboardInput();
 
-  bool                        initialize();
-  led::BaseInput::InputEvents getInputEvents();
+    bool                        initialize();
+    led::BaseInput::InputEvents getInputEvents();
 
 private:
 
-  cKeyboard   m_keyboard;
-  std::string m_keyboardDevName;
+    cKeyboard m_keyboard;
+    std::string m_keyboardDevName;
 };
 
 

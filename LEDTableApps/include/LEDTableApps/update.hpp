@@ -8,28 +8,29 @@
 class UpdateApp : public led::BaseApplication {
 protected:
 
-  enum State {
-    IDLE,
-    DO_UPDATE,
-    UPDATING,
-    DONE,
-    ERROR
-  };
+    enum State {
+        IDLE,
+        DO_UPDATE,
+        UPDATING,
+        DONE,
+        ERROR
+    };
 
-  led::MatrixScrollText m_scrollText;
-  pid_t m_childPID;
-  State m_state;
-  int m_stdoutPipe[2];
+    led::MatrixScrollText m_scrollText;
+    pid_t m_childPID;
+    State m_state;
+    int m_stdoutPipe[2];
+
 public:
 
-  UpdateApp();
-  virtual ~UpdateApp();
+    UpdateApp();
+    virtual ~UpdateApp();
 
-  void initialize(led::BaseController *ctrl);
+    void initialize(led::BaseController *ctrl);
 
-  void processInput(const led::BaseInput::InputEvents& events,
-                    led::TimeUnit                      deltaTime);
-  void draw(led::Image& frame);
+    void processInput(const led::BaseInput::InputEvents& events,
+                      led::TimeUnit deltaTime);
+    void draw(led::Image& frame);
 };
 
 

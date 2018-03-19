@@ -7,40 +7,43 @@ const char *BaseInput::inputEventState2Str[] =
 const char *BaseInput::inputEventName2Str[] =
 { "UP", "LEFT", "DOWN", "RIGHT", "ENTER", "EXIT" };
 
-BaseInput::BaseInput() {}
+BaseInput::BaseInput() {
+}
 
-BaseInput::~BaseInput() {}
+BaseInput::~BaseInput() {
+}
 
 void BaseInput::setController(BaseController *ctrl) {
-  m_ctrl = ctrl;
+    m_ctrl = ctrl;
 }
 
 bool BaseInput::initialize() {
-  return true;
+    return true;
 }
 
-void BaseInput::deinitialize() {}
+void BaseInput::deinitialize() {
+}
 
 bool BaseInput::isReleased(const InputEvents& events, InputEventName name) {
-  for (auto e : events) {
-    if ((e.name == name) &&
-        (e.state == InputEventState::KEY_RELEASED)) return true;
-  }
-  return false;
+    for (auto e : events) {
+        if ((e.name == name) &&
+            (e.state == InputEventState::KEY_RELEASED)) return true;
+    }
+    return false;
 }
 
 bool BaseInput::isPressed(const InputEvents& events, InputEventName name) {
-  for (auto e : events) {
-    if ((e.name == name) &&
-        (e.state == InputEventState::KEY_PRESSED)) return true;
-  }
-  return false;
+    for (auto e : events) {
+        if ((e.name == name) &&
+            (e.state == InputEventState::KEY_PRESSED)) return true;
+    }
+    return false;
 }
 
 bool BaseInput::isHold(const InputEvents& events, InputEventName name) {
-  for (auto e : events) {
-    if ((e.name == name) && (e.state == InputEventState::KEY_HOLD)) return true;
-  }
-  return false;
+    for (auto e : events) {
+        if ((e.name == name) && (e.state == InputEventState::KEY_HOLD)) return true;
+    }
+    return false;
 }
 }

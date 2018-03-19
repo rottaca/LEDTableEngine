@@ -15,20 +15,20 @@ public:
 
 protected:
 
-  led::MatrixScrollText m_scrollText;
-  std::string m_text;
+    led::MatrixScrollText m_scrollText;
+    std::string m_text;
 
 public:
 
-  TextDisplay();
-  virtual ~TextDisplay();
+    TextDisplay();
+    virtual ~TextDisplay();
 
-  void initialize(led::BaseController *ctrl);
+    void initialize(led::BaseController *ctrl);
 
-  void processInput(const led::BaseInput::InputEvents& events,
-                    led::TimeUnit                      deltaTime);
-  void draw(led::Image& frame);
-  void setText(std::string text);
+    void processInput(const led::BaseInput::InputEvents& events,
+                      led::TimeUnit deltaTime);
+    void draw(led::Image& frame);
+    void setText(std::string text);
 };
 
 #endif // ifndef _H_TEXT_DISPLAY_APP

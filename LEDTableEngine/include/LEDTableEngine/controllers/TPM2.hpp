@@ -12,41 +12,41 @@
 class TPM2 {
 public:
 
-  const uint8_t kStartByte = 0xC9;
-  const uint8_t kEndByte   = 0x36;
+    const uint8_t kStartByte = 0xC9;
+    const uint8_t kEndByte   = 0x36;
 
-  enum BlockTypes {
-    DATA    = 0xDA,
-    CMD     = 0xC0,
-    ACK     = 0xAC,
-    ACKDATA = 0xAD
-  };
+    enum BlockTypes {
+        DATA    = 0xDA,
+        CMD     = 0xC0,
+        ACK     = 0xAC,
+        ACKDATA = 0xAD
+    };
 
-  struct Packet {
-    BlockTypes              type;
-    std::shared_ptr<uint8_t>bufferPtr;
-    uint8_t                *dataPtr;
-    size_t                  dataSize;
-  };
+    struct Packet {
+        BlockTypes type;
+        std::shared_ptr<uint8_t>bufferPtr;
+        uint8_t                *dataPtr;
+        size_t dataSize;
+    };
 
 private:
 
-  int m_deviceFile;
-  struct termios m_serialConfig;
+    int m_deviceFile;
+    struct termios m_serialConfig;
 
 public:
 
-  TPM2();
-  ~TPM2();
+    TPM2();
+    ~TPM2();
 
-  Packet createTPM2DataPacket(size_t dataSz);
-  bool   connect(const std::string& device);
-  void   disconnect();
-  bool   sendPacket(const Packet& p);
+    Packet createTPM2DataPacket(size_t dataSz);
+    bool   connect(const std::string& device);
+    void   disconnect();
+    bool   sendPacket(const Packet& p);
 
 private:
 
-  bool configureSerial();
+    bool configureSerial();
 };
 
 #endif // ifndef _H_TPM2_

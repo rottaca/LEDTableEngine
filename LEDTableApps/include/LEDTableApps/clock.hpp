@@ -8,18 +8,18 @@
 class ClockApp : public led::BaseApplication {
 protected:
 
-  led::Rasterizer m_rasterizer;
+    led::Rasterizer m_rasterizer;
 
 public:
 
-  ClockApp();
-  virtual ~ClockApp();
+    ClockApp();
+    virtual ~ClockApp();
 
-  void initialize(led::BaseController *ctrl);
+    void initialize(led::BaseController *ctrl);
 
-  void processInput(const led::BaseInput::InputEvents& events,
-                    led::TimeUnit                      deltaTime);
-  void draw(led::Image& frame);
+    void processInput(const led::BaseInput::InputEvents& events,
+                      led::TimeUnit deltaTime);
+    void draw(led::Image& frame);
 };
 
 

@@ -7,37 +7,37 @@
 class BoardGameApp : public led::ShaderApplication {
 protected:
 
-  led::Rasterizer m_rasterizer;
+    led::Rasterizer m_rasterizer;
 
 public:
 
-  BoardGameApp();
-  virtual ~BoardGameApp();
+    BoardGameApp();
+    virtual ~BoardGameApp();
 
-  void initialize(led::BaseController *ctrl);
-  void draw(led::Image& frame);
+    void initialize(led::BaseController *ctrl);
+    void draw(led::Image& frame);
 
 protected:
 
-  void renderPixel(led::TimeUnit tm,
-                   size_t        x,
-                   size_t        y,
-                   uint8_t     & r,
-                   uint8_t     & g,
-                   uint8_t     & b,
-                   size_t        shaderId);
+    void renderPixel(led::TimeUnit tm,
+                     size_t x,
+                     size_t y,
+                     uint8_t     & r,
+                     uint8_t     & g,
+                     uint8_t     & b,
+                     size_t shaderId);
 
 private:
 
-  /**
-   * Chess shader
-   */
-  void chessboard(led::Image& img);
+/**
+ * Chess shader
+ */
+    void chessboard(led::Image& img);
 
-  /**
-   * German game, called 'Mensch ärgere dich nicht!'
-   */
-  void MADN(led::Image& img);
+/**
+ * German game, called 'Mensch ärgere dich nicht!'
+ */
+    void MADN(led::Image& img);
 };
 
 
