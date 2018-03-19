@@ -7,22 +7,22 @@
 class MatrixController : public led::BaseController {
 public:
 
-  MatrixController();
-  ~MatrixController();
+    MatrixController();
+    ~MatrixController();
 
-  bool initialize(size_t                         width,
-                  size_t                         height,
-                  std::shared_ptr<led::BaseInput>input,
-                  bool                           debug = false);
+    bool initialize(size_t width,
+                    size_t height,
+                    std::shared_ptr<led::BaseInput>input,
+                    bool debug = false);
 
 private:
 
-  void showFrame(const led::Image& frame);
-  void shutdown();
-  void copyImageToBuffer(const led::Image& frame);
+    void showFrame(const led::Image& frame);
+    void shutdown();
+    void copyImageToBuffer(const led::Image& frame);
 
-  TPM2::Packet m_frameDataPacket;
-  std::shared_ptr<TPM2> m_tpm2;
+    TPM2::Packet m_frameDataPacket;
+    std::shared_ptr<TPM2> m_tpm2;
 };
 
 

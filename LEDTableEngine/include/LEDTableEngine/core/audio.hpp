@@ -37,18 +37,18 @@ namespace led {
  */
 struct Audio
 {
-  uint32_t length;
-  uint32_t lengthTrue;
-  uint8_t *bufferTrue;
-  uint8_t *buffer;
-  uint8_t  loop;
-  uint8_t  fade;
-  uint8_t  free;
-  uint8_t  volume;
+    uint32_t length;
+    uint32_t lengthTrue;
+    uint8_t *bufferTrue;
+    uint8_t *buffer;
+    uint8_t loop;
+    uint8_t fade;
+    uint8_t free;
+    uint8_t volume;
 
-  SDL_AudioSpec audio;
+    SDL_AudioSpec audio;
 
-  Audio *next;
+    Audio *next;
 };
 
 /*
@@ -64,8 +64,8 @@ struct Audio
  *
  */
 Audio* createAudio(const char *filename,
-                   int         loop,
-                   int         volume);
+                   int loop,
+                   int volume);
 
 /*
  * Frees as many chained Audios as given
@@ -84,7 +84,7 @@ void freeAudio(Audio *audio);
  *
  */
 void playSound(const char *filename,
-               int         volume);
+               int volume);
 
 /*
  * Plays a new music, only 1 at a time plays
@@ -94,7 +94,7 @@ void playSound(const char *filename,
  *
  */
 void playMusic(const char *filename,
-               int         volume);
+               int volume);
 
 /*
  * Plays a sound from a createAudio object (clones), only 1 at a time plays
@@ -106,7 +106,7 @@ void playMusic(const char *filename,
  *
  */
 void playSoundFromMemory(Audio *audio,
-                         int    volume);
+                         int volume);
 
 /*
  * Plays a music from a createAudio object (clones), only 1 at a time plays
@@ -118,7 +118,7 @@ void playSoundFromMemory(Audio *audio,
  *
  */
 void playMusicFromMemory(Audio *audio,
-                         int    volume);
+                         int volume);
 
 /*
  * Free all audio related variables

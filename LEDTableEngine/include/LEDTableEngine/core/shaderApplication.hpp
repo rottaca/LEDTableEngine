@@ -9,37 +9,37 @@ namespace led {
 class ShaderApplication : public led::BaseApplication {
 protected:
 
-  size_t m_shaderCnt;
-  size_t m_shaderCurrId;
+    size_t m_shaderCnt;
+    size_t m_shaderCurrId;
 
 public:
 
-  ShaderApplication();
-  virtual ~ShaderApplication();
+    ShaderApplication();
+    virtual ~ShaderApplication();
 
-  virtual void initialize(led::BaseController *ctrl,
-                          size_t               shaderCnt);
+    virtual void initialize(led::BaseController *ctrl,
+                            size_t shaderCnt);
 
-  virtual void processInput(const led::BaseInput::InputEvents& events,
-                            led::TimeUnit                      deltaTime);
-  virtual void draw(led::Image& frame);
+    virtual void processInput(const led::BaseInput::InputEvents& events,
+                              led::TimeUnit deltaTime);
+    virtual void draw(led::Image& frame);
 
 protected:
 
-  /**
-   * Implement this function!
-   * The function will be called once for each pixel.
-   * It provides the current time, the image coordinates and
-   * the shader id, selected by the user.
-   * Return the resulting color for each pixel by reference.
-   */
-  virtual void renderPixel(led::TimeUnit tm,
-                           size_t        x,
-                           size_t        y,
-                           uint8_t     & r,
-                           uint8_t     & g,
-                           uint8_t     & b,
-                           size_t        shaderId) = 0;
+/**
+ * Implement this function!
+ * The function will be called once for each pixel.
+ * It provides the current time, the image coordinates and
+ * the shader id, selected by the user.
+ * Return the resulting color for each pixel by reference.
+ */
+    virtual void renderPixel(led::TimeUnit tm,
+                             size_t x,
+                             size_t y,
+                             uint8_t     & r,
+                             uint8_t     & g,
+                             uint8_t     & b,
+                             size_t shaderId) = 0;
 };
 }
 

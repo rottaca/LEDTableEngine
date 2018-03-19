@@ -7,65 +7,65 @@
 class AnimationApp : public led::ShaderApplication {
 protected:
 
-  struct WaveDef {
-    float       amp;
-    led::Pointf freq;
-    led::Pointf shift;
-  };
-  std::vector<WaveDef> m_waveDefs;
+    struct WaveDef {
+        float amp;
+        led::Pointf freq;
+        led::Pointf shift;
+    };
+    std::vector<WaveDef> m_waveDefs;
 
-  struct RainDropDef {
-    led::Pointf pos;
-    float       amp;
-    float       freq;
-    float       sigma;
-    float       speed;
-  };
-  std::vector<RainDropDef> m_rainDropDefs;
+    struct RainDropDef {
+        led::Pointf pos;
+        float amp;
+        float freq;
+        float sigma;
+        float speed;
+    };
+    std::vector<RainDropDef> m_rainDropDefs;
 
 public:
 
-  AnimationApp();
-  virtual ~AnimationApp();
+    AnimationApp();
+    virtual ~AnimationApp();
 
-  void initialize(led::BaseController *ctrl);
+    void initialize(led::BaseController *ctrl);
 
 protected:
 
-  void renderPixel(led::TimeUnit tm,
-                   size_t        x,
-                   size_t        y,
-                   uint8_t     & r,
-                   uint8_t     & g,
-                   uint8_t     & b,
-                   size_t        shaderId);
+    void renderPixel(led::TimeUnit tm,
+                     size_t x,
+                     size_t y,
+                     uint8_t     & r,
+                     uint8_t     & g,
+                     uint8_t     & b,
+                     size_t shaderId);
 
 private:
 
-  void waterShader(led::TimeUnit tm,
-                   size_t        x,
-                   size_t        y,
-                   uint8_t     & r,
-                   uint8_t     & g,
-                   uint8_t     & b);
-  void wavingColors(led::TimeUnit tm,
-                    size_t        x,
-                    size_t        y,
-                    uint8_t     & r,
-                    uint8_t     & g,
-                    uint8_t     & b);
-  void wavingColors2(led::TimeUnit tm,
-                     size_t        x,
-                     size_t        y,
+    void waterShader(led::TimeUnit tm,
+                     size_t x,
+                     size_t y,
                      uint8_t     & r,
                      uint8_t     & g,
                      uint8_t     & b);
-  void rainDrops(led::TimeUnit tm,
-                 size_t        x,
-                 size_t        y,
-                 uint8_t     & r,
-                 uint8_t     & g,
-                 uint8_t     & b);
+    void wavingColors(led::TimeUnit tm,
+                      size_t x,
+                      size_t y,
+                      uint8_t     & r,
+                      uint8_t     & g,
+                      uint8_t     & b);
+    void wavingColors2(led::TimeUnit tm,
+                       size_t x,
+                       size_t y,
+                       uint8_t     & r,
+                       uint8_t     & g,
+                       uint8_t     & b);
+    void rainDrops(led::TimeUnit tm,
+                   size_t x,
+                   size_t y,
+                   uint8_t     & r,
+                   uint8_t     & g,
+                   uint8_t     & b);
 };
 
 

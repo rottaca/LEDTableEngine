@@ -11,23 +11,23 @@
 class GameControllerInput : public led::BaseInput {
 private:
 
-  int m_deviceHandle;
-  std::vector<int> m_controllerId;
-  std::string m_i2cDevName;
+    int m_deviceHandle;
+    std::vector<int> m_controllerId;
+    std::string m_i2cDevName;
 
 public:
 
-  GameControllerInput(std::string i2cDev);
-  virtual ~GameControllerInput();
+    GameControllerInput(std::string i2cDev);
+    virtual ~GameControllerInput();
 
-  bool                        initialize();
-  led::BaseInput::InputEvents getInputEvents();
+    bool                        initialize();
+    led::BaseInput::InputEvents getInputEvents();
 
 private:
 
-  void detectConnectedControllers();
-  bool connectToDevice(std::string device);
-  void disconnect();
+    void detectConnectedControllers();
+    bool connectToDevice(std::string device);
+    void disconnect();
 };
 
 

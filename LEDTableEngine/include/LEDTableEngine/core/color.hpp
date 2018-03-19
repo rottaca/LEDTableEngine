@@ -22,8 +22,8 @@ void    fillPalette(Palette& palette);
  */
 Palette createPaletteColorFade(ColorRGB c1,
                                ColorRGB c2,
-                               int      steps,
-                               bool     fillTo256 = true);
+                               int steps,
+                               bool fillTo256 = true);
 
 /**
  * Creates a palette with 22 predefined colors.
@@ -37,15 +37,15 @@ Palette createPaletteHSV(float hStart,
                          float hStop,
                          float S,
                          float V,
-                         int   steps,
-                         bool  fillTo256 = true);
+                         int steps,
+                         bool fillTo256 = true);
 
 /**
  * Converts an HSV color to RGB.
  */
-void hsv2rgb(float  h,
-             float  s,
-             float  v,
+void hsv2rgb(float h,
+             float s,
+             float v,
              float& r,
              float& g,
              float& b);

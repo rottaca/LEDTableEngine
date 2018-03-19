@@ -12,70 +12,72 @@ namespace led {
 class Rasterizer {
 public:
 
-  Rasterizer() {}
+    Rasterizer() {
+    }
 
-  ~Rasterizer() {}
+    ~Rasterizer() {
+    }
 
-  /**
-   * Set color as palette color index.
-   * The color palette for the currently active
-   * application will be used for rendering.
-   * The image has to be of type Palette (not RGB)!
-   */
-  void setColor(uint8_t color);
+/**
+ * Set color as palette color index.
+ * The color palette for the currently active
+ * application will be used for rendering.
+ * The image has to be of type Palette (not RGB)!
+ */
+    void setColor(uint8_t color);
 
-  /**
-   * Specify the color as RGB value.
-   * The image has to be of type RGB (not Palette)!
-   */
-  void setColor(ColorRGB color);
+/**
+ * Specify the color as RGB value.
+ * The image has to be of type RGB (not Palette)!
+ */
+    void setColor(ColorRGB color);
 
-  /**
-   * Draws a circle by using the midpoint circle algorithm.
-   * Set the color with the setColor function but pay
-   * attention to the color buffer mode (RGB, Palette)!
-   * This implementation uses the Midpoint Circle algorithm.
-   */
-  void drawCircle(Image& img,
-                  Pointi center,
-                  int    radius);
+/**
+ * Draws a circle by using the midpoint circle algorithm.
+ * Set the color with the setColor function but pay
+ * attention to the color buffer mode (RGB, Palette)!
+ * This implementation uses the Midpoint Circle algorithm.
+ */
+    void drawCircle(Image& img,
+                    Pointi center,
+                    int radius);
 
-  /**
-   * Draws a line by using the midpoint line algorithm.
-   * Set the color with the setColor function but pay
-   * attention to the color buffer mode (RGB, Palette)!
-   * This implementation uses the Midpoint Line algorithm.
-   */
-  void drawLine(Image& img,
-                Pointi a,
-                Pointi b);
+/**
+ * Draws a line by using the midpoint line algorithm.
+ * Set the color with the setColor function but pay
+ * attention to the color buffer mode (RGB, Palette)!
+ * This implementation uses the Midpoint Line algorithm.
+ */
+    void drawLine(Image& img,
+                  Pointi a,
+                  Pointi b);
 
-  /**
-   * Draws an axis aligned rectangle.
-   * Set the color with the setColor function but pay
-   * attention to the color buffer mode (RGB, Palette)!
-   */
-  void drawRectAA(Image& img,
-                  Pointi UL,
-                  Pointi LR);
+/**
+ * Draws an axis aligned rectangle.
+ * Set the color with the setColor function but pay
+ * attention to the color buffer mode (RGB, Palette)!
+ */
+    void drawRectAA(Image& img,
+                    Pointi UL,
+                    Pointi LR);
 
-  /**
-   * Draws an rectangle.
-   * Set the color with the setColor function but pay
-   * attention to the color buffer mode (RGB, Palette)!
-   * This implementation uses the Midpoint Line algorithm.
-   */
-  void drawRect(Image& img,
-                Pointi p1,
-                Pointi p2,
-                Pointi p3,
-                Pointi p4);
+/**
+ * Draws an rectangle.
+ * Set the color with the setColor function but pay
+ * attention to the color buffer mode (RGB, Palette)!
+ * This implementation uses the Midpoint Line algorithm.
+ */
+    void drawRect(Image& img,
+                  Pointi p1,
+                  Pointi p2,
+                  Pointi p3,
+                  Pointi p4);
 
 private:
 
-  // Current color. If Palette color mode is used by an image,
-  // only the first channel of this color will be used.
-  ColorRGB m_color;
+// Current color. If Palette color mode is used by an image,
+// only the first channel of this color will be used.
+    ColorRGB m_color;
 };
 }
 #endif // ifndef _H_RASTERIZER

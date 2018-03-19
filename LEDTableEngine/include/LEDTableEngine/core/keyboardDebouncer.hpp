@@ -7,17 +7,17 @@ namespace led {
 class KeyboardDebouncer {
 private:
 
-  BaseInput::InputEvents m_events;
+    BaseInput::InputEvents m_events;
 
 public:
 
-  KeyboardDebouncer();
-  virtual ~KeyboardDebouncer();
+    KeyboardDebouncer();
+    virtual ~KeyboardDebouncer();
 
-  virtual void                          processInput(
-    const BaseInput::InputEvents& events);
+    virtual void                          processInput(
+        const BaseInput::InputEvents& events);
 
-  virtual const BaseInput::InputEvents& getDebouncedEvents();
+    virtual const BaseInput::InputEvents& getDebouncedEvents();
 };
 }
 

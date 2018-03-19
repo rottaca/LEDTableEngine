@@ -5,19 +5,20 @@
 
 class TEMPLATE_APP_NAME : public led::BaseApplication {
 public:
-  TEMPLATE_APP_NAME();
-  virtual ~TEMPLATE_APP_NAME();
 
-  void initialize(led::BaseController *ctrl);
-  void deinitialize();
+    TEMPLATE_APP_NAME();
+    virtual ~TEMPLATE_APP_NAME();
 
-  void processInput(const led::BaseInput::InputEvents& events,
-                    led::TimeUnit                      deltaTime);
-  void draw(led::Image& frame);
+    void initialize(led::BaseController *ctrl);
+    void deinitialize();
 
-  void continueApp();
-  void pauseApp();
+    void processInput(const led::BaseInput::InputEvents& events,
+                      led::TimeUnit deltaTime);
+    void draw(led::Image& frame);
+
+    void continueApp();
+    void pauseApp();
 };
 
 
-#endif
+#endif // ifndef _H_TEMPLATE_APP_INC_GUARD_NAME_

@@ -14,42 +14,44 @@
 class TEMPLATE_APP_NAME : public led::ShaderApplication {
 public:
 
-  TEMPLATE_APP_NAME();
-  virtual ~TEMPLATE_APP_NAME();
+    TEMPLATE_APP_NAME();
+    virtual ~TEMPLATE_APP_NAME();
 
-  void initialize(led::BaseController *ctrl);
+    void initialize(led::BaseController *ctrl);
 
 protected:
-  /**
-   * Implement pure virtual function
-   * from ShaderApplication. This function is called
-   * for each pixel in the image.
-   * Return the color for that pixel by setting
-   * the r,g,b values to something between 0 and 255
-   * @param tm       Current time in milliseconds
-   * @param x        X coordinate
-   * @param y        Y coordinate
-   * @param r        Reference (output) to red component
-   * @param g        Reference (output) to green component
-   * @param b        Reference (output) to blue component
-   * @param shaderId Id of the animation, that is selected.
-   *                 Can be changed by the user by pressing ENTER.
-   */
-  void renderPixel(led::TimeUnit tm,
-                   size_t        x,
-                   size_t        y,
-                   uint8_t     & r,
-                   uint8_t     & g,
-                   uint8_t     & b,
-                   size_t        shaderId);
+
+/**
+ * Implement pure virtual function
+ * from ShaderApplication. This function is called
+ * for each pixel in the image.
+ * Return the color for that pixel by setting
+ * the r,g,b values to something between 0 and 255
+ * @param tm       Current time in milliseconds
+ * @param x        X coordinate
+ * @param y        Y coordinate
+ * @param r        Reference (output) to red component
+ * @param g        Reference (output) to green component
+ * @param b        Reference (output) to blue component
+ * @param shaderId Id of the animation, that is selected.
+ *                 Can be changed by the user by pressing ENTER.
+ */
+    void renderPixel(led::TimeUnit tm,
+                     size_t x,
+                     size_t y,
+                     uint8_t     & r,
+                     uint8_t     & g,
+                     uint8_t     & b,
+                     size_t shaderId);
 
 private:
-  void effect1(led::TimeUnit tm,
-                   size_t        x,
-                   size_t        y,
-                   uint8_t     & r,
-                   uint8_t     & g,
-                   uint8_t     & b);
+
+    void effect1(led::TimeUnit tm,
+                 size_t x,
+                 size_t y,
+                 uint8_t     & r,
+                 uint8_t     & g,
+                 uint8_t     & b);
 };
 
 
