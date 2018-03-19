@@ -84,18 +84,21 @@ void UpdateApp::processInput(const BaseInput::InputEvents& events,
             while (read(m_stdoutPipe[PIPE_READ], &c, 1) == 1 && c != '\n') {
                 line.append(&c, 1);
             }
-            std::cout << "CHILD: " << line << std::endl;
 
-            if (line.find(">>>>>>>> Pull project") != std::string::npos) {
-                m_scrollText.setText("Downloading...");
-            } else if (line.find(">>>>>>>> CMAKE...") != std::string::npos) {
-                m_scrollText.setText("Starting build...");
-            } else if (line.front() == '[') {
-                int idx = line.find("%");
+            if(line.size() > 0){
+              std::cout << "CHILD: " << line << std::endl;
 
-                if (idx != std::string::npos) {
-                    m_scrollText.setText(line.substr(1, idx));
-                }
+              if (line.find(">>>>>>>> Pull project") != std::string::npos) {
+                  m_scrollText.setText("Downloading...");
+              } else if (line.find(">>>>>>>> CMAKE...") != std::string::npos) {
+                  m_scrollText.setText("Starting build...");
+              } else if (line.front() == '[') {
+                  int idx = line.find("%");
+
+                  if (idx != std::string::npos) {
+                      m_scrollText.setText(line.substr(1, idx));
+                  }
+              }
             }
         } else if ((ret == m_childPID) && WIFEXITED(returnStatus)) {
             std::cout << "Child exit status: " << WEXITSTATUS(returnStatus) <<
