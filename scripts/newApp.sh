@@ -86,7 +86,7 @@ $APP_DIR_SRC/$APP_NAME_FILE.cpp
 To add the application to the menu, add the include to your header file to
 the main.cpp. Also insert the following snippet to the menu creation section
 in the main.cpp. (Have a look at the existing code to get an idea how it works):
-    TextMenu::MenuEntry(\"Clock\",
+    TextMenu::MenuEntry(\"$APP_NAME\",
     std::make_shared<AppLauncher>(c, std::make_shared<$APP_NAME>()))" > $tmp_file
 whiptail --title 'Create new application' --textbox $tmp_file $HEIGHT $WIDTH
 # print to commandline
