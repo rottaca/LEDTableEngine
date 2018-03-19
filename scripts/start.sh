@@ -11,7 +11,7 @@
 # e.g. /dev/i2c-1
 i2cDev=""
 
-DIR=$(dirname $(readlink -f $0))
+DIR="$(readlink -f $(dirname $(readlink -f $0))/..)"
 #echo $DIR
 # Redirect output to log file
 exec 2>&1

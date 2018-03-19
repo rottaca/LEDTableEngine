@@ -5,7 +5,7 @@ exec 2>&1
 # unique timestamp
 t=timestamp-$(date +%s)
 
-dir=$(dirname "$(readlink -f "$0")")
+dir="$(readlink -f $(dirname $(readlink -f $0))/..)"
 echo ">>>>>>>> Go to source dir: $dir"
 cd $dir
 
