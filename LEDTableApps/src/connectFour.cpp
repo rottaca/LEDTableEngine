@@ -1,15 +1,15 @@
-#include <LEDTableApps/TEMPLATE_APP_INC_HEADER.hpp>
+#include <LEDTableApps/connectFour.hpp>
 #include <LEDTableEngine/core/baseController.hpp>
 
 using namespace led;
 
-TEMPLATE_APP_NAME::TEMPLATE_APP_NAME() {
+ConnectFour::ConnectFour() {
   // Do some initialize that should only happen once!
 }
 
-TEMPLATE_APP_NAME::~TEMPLATE_APP_NAME() {}
+ConnectFour::~ConnectFour() {}
 
-void TEMPLATE_APP_NAME::initialize(BaseController *ctrl) {
+void ConnectFour::initialize(BaseController *ctrl) {
   // Initialize base class
   BaseApplication::initialize(ctrl);
   // Specify a RGB color palette
@@ -30,17 +30,17 @@ void TEMPLATE_APP_NAME::initialize(BaseController *ctrl) {
   // Initialize your member variables here!
 }
 
-void TEMPLATE_APP_NAME::deinitialize() {
+void ConnectFour::deinitialize() {
   // Deinitialize something
 }
-void TEMPLATE_APP_NAME::continueApp() {
+void ConnectFour::continueApp() {
   // Continue your app (only necessary if you launched new apps by your own)
 }
-void TEMPLATE_APP_NAME::pauseApp() {
+void ConnectFour::pauseApp() {
   // Pause your app (only necessary if you launched new apps by your own)
 }
 
-void TEMPLATE_APP_NAME::processInput(const BaseInput::InputEvents& events,
+void ConnectFour::processInput(const BaseInput::InputEvents& events,
                           TimeUnit                      deltaTime) {
   // Process incoming events
   for (const auto& e : events) {
@@ -73,14 +73,8 @@ void TEMPLATE_APP_NAME::processInput(const BaseInput::InputEvents& events,
   }
 }
 
-void TEMPLATE_APP_NAME::draw(Image& frame) {
+void ConnectFour::draw(Image& frame) {
   // Set the frame to palette index 0
   m_ctrl->clearFrame(0);
-  // Draw you content but remember, that you have only
-  // a palette image (1 channel per pixel not 3!)
-  for (size_t y = 0; y < frame.height; y++) {
-    for (size_t x = 0; x < frame.width; x++) {
-      frame(y,x,0) = 1;
-    }
-  }
+
 }
