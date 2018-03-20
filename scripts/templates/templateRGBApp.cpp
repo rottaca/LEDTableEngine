@@ -75,9 +75,9 @@ void TEMPLATE_APP_NAME::draw(Image& frame) {
     // set all RGB components for a pixel.
     for (size_t y = 0; y < frame.height; y++) {
         for (size_t x = 0; x < frame.width; x++) {
-            frame(y, x, 0) = 255 * i / frame.width;
-            frame(y, x, 1) = 255 * i / frame.height;
-            frame(y, x, 2) = 255 * i * i / m_ctrl->getSize();
+            frame(y, x, 0) = 255 * x / frame.width;
+            frame(y, x, 1) = 255 * y / frame.height;
+            frame(y, x, 2) = 255 * x * y / m_ctrl->getSize();
         }
     }
 }
