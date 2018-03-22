@@ -2,7 +2,6 @@
 #define _H_MINESWEEPER_APP_
 
 #include <LEDTableEngine/core/baseApplication.hpp>
-#include <LEDTableEngine/core/matrixScrollText.hpp>
 
 class MineSweeper : public led::BaseApplication {
 protected:

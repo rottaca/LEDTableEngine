@@ -1,6 +1,6 @@
 #include <LEDTableApps/connectFour.hpp>
 #include <LEDTableEngine/core/baseController.hpp>
-#include <LEDTableApps/textDisplay.hpp>
+#include <LEDTableEngine/core/messageDisplay.hpp>
 
 using namespace led;
 
@@ -52,7 +52,7 @@ void ConnectFour::processInput(const BaseInput::InputEvents& events,
                                TimeUnit deltaTime) {
     if(m_ctrl->getPlayerCount() != 2) {
         // Display final message
-        auto a = std::make_shared<TextDisplay>();
+        auto a = std::make_shared<led::MessageDisplay>();
         a->setText("This game requires 2 players.");
         m_ctrl->addApplication(a, true);
         m_hasFinished = true;
@@ -81,7 +81,7 @@ void ConnectFour::processInput(const BaseInput::InputEvents& events,
             }
             else{
                 // Display final message
-                auto a = std::make_shared<TextDisplay>();
+                auto a = std::make_shared<led::MessageDisplay>();
                 a->setText(std::string("P") + std::to_string(1 + m_currPlayerId) + " wins.");
                 m_ctrl->addApplication(a, true);
                 m_hasFinished = true;

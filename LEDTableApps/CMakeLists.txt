@@ -6,8 +6,6 @@ PROJECT(${PROJECT})
 SET(APP_SRC
   src/connectFour.cpp
   src/update.cpp
-  src/textMenu.cpp
-  src/textDisplay.cpp
   src/testPatterns.cpp
   src/snake.cpp
   src/imageSlideShow.cpp

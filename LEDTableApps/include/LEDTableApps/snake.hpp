@@ -2,7 +2,6 @@
 #define _H_SNAKE_APP_
 
 #include <LEDTableEngine/core/baseApplication.hpp>
-#include <LEDTableEngine/core/matrixScrollText.hpp>
 
 class Snake : public led::BaseApplication {
 protected:

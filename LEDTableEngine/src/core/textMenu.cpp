@@ -1,7 +1,7 @@
-#include <LEDTableApps/textMenu.hpp>
+#include <LEDTableEngine/core/textMenu.hpp>
 #include <LEDTableEngine/core/baseController.hpp>
 
-using namespace led;
+namespace led{
 
 TextMenu::TextMenu(bool closable){
     m_isClosable = closable;
@@ -135,4 +135,5 @@ AppLauncher::AppLauncher(std::shared_ptr<BaseController> ctrl, std::shared_ptr<B
 bool AppLauncher::onSelectMenuItem(TextMenu* menu, TextMenu::MenuEntry& menuEntry, size_t idx){
     m_ctrl->addApplication(m_app, true);
     return false;
+}
 }

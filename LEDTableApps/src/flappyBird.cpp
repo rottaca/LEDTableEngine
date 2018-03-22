@@ -1,7 +1,7 @@
 #include <LEDTableApps/flappyBird.hpp>
 #include <algorithm>
 #include <LEDTableEngine/core/baseController.hpp>
-#include <LEDTableApps/textDisplay.hpp>
+#include <LEDTableEngine/core/messageDisplay.hpp>
 
 using namespace led;
 FlappyBird::FlappyBird() {
@@ -58,19 +58,19 @@ void FlappyBird::processInput(const BaseInput::InputEvents& events,
 
     if (m_birdY < 0) {
         m_birdY = 0;
-        auto a = std::make_shared<TextDisplay>();
+        auto a = std::make_shared<led::MessageDisplay>();
         a->setText(std::string("Score: ") + std::to_string(m_score));
         m_ctrl->addApplication(a, true);
         m_hasFinished = true;
     } else if (m_birdY > m_ctrl->getHeight() - 1) {
         m_birdY = m_ctrl->getHeight() - 1;
-        auto a = std::make_shared<TextDisplay>();
+        auto a = std::make_shared<led::MessageDisplay>();
         a->setText(std::string("Score: ") + std::to_string(m_score));
         m_ctrl->addApplication(a, true);
         m_hasFinished = true;
     }
 
-    if (m_ctrl->getTimeMs() - m_lastUpdateTime > 2000.0 / (0.2 * m_score + 1)) {
+    if (m_ctrl->getTimeMs() - m_lastUpdateTime > 5000.0 / (0.2 * m_score + 1)) {
         m_lastUpdateTime = m_ctrl->getTimeMs();
         Wall w;
         ssize_t openingHeight =  3 + m_posDist(m_generator) % 3 + 1 -
@@ -98,7 +98,7 @@ void FlappyBird::processInput(const BaseInput::InputEvents& events,
         (fabs(m_walls.front().posX - m_birdX) < 1) &&
         ((round(m_birdY) < m_walls.front().openingYMin) ||
          (round(m_birdY) > m_walls.front().openingYMax))) {
-        auto a = std::make_shared<TextDisplay>();
+        auto a = std::make_shared<led::MessageDisplay>();
         a->setText(std::string("Score: ") + std::to_string(m_score));
         m_ctrl->addApplication(a, true);
         m_hasFinished = true;

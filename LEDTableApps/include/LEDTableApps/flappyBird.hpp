@@ -2,7 +2,6 @@
 #define _H_FlappyBird_APP_
 
 #include <LEDTableEngine/core/baseApplication.hpp>
-#include <LEDTableEngine/core/matrixScrollText.hpp>
 
 class FlappyBird : public led::BaseApplication {
 protected:

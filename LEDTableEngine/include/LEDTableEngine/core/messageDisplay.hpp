@@ -8,9 +8,13 @@
 namespace led {
 class MenuEntryHandler;
 class BaseController;
-}
-
-class TextDisplay : public led::BaseApplication {
+/**
+ * This class provides a simple interface to display a
+ * moving text ontop of a running application.
+ * It can be used to display status messages with very little effort.
+ * Pressing ENTER or EXIT leaves the application.
+ */
+class MessageDisplay : public led::BaseApplication {
 public:
 
 protected:
@@ -20,15 +24,20 @@ protected:
 
 public:
 
-    TextDisplay();
-    virtual ~TextDisplay();
+    MessageDisplay();
+    virtual ~MessageDisplay();
 
     void initialize(led::BaseController *ctrl);
 
     void processInput(const led::BaseInput::InputEvents& events,
                       led::TimeUnit deltaTime);
     void draw(led::Image& frame);
+
+    /**
+     * Set the actual text that should be displayed.
+     */
     void setText(std::string text);
 };
 
+}
 #endif // ifndef _H_TEXT_DISPLAY_APP

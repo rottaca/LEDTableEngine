@@ -2,7 +2,6 @@
 #define _H_CLOCK_APP
 
 #include <LEDTableEngine/core/baseApplication.hpp>
-#include <LEDTableEngine/core/matrixScrollText.hpp>
 #include <LEDTableEngine/core/rasterizer.hpp>
 
 class ClockApp : public led::BaseApplication {

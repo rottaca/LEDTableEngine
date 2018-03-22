@@ -4,6 +4,7 @@
 #include "LEDTableEngine/controllers/desktopController.hpp"
 #include "LEDTableEngine/controllers/matrixController.hpp"
 #include "LEDTableEngine/core/audio.hpp"
+#include "LEDTableEngine/core/textMenu.hpp"
 
 #include "LEDTableEngine/inputHandlers/keyboardInput.hpp"
 #ifdef LED_HAVE_I2C_H_
@@ -12,7 +13,6 @@
 
 #include "LEDTableApps/update.hpp"
 #include "LEDTableApps/testPatterns.hpp"
-#include "LEDTableApps/textMenu.hpp"
 #include "LEDTableApps/snake.hpp"
 #include "LEDTableApps/imageSlideShow.hpp"
 #include "LEDTableApps/pong.hpp"

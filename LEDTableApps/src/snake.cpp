@@ -3,8 +3,8 @@
 #include <algorithm>
 #include <sstream>
 
-#include <LEDTableApps/textDisplay.hpp>
 #include <LEDTableEngine/core/baseController.hpp>
+#include <LEDTableEngine/core/messageDisplay.hpp>
 
 using namespace led;
 Snake::Snake() {
@@ -138,13 +138,13 @@ void Snake::processInput(const BaseInput::InputEvents& events,
             collision) {
             for (int j = m_snakes.size() - 1; j >= 0; j--) {
                 SnakeData& s = m_snakes[j];
-                auto a       = std::make_shared<TextDisplay>();
+                auto a       = std::make_shared<led::MessageDisplay>();
                 std::stringstream ss;
                 ss << "P" << j + 1 << ": " << s.snake.size() << "Pts";
                 a->setText(ss.str());
                 m_ctrl->addApplication(a, true);
             }
-            auto a = std::make_shared<TextDisplay>();
+            auto a = std::make_shared<led::MessageDisplay>();
             std::stringstream ss;
             ss << "Player " << i + 1 << " died!";
             a->setText(ss.str());

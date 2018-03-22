@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <sstream>
 
-#include <LEDTableApps/textDisplay.hpp>
+#include <LEDTableEngine/core/messageDisplay.hpp>
 #include <LEDTableEngine/core/baseController.hpp>
 
 using namespace led;
@@ -196,14 +196,14 @@ void MineSweeper::processInput(const BaseInput::InputEvents& events,
         m_gamefield[m_cursorPos.x + m_cursorPos.y *
                     w].marked = !m_gamefield[m_cursorPos.x + m_cursorPos.y * w].marked;
     } else if (m_hasFinished && m_gameOver) {
-        auto a = std::make_shared<TextDisplay>();
+        auto a = std::make_shared<led::MessageDisplay>();
         std::stringstream ss;
         ss << "Lost after " << m_steps << " steps";
         a->setText(ss.str());
         m_ctrl->addApplication(a, true);
     } else if (gameWon()) {
         m_gameOver = true;
-        auto a = std::make_shared<TextDisplay>();
+        auto a = std::make_shared<led::MessageDisplay>();
         std::stringstream ss;
         ss << "Won after " << m_steps << " steps";
         a->setText(ss.str());

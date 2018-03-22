@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-#include <LEDTableApps/textDisplay.hpp>
+#include <LEDTableEngine/core/messageDisplay.hpp>
 #include <LEDTableEngine/core/baseController.hpp>
 
 using namespace led;
@@ -192,7 +192,7 @@ void Tetris::processInput(const BaseInput::InputEvents& events,
         if (collision) {
             for (Pointi& p : m_fallingShape.currShape()) {
                 if (pos.y + p.y < 0) {
-                    auto a = std::make_shared<TextDisplay>();
+                    auto a = std::make_shared<led::MessageDisplay>();
                     a->setText(std::string("Score: ") + std::to_string(m_score));
                     m_ctrl->addApplication(a, true);
                     m_hasFinished = true;

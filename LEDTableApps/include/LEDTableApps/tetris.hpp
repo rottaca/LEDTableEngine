@@ -3,7 +3,6 @@
 
 
 #include <LEDTableEngine/core/baseApplication.hpp>
-#include <LEDTableEngine/core/matrixScrollText.hpp>
 
 class Tetris : public led::BaseApplication {
 public:

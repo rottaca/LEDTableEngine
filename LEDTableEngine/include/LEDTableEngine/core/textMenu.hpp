@@ -9,7 +9,6 @@
 
 namespace led {
 class BaseController;
-}
 class MenuEntryHandler;
 
 class TextMenu : public led::BaseApplication {
@@ -33,17 +32,17 @@ protected:
         TEXT  = 2
     };
 
-// / True, if the menu can be closed
-// / Generally false for the main menu!
+// True, if the menu can be closed
+// Generally false for the main menu!
     bool m_isClosable;
 
-// / Currently selected menu entry
+// Currently selected menu entry
     size_t m_menuEntryIdx;
 
-// / Data structure that contains all menu entries
+// Data structure that contains all menu entries
     std::vector<MenuEntry> m_menuEntries;
 
-// / The current scroll text that has to be displayed
+// The current scroll text that has to be displayed
     led::MatrixScrollText m_scrollText;
 
 public:
@@ -113,5 +112,6 @@ public:
                           TextMenu::MenuEntry& menuEntry,
                           size_t idx);
 };
+}
 
 #endif // ifndef _H_TEXTMENU_APP_

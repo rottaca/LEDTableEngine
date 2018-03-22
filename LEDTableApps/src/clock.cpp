@@ -1,7 +1,7 @@
 #include <LEDTableApps/clock.hpp>
 #include <algorithm>
 #include <LEDTableEngine/core/baseController.hpp>
-#include <LEDTableApps/textDisplay.hpp>
+#include <LEDTableEngine/core/messageDisplay.hpp>
 
 using namespace led;
 ClockApp::ClockApp() {

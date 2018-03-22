@@ -1,15 +1,15 @@
-#include <LEDTableApps/textDisplay.hpp>
+#include <LEDTableEngine/core/messageDisplay.hpp>
 #include <LEDTableEngine/core/baseController.hpp>
 
-using namespace led;
+namespace led{
 
-TextDisplay::TextDisplay() {
+MessageDisplay::MessageDisplay() {
 }
 
-TextDisplay::~TextDisplay() {
+MessageDisplay::~MessageDisplay() {
 }
 
-void TextDisplay::initialize(BaseController *ctrl) {
+void MessageDisplay::initialize(BaseController *ctrl) {
     BaseApplication::initialize(ctrl);
     m_colorPalette = {
         {   0,   0,   0 },
@@ -23,11 +23,11 @@ void TextDisplay::initialize(BaseController *ctrl) {
     m_scrollText.setText(m_text);
 }
 
-void TextDisplay::setText(std::string text) {
+void MessageDisplay::setText(std::string text) {
     m_text = text;
 }
 
-void TextDisplay::processInput(const BaseInput::InputEvents& events,
+void MessageDisplay::processInput(const BaseInput::InputEvents& events,
                                TimeUnit deltaTime) {
     TimeUnit t = m_ctrl->getTimeMs();
 
@@ -48,8 +48,9 @@ void TextDisplay::processInput(const BaseInput::InputEvents& events,
     }
 }
 
-void TextDisplay::draw(Image& frame) {
+void MessageDisplay::draw(Image& frame) {
     m_requiresRedraw = false;
     m_ctrl->clearFrame(0);
     m_scrollText.draw(frame);
+}
 }
