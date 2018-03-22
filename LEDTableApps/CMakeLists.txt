@@ -4,6 +4,7 @@ SET(PROJECT LEDTableApps)
 PROJECT(${PROJECT})
 
 SET(APP_SRC
+  src/shutdownApp.cpp
   src/connectFour.cpp
   src/update.cpp
   src/testPatterns.cpp
