@@ -2,6 +2,11 @@
 #include <LEDTableEngine/core/baseController.hpp>
 #include <LEDTableEngine/core/yesNoDisplay.hpp>
 
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/wait.h>
+#include <fcntl.h> // library for fcntl function
+
 using namespace led;
 
 ShutdownApp::ShutdownApp() {
