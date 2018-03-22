@@ -60,7 +60,8 @@ void UpdateApp::processInput(const BaseInput::InputEvents& events,
                 exit(errno);
             }
             std::cout << "CHILD: Starting update..." << std::endl;
-            int res = system("./../scripts/update.sh");
+            // Run script as non root
+            int res = system("sudo -u pi ./../scripts/update.sh");
             exit(res);
         }
 
