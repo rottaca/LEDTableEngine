@@ -233,7 +233,7 @@ int main(int argc, char **argv)
                             std::make_shared<AppLauncher>(c,
                                                           std::make_shared<
                                                               UpdateApp>())),
-        TextMenu::MenuEntry("ShutdownApp", std::make_shared<AppLauncher>(c,
+        TextMenu::MenuEntry("Shutdown", std::make_shared<AppLauncher>(c,
                             std::make_shared<ShutdownApp>()))
     });
 
