@@ -49,7 +49,13 @@ void ShutdownApp::processInput(const BaseInput::InputEvents& events,
         if(m_yesNoDisplay->exitedWithYes()){
           if(m_ctrl->isDebug())
             std::cout << "Shutdown started" << std::endl;
-          system("sudo shutdown -h now");
+          pid_t fk = fork();
+          // Child process
+          if(!fk){
+            // Call shutdown command
+            execl("/sbin/shutdown","/sbin/shutdown","-h","now",(char*) NULL);
+            exit(0);
+          }
           m_state = SHUTDOWN_STARTED;
         }else{
           if(m_ctrl->isDebug())
