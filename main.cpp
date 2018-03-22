@@ -25,6 +25,7 @@
 #include "LEDTableApps/minesweeper.hpp"
 #include "LEDTableApps/clock.hpp"
 #include "LEDTableApps/connectFour.hpp"
+#include "LEDTableApps/shutdownApp.hpp"
 
 extern char *optarg;
 extern int optind, opterr, optopt;
@@ -232,6 +233,8 @@ int main(int argc, char **argv)
                             std::make_shared<AppLauncher>(c,
                                                           std::make_shared<
                                                               UpdateApp>())),
+        TextMenu::MenuEntry("Shutdown", std::make_shared<AppLauncher>(c,
+                            std::make_shared<ShutdownApp>()))
     });
 
     // Main Menu
