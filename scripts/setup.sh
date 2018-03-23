@@ -1,4 +1,5 @@
 #!/bin/bash
+shopt -s nullglob
 
 ###################
 ## Check a few things for the setup
@@ -78,7 +79,7 @@ sudo apt-get install libsdl2-dev libsdl2-image-dev g++ cmake i2c-tools libi2c-de
 ## Edit configuration header
 ###################
 
-if ($DISPLAY_CMD --title "Setup Installer Script for LED Matrix Engine" \
+if ($DISPLAY_CMD --clear --title "Setup Installer Script for LED Matrix Engine" \
     --yesno "\
 All required libraries are now installed!\
 
@@ -207,7 +208,7 @@ To leave the framework, use CTRL-C and restart the setup." 0 0) then
     ./LEDTableMain -c $DISPLAY_MODE -i $INPUT_DEVICE -I $INPUT_DEVICE_FILE  > $TMP_FILE 2>&1 &
   fi
 
-  $answ=$($DISPLAY_CMD --title "Setup Installer Script for LED Matrix Engine" \
+  $answ=$($DISPLAY_CMD --clear --title "Setup Installer Script for LED Matrix Engine" \
       --yesno "Did the engine start successfully? Do the controllers/keyboard work?." 0 0)
 
   if [ "$answ" == "1" ]; then
