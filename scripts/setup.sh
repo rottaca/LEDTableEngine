@@ -242,7 +242,7 @@ if ($DISPLAY_CMD --title "Setup Installer Script for LED Matrix Engine" \
   # Add script to cron tab only once
   CRONCMD="/bin/sh /home/pi/LEDTableEngine/scripts/start.sh"
   CRONJOB="@reboot $CRONCMD"
-  ( crontab -l | grep -v -F "SHELL=/bin/sh" ; echo "$SHELL=/bin/sh" ) | crontab -
+  ( crontab -l | grep -v -F "SHELL=/bin/sh" ; echo "SHELL=/bin/sh" ) | crontab -
   ( crontab -l | grep -v -F "$CRONCMD" ; echo "$CRONJOB" ) | crontab -
 
 
