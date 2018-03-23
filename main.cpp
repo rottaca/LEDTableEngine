@@ -126,11 +126,15 @@ int main(int argc, char **argv)
                 inputIdx = 0;
             }
 
-#ifdef LED_HAVE_I2C_H_
             else if (strcmp(optarg, "i2c") == 0) {
+            #ifdef LED_HAVE_I2C_H_
                 inputIdx = 1;
+            #elif
+                std::cerr << "I2C controller option selected, but framework is not compiled with I2C support!: " <<
+                    std::endl;
+                exit(1);
+            #endif // ifdef LED_HAVE_I2C_H_
             }
-#endif // ifdef LED_HAVE_I2C_H_
             else {
                 std::cerr << "Unknwon argument for controller option: " << optarg <<
                     std::endl;
