@@ -172,7 +172,11 @@ elif [[ "$INPUT_DEVICE" == "i2c" ]]; then
   OPTIONS=()
   for f in /dev/i2c-*; do
     OPTIONS+=("$f")
-    OPTIONS+=("_")
+    if [[ "$f" == "/dev/i2c-1" ]]; then
+      OPTIONS+=("Usually_correct_for_a_Raspberry")
+    else
+      OPTIONS+=("_")
+    fi
   done
   if [[ "${#OPTIONS[@]}" == "0" ]]; then
     $DISPLAY_CMD --clear --title "Setup Installer Script for LED Matrix Engine" \
@@ -192,13 +196,28 @@ fi
 ###################
 ## Start framework
 ###################
-if ($DISPLAY_CMD --title "Setup Installer Script for LED Matrix Engine" \
-    --yesno "Would you like to start the framework for the first time?" 0 0) then
+if ($DISPLAY_CMD --clear --title "Setup Installer Script for LED Matrix Engine" \
+    --yesno "Would you like to start the framework for the first time?
+To leave the framework, use CTRL-C and restart the setup." 0 0) then
+  TMP_FILE="$(mktemp)"
 
   if [[ "$INPUT_DEVICE" == "keyboard" ]]; then
-    sudo ./LEDTableMain -c $DISPLAY_MODE -i $INPUT_DEVICE -k $INPUT_DEVICE_FILE || abortSetup
+    sudo ./LEDTableMain -c $DISPLAY_MODE -i $INPUT_DEVICE -k $INPUT_DEVICE_FILE > $TMP_FILE 2>&1 &
   elif [[ "$INPUT_DEVICE" == "i2c" ]]; then
-    ./LEDTableMain -c $DISPLAY_MODE -i $INPUT_DEVICE -I $INPUT_DEVICE_FILE || abortSetup
+    ./LEDTableMain -c $DISPLAY_MODE -i $INPUT_DEVICE -I $INPUT_DEVICE_FILE  > $TMP_FILE 2>&1 &
+  fi
+
+  $answ=$($DISPLAY_CMD --title "Setup Installer Script for LED Matrix Engine" \
+      --yesno "Did the engine start successfully? Do the controllers/keyboard work?." 0 0)
+
+  if [ "$answ" == "1" ]; then
+    $DISPLAY_CMD --clear --title "Setup Installer Script for LED Matrix Engine" \
+                 --msgbox "Please have a look at the output to identify the error (Output will be displayed after closing this message)!" 0 0
+    cat $TMP_FILE
+    killall LEDTableMain
+    exit 0
+  else
+    killall LEDTableMain
   fi
 fi
 
