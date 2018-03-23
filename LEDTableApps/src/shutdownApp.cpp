@@ -58,7 +58,7 @@ void ShutdownApp::processInput(const BaseInput::InputEvents& events,
           // Child process
           if(!fk){
             // Call shutdown command
-            execl("/sbin/shutdown","/sbin/shutdown","-h","now",(char*) NULL);
+            execl("/bin/sh","/bin/sh","-c","sudo shutdown -h now",(char*) NULL);
             exit(0);
           }
           m_state = SHUTDOWN_STARTED;
