@@ -59,16 +59,13 @@ void UpdateApp::processInput(const BaseInput::InputEvents& events,
             if (dup2(m_stdoutPipe[PIPE_WRITE], STDOUT_FILENO) == -1) {
                 exit(errno);
             }
-            std::cout << "CHILD: Starting update..." << std::endl;
-            // Run script as non root
-            int res = system("sudo -u pi ./../scripts/update.sh");
+            std::cout << "Starting update..." << std::endl;
+            int res = system("./../scripts/update.sh");
             exit(res);
         }
 
         // Parent
-        else {
-            std::cout << "PARENT: Starting update..." << std::endl;
-        }
+        else {}
     } else if (m_state == UPDATING) {
         int returnStatus;
 
