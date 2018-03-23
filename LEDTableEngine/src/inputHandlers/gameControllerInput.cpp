@@ -104,7 +104,7 @@ bool GameControllerInput::connectToDevice(std::string device) {
 
     if ((m_deviceHandle = open(device.c_str(), O_RDWR)) < 0)
     {
-        perror("open() failed");
+        perror("Opening the i2c device file failed");
         return false;
     }
     std::cout << " OK" << std::endl;
