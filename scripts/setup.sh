@@ -82,6 +82,7 @@ Would you like to install the libraries?
 
   # Create default user if onone exists, otherwise git stash might fail
   if [[ -z "$(git config user.email)" ]]; then
+    echo "Creating new (empty) git user account to allow stashing"
     git config user.email "(none)"
     git config user.name "Template User"
   fi
@@ -116,7 +117,6 @@ TMP_FILE=$(mktemp)
 
 cmake .. | tee $TMP_FILE
 # Cmake failed ?
-echo ${PIPESTATUS[0]}
 if [[ "${PIPESTATUS[0]}" -ne "0" ]]; then
   abortSetup
 fi

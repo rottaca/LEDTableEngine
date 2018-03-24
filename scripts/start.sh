@@ -8,13 +8,13 @@
 
 # The i2c device file, that has to be used
 # to connect to the game controllers.
-# Set to an empty string "" if you don't wan't
+# Set to an empty string "" if you don't want
 # to use controllers
 # e.g. /dev/i2c-1
 i2cDev=""
 
 # The keyboard device file, that has to be used
-# Set to an empty string "" if you don't wan't
+# Set to an empty string "" if you don't want
 # to use a keyboard
 keyboardDev=""
 # If you want to automatically find the first
