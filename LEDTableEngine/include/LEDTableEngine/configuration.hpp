@@ -69,4 +69,21 @@
 // End adress for the device scan
 #define I2C_CTRL_ADR_END 0x27
 
+////////////////////////////////////////////////////////////////////////////////
+/////////////////////// Parameter Validation ///////////////////////////////////
+// ////////////////////////////////////
+// LED-Matrix Settings
+// ////////////////////////////////////
+#if defined(LED_MATRIX_ZIGZAG_X) && defined(LED_MATRIX_ZIGZAG_Y)
+  #error "LED_MATRIX_ZIGZAG_X and LED_MATRIX_ZIGZAG_Y are defined at the same time!\
+   Please comment out one of both symbols!"
+#endif
+
+#if ! defined(LED_MATRIX_ZIGZAG_X) && ! defined(LED_MATRIX_ZIGZAG_Y)
+  #error "No matrix zigzag layout defined!"
+#endif
+
+
+
+
 #endif // ifndef CONFIGURATION_H_

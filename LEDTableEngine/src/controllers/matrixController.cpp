@@ -60,15 +60,15 @@ void MatrixController::copyImageToBuffer(const led::Image& frame) {
           else {
               outputIdx = 3 * (y_matrix_inverted + x_matrix * m_height);
           }
-          #elif LED_MATRIX_ZIGZAG_X
+          #endif
+          
+          #ifdef LED_MATRIX_ZIGZAG_X
           if (y_matrix % 2 == 0){
               outputIdx = 3 * (x_matrix + y_matrix * m_width);
           }
           else {
               outputIdx = 3 * (y_matrix_inverted + y_matrix * m_width);
           }
-          #else
-            #error "Invalid configuration specified. LED_MATRIX_ZIGZAG_X or LED_MATRIX_ZIGZAG_Y have to be set!"
           #endif
 
           // Palette mode
