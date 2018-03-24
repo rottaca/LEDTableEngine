@@ -79,6 +79,12 @@ Would you like to install the libraries?
 " 0 0) then
   # Install the required libraries
   sudo apt-get install libsdl2-dev libsdl2-image-dev g++ cmake i2c-tools libi2c-dev || abortSetup
+
+  # Create default user if onone exists, otherwise git stash might fail
+  if [[ -z "$(git config user.email)" ]]; then
+    git config user.email "(none)"
+    git config user.name "Template User"
+  fi
 fi
 ###################
 ## Edit configuration header
