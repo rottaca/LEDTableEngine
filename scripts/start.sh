@@ -28,19 +28,19 @@ exec 2>&1
 exec >${DIR}/log.txt
 
 echo ">>>>>>> Kill all running LEDTable executables..."
-killall LEDTable
+killall LEDTableMain
 echo ">>>>>>> Sleeping for 5 seconds befor start..."
 sleep 5
 echo ">>>>>>> Try to find the I2C device ....."
 startParams=""
 # Check if i2c file exists
-if [ ! -z "$i2cDev"] && [ -e "$i2cDev" ];then
+if [ ! -z "$i2cDev" ] && [ -e "$i2cDev" ];then
   startParams="-i i2c -f $i2cDev"
   echo ">>>>>>> I2C device exists....."
 else
   echo ">>>>>>> Failed to find valid i2c device ....."
   echo ">>>>>>> Try to find keyboard instead ....."
-  if [ ! -z "$keybardDev"] &&  [ -e "$keybardDev" ]; then
+  if [ ! -z "$keybardDev" ] &&  [ -e "$keybardDev" ]; then
     echo ">>>>>>> Keyboard found: $keybardDev"
       startParams="-i keyboard -f $keybardDev"
   else
