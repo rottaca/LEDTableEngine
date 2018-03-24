@@ -4,6 +4,7 @@
 // ////////////////////////////////////
 // General Settings
 // ////////////////////////////////////
+
 // The actual width of the matrix table in pixels
 #define PIXEL_MATRIX_WIDTH (20)
 
@@ -23,15 +24,30 @@
 // if the engine is in standby mode
 #define STANDBY_CHECK_TIME_MS (1000)
 
+
+
+// ////////////////////////////////////
+// LED-Matrix Settings
+// ////////////////////////////////////
+
 // The device file that allows the communication the
 // LED controller chip via a serial connection.
 // This name might change, if you use a different controller.
 // Could be also ttyUSB*
 #define LED_USB_CONTROLLER_DEV "/dev/ttyACM0"
 
+// Uncomment the line below if your
+// matrix orienation is flipped from left to right
+//#define LED_MATRIX_FLIP_X
+
+// Uncomment the line below if your
+// matrix orienation is flipped from top to bottom
+//#define LED_MATRIX_FLIP_Y
+
 // ////////////////////////////////////
 // Game-Controller Settings
 // ////////////////////////////////////
+
 // The values below are the actual range of adresses, that are used
 // by your I2C port extender. Have a look into its documentation
 // and change the values here accordingly.
