@@ -61,13 +61,13 @@ void MatrixController::copyImageToBuffer(const led::Image& frame) {
               outputIdx = 3 * (y_matrix_inverted + x_matrix * m_height);
           }
           #endif
-          
+
           #ifdef LED_MATRIX_ZIGZAG_X
           if (y_matrix % 2 == 0){
               outputIdx = 3 * (x_matrix + y_matrix * m_width);
           }
           else {
-              outputIdx = 3 * (y_matrix_inverted + y_matrix * m_width);
+              outputIdx = 3 * (x_matrix_inverted + y_matrix * m_width);
           }
           #endif
 
