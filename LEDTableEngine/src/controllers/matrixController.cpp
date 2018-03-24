@@ -26,7 +26,7 @@ bool MatrixController::initialize(size_t width, size_t height,
 
 void MatrixController::copyImageToBuffer(const led::Image& frame) {
     const led::Palette& palette = getCurrentPalette();
-    uint8_t *ouputPtr             = m_frameDataPacket.dataPtr;
+    uint8_t *outputPtr             = m_frameDataPacket.dataPtr;
     uint8_t *p;
     size_t inputIdx = 0;
     size_t outputIdx = 0;
@@ -42,15 +42,15 @@ void MatrixController::copyImageToBuffer(const led::Image& frame) {
       y_matrix = 0;
       y_matrix_inverted = m_height - 1;
     #endif
-    #ifdef LED_MATRIX_FLIP_X
-      x_matrix = m_width - 1;
-      x_matrix_inverted = 0;
-    #else
-      x_matrix = 0;
-      x_matrix_inverted = m_width - 1;
-    #endif
 
     for (size_t y = 0; y < m_height; y++) {
+        #ifdef LED_MATRIX_FLIP_X
+          x_matrix = m_width - 1;
+          x_matrix_inverted = 0;
+        #else
+          x_matrix = 0;
+          x_matrix_inverted = m_width - 1;
+        #endif
         for (size_t x = 0; x < m_width; x++){
 
           #ifdef LED_MATRIX_ZIGZAG_Y
@@ -82,10 +82,9 @@ void MatrixController::copyImageToBuffer(const led::Image& frame) {
               c[2] = frame.data[inputIdx++];
           }
 
-          ouputPtr[outputIdx+0] = c[0] * m_brightness;
-          ouputPtr[outputIdx+1] = c[1] * m_brightness;
-          ouputPtr[outputIdx+2] = c[2] * m_brightness;
-
+          outputPtr[outputIdx+0] = c[0] * m_brightness;
+          outputPtr[outputIdx+1] = c[1] * m_brightness;
+          outputPtr[outputIdx+2] = c[2] * m_brightness;
 
           #ifdef LED_MATRIX_FLIP_X
             x_matrix--;

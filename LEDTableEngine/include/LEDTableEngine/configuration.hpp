@@ -24,8 +24,6 @@
 // if the engine is in standby mode
 #define STANDBY_CHECK_TIME_MS (1000)
 
-
-
 // ////////////////////////////////////
 // LED-Matrix Settings
 // ////////////////////////////////////
@@ -44,14 +42,14 @@
 // matrix orienation is flipped from top to bottom
 //#define LED_MATRIX_FLIP_Y
 
-// If your matrix table uses the zig-zag layout along the y direction (up/down),
+// If your matrix table uses the zig-zag layout along the X direction (up/down),
 // uncomment this option.
 // ATTENTION: YOU HAVE TO COMMENT OUT LED_MATRIX_ZIGZAG_Y
 //#define LED_MATRIX_ZIGZAG_X
 
-// If your matrix table uses the zig-zag layout along the X direction (left/right),
+// If your matrix table uses the zig-zag layout along the Y direction (left/right),
 // uncomment this option.
-// ATTENTION: YOU HAVE TO COMMENT OUT LED_MATRIX_ZIGZAG_Y
+// ATTENTION: YOU HAVE TO COMMENT OUT LED_MATRIX_ZIGZAG_X
 #define LED_MATRIX_ZIGZAG_Y
 
 // ////////////////////////////////////
