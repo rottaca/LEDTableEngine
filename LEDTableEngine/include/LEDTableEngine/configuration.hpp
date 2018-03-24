@@ -44,6 +44,16 @@
 // matrix orienation is flipped from top to bottom
 //#define LED_MATRIX_FLIP_Y
 
+// If your matrix table uses the zig-zag layout along the y direction (up/down),
+// uncomment this option.
+// ATTENTION: YOU HAVE TO COMMENT OUT LED_MATRIX_ZIGZAG_Y
+//#define LED_MATRIX_ZIGZAG_X
+
+// If your matrix table uses the zig-zag layout along the X direction (left/right),
+// uncomment this option.
+// ATTENTION: YOU HAVE TO COMMENT OUT LED_MATRIX_ZIGZAG_Y
+#define LED_MATRIX_ZIGZAG_Y
+
 // ////////////////////////////////////
 // Game-Controller Settings
 // ////////////////////////////////////

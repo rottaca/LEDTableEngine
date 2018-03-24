@@ -26,11 +26,11 @@ bool MatrixController::initialize(size_t width, size_t height,
 
 void MatrixController::copyImageToBuffer(const led::Image& frame) {
     const led::Palette& palette = getCurrentPalette();
-    uint8_t *pixels             = m_frameDataPacket.dataPtr;
+    uint8_t *ouputPtr             = m_frameDataPacket.dataPtr;
     uint8_t *p;
-    size_t idx = 0;
+    size_t inputIdx = 0;
+    size_t outputIdx = 0;
     led::ColorRGB c;
-
 
     size_t y_matrix, y_matrix_inverted;
     size_t x_matrix, x_matrix_inverted;
@@ -47,19 +47,46 @@ void MatrixController::copyImageToBuffer(const led::Image& frame) {
       x_matrix_inverted = 0;
     #else
       x_matrix = 0;
-      x_matrix_inverted = m_height - 1;
+      x_matrix_inverted = m_width - 1;
     #endif
 
     for (size_t y = 0; y < m_height; y++) {
-        #ifdef LED_MATRIX_FLIP_Y
-          y_matrix--;
-          y_matrix_inverted++;
-        #else
-          y_matrix++;
-          y_matrix_inverted--;
-        #endif
-
         for (size_t x = 0; x < m_width; x++){
+
+          #ifdef LED_MATRIX_ZIGZAG_Y
+          if (x_matrix % 2 == 0){
+              outputIdx = 3 * (y_matrix + x_matrix * m_height);
+          }
+          else {
+              outputIdx = 3 * (y_matrix_inverted + x_matrix * m_height);
+          }
+          #elif LED_MATRIX_ZIGZAG_X
+          if (y_matrix % 2 == 0){
+              outputIdx = 3 * (x_matrix + y_matrix * m_width);
+          }
+          else {
+              outputIdx = 3 * (y_matrix_inverted + y_matrix * m_width);
+          }
+          #else
+            #error "Invalid configuration specified. LED_MATRIX_ZIGZAG_X or LED_MATRIX_ZIGZAG_Y have to be set!"
+          #endif
+
+          // Palette mode
+          if (m_bufferMode == led::BufferColorMode::PALETTE) {
+              c = palette[frame.data[inputIdx++]];
+          }
+          // RGB Mode
+          else {
+              c[0] = frame.data[inputIdx++];
+              c[1] = frame.data[inputIdx++];
+              c[2] = frame.data[inputIdx++];
+          }
+
+          ouputPtr[outputIdx+0] = c[0] * m_brightness;
+          ouputPtr[outputIdx+1] = c[1] * m_brightness;
+          ouputPtr[outputIdx+2] = c[2] * m_brightness;
+
+
           #ifdef LED_MATRIX_FLIP_X
             x_matrix--;
             x_matrix_inverted++;
@@ -67,31 +94,14 @@ void MatrixController::copyImageToBuffer(const led::Image& frame) {
             x_matrix++;
             x_matrix_inverted--;
           #endif
-
-          if (x_matrix % 2 == 0){
-              p = pixels + 3 * (y_matrix + x_matrix * m_height);
-          }
-          else {
-              p = pixels + 3 * (y_matrix_inverted + x_matrix * m_height);
-          }
-
-          // Palette mode
-          if (m_bufferMode == led::BufferColorMode::PALETTE) {
-              int p = frame.data[idx++];
-              c = palette[p];
-          }
-
-          // RGB Mode
-          else {
-              c[0] = frame.data[idx++];
-              c[1] = frame.data[idx++];
-              c[2] = frame.data[idx++];
-          }
-
-          *(p+0) = c[0] * m_brightness;
-          *(p+1) = c[1] * m_brightness;
-          *(p+2) = c[2] * m_brightness;
       }
+      #ifdef LED_MATRIX_FLIP_Y
+        y_matrix--;
+        y_matrix_inverted++;
+      #else
+        y_matrix++;
+        y_matrix_inverted--;
+      #endif
     }
 }
 
