@@ -96,12 +96,11 @@ int main(int argc, char **argv)
     size_t controllerIdx    = 0;
     size_t inputIdx         = 0;
     float desktopUpscale   = 20;
-    std::string keyboardDev = "/dev/input/by-path/platform-i8042-serio-0-event-kbd";
-    std::string i2cDev      = "/dev/i2c-1";
+    std::string devFile = "";
 
     int opt;
 
-    while ((opt = getopt(argc, argv, "dc:i:k:I:")) != -1) {
+    while ((opt = getopt(argc, argv, "dc:i:f:")) != -1) {
         switch (opt) {
         case 'd':
             debug = true;
@@ -114,7 +113,7 @@ int main(int argc, char **argv)
             } else if (strcmp(optarg, "matrix") == 0) {
                 controllerIdx = 1;
             } else {
-                std::cerr << "Unknwon argument for controller option: " << optarg <<
+                std::cerr << "Unknown argument for display option: " << optarg <<
                     std::endl;
                 exit(1);
             }
@@ -130,24 +129,20 @@ int main(int argc, char **argv)
             #ifdef LED_HAVE_I2C_H_
                 inputIdx = 1;
             #elif
-                std::cerr << "I2C controller option selected, but framework is not compiled with I2C support!: " <<
+                std::cerr << "I2C controller option selected, but framework is not compiled with I2C support! " <<
                     std::endl;
                 exit(1);
             #endif // ifdef LED_HAVE_I2C_H_
             }
             else {
-                std::cerr << "Unknwon argument for controller option: " << optarg <<
+                std::cerr << "Unknown argument for controller option: " << optarg <<
                     std::endl;
                 exit(1);
             }
             break;
 
-        case 'k':
-            keyboardDev = optarg;
-            break;
-
-        case 'I':
-            i2cDev = optarg;
+        case 'f':
+            devFile = optarg;
             break;
 
         default:
@@ -163,10 +158,10 @@ int main(int argc, char **argv)
 
     // Inputs
     std::vector<std::shared_ptr<led::BaseInput> > inputs;
-    inputs.push_back(std::make_shared<KeyboardInput>(keyboardDev));
+    inputs.push_back(std::make_shared<KeyboardInput>(devFile));
 
 #ifdef LED_HAVE_I2C_H_
-    inputs.push_back(std::make_shared<GameControllerInput>(i2cDev));
+    inputs.push_back(std::make_shared<GameControllerInput>(devFile));
 #endif // ifdef LED_HAVE_I2C_H_
 
     auto c = controllers[controllerIdx];

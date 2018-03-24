@@ -7,9 +7,19 @@
 
 
 # The i2c device file, that has to be used
-# to connect to the game controllers
+# to connect to the game controllers.
+# Set to an empty string "" if you don't wan't
+# to use controllers
 # e.g. /dev/i2c-1
 i2cDev=""
+
+# The keyboard device file, that has to be used
+# Set to an empty string "" if you don't wan't
+# to use a keyboard
+keyboardDev=""
+# If you want to automatically find the first
+# keyboard file, uncomment this line:
+#keybardDev=$(ls /dev/input/by-path/*kbd* | head -1)
 
 DIR="$(readlink -f $(dirname $(readlink -f $0))/..)"
 
@@ -19,24 +29,22 @@ exec >${DIR}/log.txt
 
 echo ">>>>>>> Kill all running LEDTable executables..."
 killall LEDTable
-echo ">>>>>>> Sleeping for 10 seconds befor start..."
-sleep 10
+echo ">>>>>>> Sleeping for 5 seconds befor start..."
+sleep 5
 echo ">>>>>>> Try to find the I2C device ....."
 startParams=""
 # Check if i2c file exists
-if [ -e "$i2cDev" ];then
-  startParams="-i i2c -I $i2cDev"
+if [ ! -z "$i2cDev"] && [ -e "$i2cDev" ];then
+  startParams="-i i2c -f $i2cDev"
   echo ">>>>>>> I2C device exists....."
 else
   echo ">>>>>>> Failed to find valid i2c device ....."
   echo ">>>>>>> Try to find keyboard instead ....."
-  # Automatically find first keyboard file
-  keybardDev=$(ls /dev/input/by-path/*kbd* | head -1)
-  if [ -z "$keybardDev" ]; then
-    echo ">>>>>>> Failed to find valid keyboard event file!"
+  if [ ! -z "$keybardDev"] &&  [ -e "$keybardDev" ]; then
+    echo ">>>>>>> Keyboard found: $keybardDev"
+      startParams="-i keyboard -f $keybardDev"
   else
-  echo ">>>>>>> Keyboard found: $keybardDev"
-    startParams="-i keyboard -k $keybardDev"
+    echo ">>>>>>> Failed to find valid keyboard event file ....."
   fi
 fi
 
@@ -50,7 +58,7 @@ if [ ! -z "$startParams" ]; then
       echo ">>>>>>> Restart failed!"
       exit 1
     else
-      echo ">>>>>>> Restart engine, due to crash! Attempt $restartCounter of 10"
+      echo ">>>>>>> Restart engine, due to unexpected exit! Attempt $restartCounter of 10"
       sleep 1
     fi
   done

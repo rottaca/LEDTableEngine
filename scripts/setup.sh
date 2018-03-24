@@ -47,7 +47,7 @@ following options:
      -> (P5) I2C
         -> Answer all questions with YES!
 
-Would you like to start raspi-config or skip this setup step?
+Would you like to start raspi-config or skip this setup step because you already did this?
 " 0 0) then
 
   sudo raspi-config
@@ -61,20 +61,25 @@ fi
 ###################
 ## Install libraries
 ###################
-$DISPLAY_CMD --clear --title "Setup Installer Script for LED Matrix Engine"\
-             --msgbox "\
-The next step is to install the following libraries:
- - Git (git)
- - SDL2 (libsdl2-dev)
- - SDL2-Image (libsdl2-image-dev)
- - g++ (g++)
- - CMake  (cmake)
- - I2C-Tools (i2c-tools)
- - libi2c-dev (libi2c-dev)
-Please enter your password if required and follow the instructions!" 0 0
-# Install the required libraries
-sudo apt-get install libsdl2-dev libsdl2-image-dev g++ cmake i2c-tools libi2c-dev || abortSetup
+if ($DISPLAY_CMD --clear --title "Setup Installer Script for LED Matrix Engine" \
+    --yesno "\
+The script will now install the following libraries:
+- Git (git)
+- SDL2 (libsdl2-dev)
+- SDL2-Image (libsdl2-image-dev)
+- g++ (g++)
+- CMake  (cmake)
+- I2C-Tools (i2c-tools)
+- libi2c-dev (libi2c-dev)
 
+Please enter your password if required and follow the instructions!
+If you already installed all libraries, you can skip this setup step.
+
+Would you like to install the libraries?
+" 0 0) then
+  # Install the required libraries
+  sudo apt-get install libsdl2-dev libsdl2-image-dev g++ cmake i2c-tools libi2c-dev || abortSetup
+fi
 ###################
 ## Edit configuration header
 ###################
@@ -84,7 +89,8 @@ if ($DISPLAY_CMD --clear --title "Setup Installer Script for LED Matrix Engine" 
 All required libraries are now installed!\
 
 Please have a look at the configuration file and setup everything
-correctly (e.g. width and height of matrix ,..).
+correctly (e.g. width and height of matrix , mirroring, ...).
+If you missed something, just restart the setup script.
 
 The configuration will be opened in your default text editor. Open file or keep defaults?" 0 0) then
   select-editor || abortSetup
@@ -95,43 +101,60 @@ fi
 ## Build project
 ###################
 $DISPLAY_CMD --clear --title "Setup Installer Script for LED Matrix Engine" \
-               --msgbox "The script will now build the project the first time.\
-Take a look at the command line output and check if the game controller support is enabled." 0 0
+               --msgbox "The script will now build the project the first time." 0 0
 
 mkdir "$BASE_DIR/build" 2>/dev/null
 cd "$BASE_DIR/build" || abortSetup
-cmake .. || abortSetup
+
+TMP_FILE=$(mktemp)
+
+cmake .. | tee $TMP_FILE
+# Cmake failed ?
+echo ${PIPESTATUS[0]}
+if [[ "${PIPESTATUS[0]}" -ne "0" ]]; then
+  abortSetup
+fi
 make || abortSetup
 
-$DISPLAY_CMD --clear --title "Setup Installer Script for LED Matrix Engine" --msgbox "Build was successful!" 0 0
+MSG="Build was successful!"
+CTRL_SUPPORT=$(cat $TMP_FILE | grep "lib2c-dev found")
+if [[ -z "$CTRL_SUPPORT" ]]; then
+  MSG="$MSG
+But controller support is disabeled! If you want to use the controllers,
+please check if everything is setup correctly. Otherwise, continue the setup."
+fi
+
+$DISPLAY_CMD --clear --title "Setup Installer Script for LED Matrix Engine" --msgbox "$MSG" 0 0
 
 
 ###################
 ## Render to monitor or to matrix ?
 ###################
-DISPLAY_MODE=$($DISPLAY_CMD --clear --title "Setup Installer Script for LED Matrix Engine" \
-             --menu "Please select, which display mode you want to use for your initial test." 0 0 0 \
-             "desktop" "Use the simulation environment to test you installation / controllers." \
-             "matrix" "Render the content to your LED Matrix." 3>&1 1>&2 2>&3)
+DISPLAY_MODE="matrix"
 
-exitstatus=$?
-if [ $exitstatus -ne 0 ]; then
- abortSetup
-fi
+# $($DISPLAY_CMD --clear --title "Setup Installer Script for LED Matrix Engine" \
+#              --menu "Please select, which display mode you want to use for your initial test." 0 0 0 \
+#              "desktop" "Use the simulation environment to test you installation / controllers." \
+#              "matrix" "Render the content to your LED Matrix." 3>&1 1>&2 2>&3)
 
-if [[ "$DISPLAY_MODE" == "desktop" ]]; then
-  $DISPLAY_CMD --clear --title "Setup Installer Script for LED Matrix Engine" \
-               --msgbox "\
-You selected the simulation environment. This mode renders the content to a window
-on your computer monitor. Therefore, a graphical interface is required.
-If you don't have a desktop but only a command line interface, start the graphical
-environment and restart the script.
-
-For a Raspberry Pi (raspbian) execute the following in the command line:
-   startx
-
-If you are running a graphical interface, just continue with the setup." 0 0
-fi
+# exitstatus=$?
+# if [ $exitstatus -ne 0 ]; then
+#  abortSetup
+# fi
+#
+# if [[ "$DISPLAY_MODE" == "desktop" ]]; then
+#   $DISPLAY_CMD --clear --title "Setup Installer Script for LED Matrix Engine" \
+#                --msgbox "\
+# You selected the simulation environment. This mode renders the content to a window
+# on your computer monitor. Therefore, a graphical interface is required.
+# If you don't have a desktop but only a command line interface, start the graphical
+# environment and restart the script.
+#
+# For a Raspberry Pi (raspbian) execute the following in the command line:
+#    startx
+#
+# If you are running a graphical interface, just continue with the setup." 0 0
+# fi
 
 ###################
 ## Select the input device: keyboard or i2c?
@@ -159,7 +182,7 @@ if [[ "$INPUT_DEVICE" == "keyboard" ]]; then
      abortSetup
   else
     INPUT_DEVICE_FILE=$($DISPLAY_CMD --clear --title "Setup Installer Script for LED Matrix Engine" --menu "\
-You selected the keyboard as input device. Please select your keyboard from the list below.\
+You selected the keyboard as input device. Please select your keyboard from the list below.
 If you only have a single keyboard connected, there should be only a single entry." 0 0 0 ${OPTIONS[@]} 3>&1 1>&2 2>&3)
     exitstatus=$?
     if [ $exitstatus -ne 0 ]; then
@@ -186,7 +209,7 @@ elif [[ "$INPUT_DEVICE" == "i2c" ]]; then
   else
     INPUT_DEVICE_FILE=$($DISPLAY_CMD --clear --title "Setup Installer Script for LED Matrix Engine" --menu "\
 You selected the i2c controller as input device. Please select your i2c device file from the list below.\
-If you have multiple i2c device files, try it out or use the i2cdetect." 0 0 0 ${OPTIONS[@]} 3>&1 1>&2 2>&3)
+If you have multiple i2c device files, try it out or use the i2cdetect tool (see manual setup)." 0 0 0 ${OPTIONS[@]} 3>&1 1>&2 2>&3)
     exitstatus=$?
     if [ $exitstatus -ne 0 ]; then
        abortSetup
@@ -198,27 +221,30 @@ fi
 ## Start framework
 ###################
 if ($DISPLAY_CMD --clear --title "Setup Installer Script for LED Matrix Engine" \
-    --yesno "Would you like to start the framework for the first time?
+    --yesno "Would you like to start the framework with your matrix display for the first time?
+You need to have everything connected (e.g. controllers and matrix), otherwise the test fails.
+If the test fails, you can still continue the setup.
 To leave the framework, use CTRL-C and restart the setup." 0 0) then
-  TMP_FILE="$(mktemp)"
+  TMP_FILE=$(mktemp)
 
   if [[ "$INPUT_DEVICE" == "keyboard" ]]; then
-    sudo ./LEDTableMain -c $DISPLAY_MODE -i $INPUT_DEVICE -k $INPUT_DEVICE_FILE > $TMP_FILE 2>&1 &
+    sudo $BASE_DIR/build/LEDTableMain -c $DISPLAY_MODE -i $INPUT_DEVICE -f $INPUT_DEVICE_FILE > $TMP_FILE 2>&1 &
   elif [[ "$INPUT_DEVICE" == "i2c" ]]; then
-    ./LEDTableMain -c $DISPLAY_MODE -i $INPUT_DEVICE -I $INPUT_DEVICE_FILE  > $TMP_FILE 2>&1 &
+    $BASE_DIR/build/LEDTableMain -c $DISPLAY_MODE -i $INPUT_DEVICE -f $INPUT_DEVICE_FILE  > $TMP_FILE 2>&1 &
   fi
 
-  $answ=$($DISPLAY_CMD --clear --title "Setup Installer Script for LED Matrix Engine" \
-      --yesno "Did the engine start successfully? Do the controllers/keyboard work?." 0 0)
-
-  if [ "$answ" == "1" ]; then
+  if ($DISPLAY_CMD --clear --title "Setup Installer Script for LED Matrix Engine" \
+      --yesno "Did the engine start successfully? Do the controllers/keyboard work?." 0 0) then
+    killall LEDTableMain
+  else
     $DISPLAY_CMD --clear --title "Setup Installer Script for LED Matrix Engine" \
                  --msgbox "Please have a look at the output to identify the error (Output will be displayed after closing this message)!" 0 0
+    echo "###################################"
+    echo "########### LOG OUTPUT ############"
+    echo "###################################"
     cat $TMP_FILE
     killall LEDTableMain
     exit 0
-  else
-    killall LEDTableMain
   fi
 fi
 
@@ -227,8 +253,8 @@ fi
 ###################
 if ($DISPLAY_CMD --title "Setup Installer Script for LED Matrix Engine" \
     --yesno "Would you like to setup the automated start script (cron job)?
-  It allows you to automatically start the framework after booting
-  and it is the final setup step. This will always use the matrix as display device!" 0 0) then
+It allows you to automatically start the framework after booting
+and it is the final setup step. This will always use the matrix as display device!" 0 0) then
 
   $DISPLAY_CMD --clear --title "Setup Installer Script for LED Matrix Engine" \
                    --msgbox "To setup the automated start, please insert the i2c device file name in the script header." 0 0
