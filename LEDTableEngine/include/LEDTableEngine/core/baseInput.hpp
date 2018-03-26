@@ -45,23 +45,38 @@ public:
  */
     static const char *inputEventName2Str[];
 
+  /**
+   * Player IDs
+   */
+  enum PlayerID {
+    PLAYER_0 = 0,
+    PLAYER_1,
+    PLAYER_2,
+    PLAYER_3,
+    PLAYER_4,
+    PLAYER_5,
+    PLAYER_6,
+    PLAYER_7,
+    PLAYER_MAX_CNT
+   };
+
 /**
  * Stores the state, player id and name of a key event
  */
     struct InputEvent {
         InputEventState state;
         InputEventName name;
-        int playerId;
+        PlayerID playerId;
 
         InputEvent() {
             state    = InputEventState::KEY_NONE;
             name     = InputEventName::UP;
-            playerId = 0;
+            playerId = PLAYER_0;
         }
 
         InputEvent(InputEventState state,
                    InputEventName name,
-                   int playerId) {
+                   PlayerID playerId) {
             this->name     = name;
             this->state    = state;
             this->playerId = playerId;
@@ -83,7 +98,6 @@ public:
     virtual void                   setController(BaseController *ctrl);
     virtual bool                   initialize();
     virtual void                   deinitialize();
-    virtual BaseInput::InputEvents getInputEvents() = 0;
 
     static bool                    isReleased(const InputEvents& events,
                                               InputEventName name);
@@ -91,6 +105,9 @@ public:
                                              InputEventName name);
     static bool                    isHold(const InputEvents& events,
                                           InputEventName name);
+
+    virtual BaseInput::InputEvents getInputEvents() = 0;
+    virtual size_t                 getSupportedPlayerCnt() = 0;
 };
 }
 

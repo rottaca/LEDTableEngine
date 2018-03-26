@@ -3,8 +3,9 @@
 
 namespace led{
 
-TextMenu::TextMenu(bool closable){
+TextMenu::TextMenu(std::string name, bool closable){
     m_isClosable = closable;
+    m_name = name;
 }
 TextMenu::~TextMenu (){
 
@@ -37,7 +38,7 @@ void TextMenu::continueApp(){
 }
 void TextMenu::updateTextData()
 {
-    m_scrollText.setText(m_menuEntries[m_menuEntryIdx].name);
+    m_scrollText.setText(m_menuEntries[m_menuEntryIdx].getName());
 }
 
 void TextMenu::setMenuItems(std::vector<MenuEntry> entries){
@@ -69,8 +70,8 @@ void TextMenu::processInput(const BaseInput::InputEvents &events,
         }
         break;
         case BaseInput::InputEventName::ENTER: {
-            if(m_menuEntries[m_menuEntryIdx].handler) {
-                if(m_menuEntries[m_menuEntryIdx].handler->onSelectMenuItem(this, m_menuEntries[m_menuEntryIdx], m_menuEntryIdx) && m_isClosable)
+            if(m_menuEntries[m_menuEntryIdx].getHandler()) {
+                if(m_menuEntries[m_menuEntryIdx].getHandler()->onSelectMenuItem(this, m_menuEntries[m_menuEntryIdx], m_menuEntryIdx) && m_isClosable)
                     m_hasFinished = true;
             }else if(m_isClosable) {
                 m_hasFinished = true;
@@ -126,14 +127,5 @@ void TextMenu::draw(Image &frame){
             frame(frame.height-1, frame.width/2,0) = ColorPaleteIdx::ARROW;
         }
     }
-}
-
-AppLauncher::AppLauncher(std::shared_ptr<BaseController> ctrl, std::shared_ptr<BaseApplication> app){
-    m_app = app;
-    m_ctrl = ctrl;
-}
-bool AppLauncher::onSelectMenuItem(TextMenu* menu, TextMenu::MenuEntry& menuEntry, size_t idx){
-    m_ctrl->addApplication(m_app, true);
-    return false;
 }
 }

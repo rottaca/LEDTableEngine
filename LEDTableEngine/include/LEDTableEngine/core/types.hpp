@@ -17,12 +17,11 @@
 
 #include "color.hpp"
 
+#define BIN_FROM_IDX(I) (1 << I)
+
 namespace led {
-const size_t kMaxPlayerCount = 2;
 
 typedef int64_t TimeUnit;
-
-// /**
 
 /**
  * BufferColorMode describes the content of the frame buffer

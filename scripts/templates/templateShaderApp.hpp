@@ -19,6 +19,9 @@ public:
 
     void initialize(led::BaseController *ctrl);
 
+    const std::string getName()  const{
+      return "TEMPLATE_APP_NAME";
+    }
 protected:
 
 /**

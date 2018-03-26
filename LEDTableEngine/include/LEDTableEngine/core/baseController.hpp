@@ -153,6 +153,13 @@ public:
     size_t getPlayerCount() {
         return m_playerCnt;
     }
+/**
+ * Number of maximally available players
+ * @return [description]
+ */
+    size_t getMaxPlayerCount(){
+      return m_inputHandler->getSupportedPlayerCnt();
+    }
 
 /**
  * Returns the time since engine start in milliseconds.

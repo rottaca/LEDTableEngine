@@ -17,6 +17,7 @@ SET(ENGINE_SRC
   src/core/messageDisplay.cpp
   src/core/yesNoDisplay.cpp
   src/core/textMenu.cpp
+  src/core/textMenuItems.cpp
 
   src/core/color.cpp
   src/core/rasterizer.cpp

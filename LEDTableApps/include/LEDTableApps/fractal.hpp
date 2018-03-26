@@ -46,6 +46,9 @@ public:
     void draw(led::Image& frame);
     void continueApp();
 
+    const std::string getName() const{
+      return "Fractal";
+    }
 private:
 
     void draw_Mandelbrot(led::Image & frame,     // where to draw the image

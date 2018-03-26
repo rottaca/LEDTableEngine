@@ -31,6 +31,11 @@ public:
                       led::TimeUnit deltaTime);
     void draw(led::Image& frame);
     void continueApp();
+
+
+    const std::string getName() const{
+      return "Test Patterns";
+    }
 };
 
 

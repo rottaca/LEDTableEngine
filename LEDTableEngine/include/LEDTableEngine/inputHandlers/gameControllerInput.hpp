@@ -8,7 +8,9 @@
 #include <linux/i2c-dev.h>
 
 #include <LEDTableEngine/core/baseInput.hpp>
-class GameControllerInput : public led::BaseInput {
+
+namespace led{
+class GameControllerInput : public BaseInput {
 private:
 
     int m_deviceHandle;
@@ -21,14 +23,14 @@ public:
     virtual ~GameControllerInput();
 
     bool                        initialize();
-    led::BaseInput::InputEvents getInputEvents();
-
+    BaseInput::InputEvents getInputEvents();
+    size_t                 getSupportedPlayerCnt();
 private:
 
     void detectConnectedControllers();
     bool connectToDevice(std::string device);
     void disconnect();
 };
-
+}
 
 #endif // ifndef _H_GAMECTRL_INPUT_

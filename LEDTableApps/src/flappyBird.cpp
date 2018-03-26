@@ -36,6 +36,7 @@ void FlappyBird::initialize(BaseController *ctrl) {
 void FlappyBird::processInput(const BaseInput::InputEvents& events,
                               TimeUnit deltaTime) {
     for (const auto& e : events) {
+      if(e.playerId != led::BaseInput::PLAYER_0) continue;
         switch (e.name) {
         case BaseInput::InputEventName::UP:
             m_birdYSpeed -= 20 * deltaTime / 1000.0;

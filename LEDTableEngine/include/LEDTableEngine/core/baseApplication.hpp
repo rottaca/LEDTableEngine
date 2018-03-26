@@ -87,6 +87,12 @@ public:
  */
     virtual void draw(Image& frame) = 0;
 
+    /**
+     * Return the display name of the application
+     * @return [description]
+     */
+    virtual const std::string getName() const = 0;
+
 protected:
 };
 }

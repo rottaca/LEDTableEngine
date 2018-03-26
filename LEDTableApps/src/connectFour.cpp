@@ -32,7 +32,7 @@ void ConnectFour::initialize(BaseController *ctrl) {
     memset(m_gameField.data, 2, m_gameField.size);
     m_chipIsFalling = false;
     m_playerWon = false;
-    m_currPlayerId = 0;
+    m_currPlayerId = led::BaseInput::PLAYER_0;
     m_currFallingChipPos.x = 0;
     m_currFallingChipPos.y = 0;
     m_lastFallTime = 0;
@@ -107,7 +107,7 @@ void ConnectFour::processInput(const BaseInput::InputEvents& events,
                 if(m_winPoints.size() == 4) {
                     m_playerWon = true;
                 }else{
-                    m_currPlayerId = (m_currPlayerId + 1) % 2;
+                    m_currPlayerId = static_cast<led::BaseInput::PlayerID>((static_cast<int>(m_currPlayerId) + 1) % 2);
                 }
             }
             m_currFallingChipPos.x = 0;

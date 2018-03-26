@@ -64,7 +64,8 @@ void Pong::processInput(const BaseInput::InputEvents& events,
 
         for (const auto& e : events) {
             if ((e.state != BaseInput::InputEventState::KEY_PRESSED) &&
-                (e.playerId > m_ctrl->getPlayerCount())) continue;
+                (e.playerId != led::BaseInput::PLAYER_0 &&
+                 e.playerId != led::BaseInput::PLAYER_1)) continue;
 
             switch (e.name) {
             case BaseInput::InputEventName::UP:

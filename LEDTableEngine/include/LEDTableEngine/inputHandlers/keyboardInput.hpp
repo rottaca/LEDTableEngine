@@ -9,20 +9,22 @@
 #include <LEDTableEngine/core/baseInput.hpp>
 #include <LEDTableEngine/inputHandlers/keyboard.hpp>
 
-class KeyboardInput : public led::BaseInput {
+namespace led{
+class KeyboardInput : public BaseInput {
 public:
 
     KeyboardInput(std::string keyboardDev);
     virtual ~KeyboardInput();
 
     bool                        initialize();
-    led::BaseInput::InputEvents getInputEvents();
+    BaseInput::InputEvents getInputEvents();
+    size_t                 getSupportedPlayerCnt();
 
 private:
 
     cKeyboard m_keyboard;
     std::string m_keyboardDevName;
 };
-
+}
 
 #endif // ifndef _H_KEYBOARD_INPUT_

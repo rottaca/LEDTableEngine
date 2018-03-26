@@ -13,6 +13,7 @@
 #include <LEDTableEngine/configuration.hpp>
 
 
+namespace led{
 GameControllerInput::GameControllerInput(std::string i2cDev) {
     m_deviceHandle = 0;
     m_i2cDevName   = i2cDev;
@@ -30,8 +31,8 @@ bool GameControllerInput::initialize() {
     return m_controllerId.size() > 0;
 }
 
-led::BaseInput::InputEvents GameControllerInput::getInputEvents() {
-    led::BaseInput::InputEvents ie;
+BaseInput::InputEvents GameControllerInput::getInputEvents() {
+    BaseInput::InputEvents ie;
 
     for (int pId = 0; pId < m_controllerId.size(); pId++) {
         if (ioctl(m_deviceHandle, I2C_SLAVE, m_controllerId[pId]) < 0) perror(
@@ -42,47 +43,47 @@ led::BaseInput::InputEvents GameControllerInput::getInputEvents() {
 
             if (res >= 0) {
                 BaseInput::InputEvent e;
-                e.playerId = pId;
+                e.playerId = static_cast<PlayerID>(pId);
                 e.state    = InputEventState::KEY_PRESSED;
 
                 // With the used hardware setup and the PCF8574,
                 // Key presses result in zeros
-                if ((res & 0x01) == 0) {
+                if ((res & (I2C_CTRL_KEYMAP_A)) == 0) {
                     e.name = InputEventName::A;
                     ie.push_back(e);
                 }
 
-                if ((res & 0x02) == 0) {
+                if ((res & (I2C_CTRL_KEYMAP_B)) == 0) {
                     e.name = InputEventName::B;
                     ie.push_back(e);
                 }
 
-                if ((res & 0x04) == 0) {
+                if ((res & (I2C_CTRL_KEYMAP_EXIT)) == 0) {
                     e.name = InputEventName::EXIT;
                     ie.push_back(e);
                 }
 
-                if ((res & 0x08) == 0) {
+                if ((res & (I2C_CTRL_KEYMAP_ENTER)) == 0) {
                     e.name = InputEventName::ENTER;
                     ie.push_back(e);
                 }
 
-                if ((res & 0x10) == 0) {
+                if ((res & (I2C_CTRL_KEYMAP_DOWN)) == 0) {
                     e.name = InputEventName::DOWN;
                     ie.push_back(e);
                 }
 
-                if ((res & 0x20) == 0) {
+                if ((res & (I2C_CTRL_KEYMAP_UP)) == 0) {
                     e.name = InputEventName::UP;
                     ie.push_back(e);
                 }
 
-                if ((res & 0x40) == 0) {
+                if ((res & (I2C_CTRL_KEYMAP_LEFT)) == 0) {
                     e.name = InputEventName::LEFT;
                     ie.push_back(e);
                 }
 
-                if ((res & 0x80) == 0) {
+                if ((res & (I2C_CTRL_KEYMAP_RIGHT)) == 0) {
                     e.name = InputEventName::RIGHT;
                     ie.push_back(e);
                 }
@@ -143,4 +144,8 @@ void GameControllerInput::detectConnectedControllers() {
         }
     }
     std::cout << "Found " << m_controllerId.size() << " i2c controllers." << std::endl;
+}
+size_t GameControllerInput::getSupportedPlayerCnt(){
+  return m_controllerId.size();
+}
 }

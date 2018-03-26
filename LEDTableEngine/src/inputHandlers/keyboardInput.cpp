@@ -1,5 +1,7 @@
 #include <LEDTableEngine/inputHandlers/keyboardInput.hpp>
+#include <LEDTableEngine/configuration.hpp>
 
+namespace led{
 KeyboardInput::KeyboardInput(std::string keyboardDev) {
     m_keyboardDevName = keyboardDev;
 }
@@ -11,105 +13,110 @@ bool KeyboardInput::initialize() {
     return m_keyboard.start(m_keyboardDevName);
 }
 
-led::BaseInput::InputEvents KeyboardInput::getInputEvents() {
+BaseInput::InputEvents KeyboardInput::getInputEvents() {
     InputEvents ie;
-    InputEvent e(BaseInput::InputEventState::KEY_PRESSED,
-                 BaseInput::InputEventName::LEFT, 0);
 
-    if (m_keyboard.getKeyState(KEY_A)) {
+    BaseInput::InputEvent e;
+    e.state    = InputEventState::KEY_PRESSED;
+
+    if (m_keyboard.getKeyState(KEYBOARD_CTR_0_KEYMAP_LEFT)) {
         e.name     = BaseInput::InputEventName::LEFT;
-        e.playerId = 0;
+        e.playerId = PLAYER_0;
         ie.push_back(e);
     }
 
-    if (m_keyboard.getKeyState(KEY_D)) {
+    if (m_keyboard.getKeyState(KEYBOARD_CTRL_0_KEYMAP_RIGHT)) {
         e.name     = BaseInput::InputEventName::RIGHT;
-        e.playerId = 0;
+        e.playerId = PLAYER_0;
         ie.push_back(e);
     }
 
-    if (m_keyboard.getKeyState(KEY_W)) {
+    if (m_keyboard.getKeyState(KEYBOARD_CTRL_0_KEYMAP_UP)) {
         e.name     = BaseInput::InputEventName::UP;
-        e.playerId = 0;
+        e.playerId = PLAYER_0;
         ie.push_back(e);
     }
 
-    if (m_keyboard.getKeyState(KEY_S)) {
+    if (m_keyboard.getKeyState(KEYBOARD_CTRL_0_KEYMAP_DOWN)) {
         e.name     = BaseInput::InputEventName::DOWN;
-        e.playerId = 0;
+        e.playerId = PLAYER_0;
         ie.push_back(e);
     }
 
-    if (m_keyboard.getKeyState(KEY_Q)) {
+    if (m_keyboard.getKeyState(KEYBOARD_CTRL_0_KEYMAP_EXIT)) {
         e.name     = BaseInput::InputEventName::EXIT;
-        e.playerId = 0;
+        e.playerId = PLAYER_0;
         ie.push_back(e);
     }
 
-    if (m_keyboard.getKeyState(KEY_E)) {
+    if (m_keyboard.getKeyState(KEYBOARD_CTRL_0_KEYMAP_ENTER)) {
         e.name     = BaseInput::InputEventName::ENTER;
-        e.playerId = 0;
+        e.playerId = PLAYER_0;
         ie.push_back(e);
     }
 
-    if (m_keyboard.getKeyState(KEY_R)) {
+    if (m_keyboard.getKeyState(KEYBOARD_CTRL_0_KEYMAP_A)) {
         e.name     = BaseInput::InputEventName::A;
-        e.playerId = 0;
+        e.playerId = PLAYER_0;
         ie.push_back(e);
     }
 
-    if (m_keyboard.getKeyState(KEY_F)) {
+    if (m_keyboard.getKeyState(KEYBOARD_CTRL_0_KEYMAP_B)) {
         e.name     = BaseInput::InputEventName::B;
-        e.playerId = 0;
+        e.playerId = PLAYER_0;
         ie.push_back(e);
     }
 
-    if (m_keyboard.getKeyState(KEY_LEFT)) {
+    if (m_keyboard.getKeyState(KEYBOARD_CTRL_1_KEYMAP_LEFT)) {
         e.name     = BaseInput::InputEventName::LEFT;
-        e.playerId = 1;
+        e.playerId = PLAYER_1;
         ie.push_back(e);
     }
 
-    if (m_keyboard.getKeyState(KEY_RIGHT)) {
+    if (m_keyboard.getKeyState(KEYBOARD_CTRL_1_KEYMAP_RIGHT)) {
         e.name     = BaseInput::InputEventName::RIGHT;
-        e.playerId = 1;
+        e.playerId = PLAYER_1;
         ie.push_back(e);
     }
 
-    if (m_keyboard.getKeyState(KEY_UP)) {
+    if (m_keyboard.getKeyState(KEYBOARD_CTRL_1_KEYMAP_UP)) {
         e.name     = BaseInput::InputEventName::UP;
-        e.playerId = 1;
+        e.playerId = PLAYER_1;
         ie.push_back(e);
     }
 
-    if (m_keyboard.getKeyState(KEY_DOWN)) {
+    if (m_keyboard.getKeyState(KEYBOARD_CTRL_1_KEYMAP_DOWN)) {
         e.name     = BaseInput::InputEventName::DOWN;
-        e.playerId = 1;
+        e.playerId = PLAYER_1;
         ie.push_back(e);
     }
 
-    if (m_keyboard.getKeyState(KEY_BACKSPACE)) {
+    if (m_keyboard.getKeyState(KEYBOARD_CTRL_1_KEYMAP_EXIT)) {
         e.name     = BaseInput::InputEventName::EXIT;
-        e.playerId = 1;
+        e.playerId = PLAYER_1;
         ie.push_back(e);
     }
 
-    if (m_keyboard.getKeyState(KEY_ENTER)) {
+    if (m_keyboard.getKeyState(KEYBOARD_CTRL_1_KEYMAP_ENTER)) {
         e.name     = BaseInput::InputEventName::ENTER;
-        e.playerId = 1;
+        e.playerId = PLAYER_1;
         ie.push_back(e);
     }
 
-    if (m_keyboard.getKeyState(KEY_O)) {
+    if (m_keyboard.getKeyState(KEYBOARD_CTRL_1_KEYMAP_A)) {
         e.name     = BaseInput::InputEventName::A;
-        e.playerId = 1;
+        e.playerId = PLAYER_1;
         ie.push_back(e);
     }
 
-    if (m_keyboard.getKeyState(KEY_L)) {
+    if (m_keyboard.getKeyState(KEYBOARD_CTRL_1_KEYMAP_B)) {
         e.name     = BaseInput::InputEventName::B;
-        e.playerId = 1;
+        e.playerId = PLAYER_1;
         ie.push_back(e);
     }
     return ie;
+}
+size_t KeyboardInput::getSupportedPlayerCnt(){
+  return 2;
+}
 }

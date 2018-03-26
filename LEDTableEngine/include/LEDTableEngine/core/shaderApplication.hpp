@@ -23,7 +23,7 @@ public:
     virtual void processInput(const led::BaseInput::InputEvents& events,
                               led::TimeUnit deltaTime);
     virtual void draw(led::Image& frame);
-
+    
 protected:
 
 /**

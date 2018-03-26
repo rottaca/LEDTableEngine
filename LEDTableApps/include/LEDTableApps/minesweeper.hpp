@@ -45,6 +45,9 @@ public:
                       led::TimeUnit deltaTime);
     void draw(led::Image& frame);
 
+    const std::string getName() const{
+      return "Minesweeper";
+    }
 private:
 
     void initGameField(size_t bombCnt,

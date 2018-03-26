@@ -23,6 +23,9 @@ public:
     void continueApp();
     void pauseApp();
 
+    const std::string getName() const{
+      return "Shutdown";
+    }
 private:
   std::shared_ptr<led::YesNoDisplay>  m_yesNoDisplay;
 

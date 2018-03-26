@@ -4,7 +4,7 @@
 using namespace led;
 
 TestPatternApp::TestPatternApp() {
-    m_font.loadFromFile("res/font/myfont.fnt");
+
 }
 
 TestPatternApp::~TestPatternApp() {
@@ -105,7 +105,7 @@ void TestPatternApp::draw(Image& frame) {
 
     case FONT_TEST: {
         std::string txt = "Test text";
-        m_font.draw(frame, txt, { 26, 254, 100 });
+        m_ctrl->getDefaultFont()->draw(frame, txt, { 26, 254, 100 });
         break;
     }
     }

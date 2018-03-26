@@ -18,6 +18,10 @@ public:
 
     void continueApp();
     void pauseApp();
+
+    const std::string getName()  const{
+      return "TEMPLATE_APP_NAME";
+    }
 };
 
 

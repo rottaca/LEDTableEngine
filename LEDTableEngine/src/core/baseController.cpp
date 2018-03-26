@@ -21,7 +21,6 @@ BaseController::~BaseController() {
 
 bool BaseController::initialize(size_t width, size_t height,
                                 std::shared_ptr<BaseInput>input, bool debug) {
-    std::cout << "Initialize Controller" << std::endl;
     m_width        = width;
     m_height       = height;
     m_size         = width * height;
@@ -32,7 +31,6 @@ bool BaseController::initialize(size_t width, size_t height,
     m_isStandby  = false;
     m_bufferMode = BufferColorMode::PALETTE;
     m_brightness = 1;
-    m_playerCnt  = 1;
     auto now = std::chrono::high_resolution_clock::now();
     m_refTimeStartUs =
         std::chrono::duration_cast<std::chrono::microseconds>(now.time_since_epoch()).count();
@@ -45,18 +43,33 @@ bool BaseController::initialize(size_t width, size_t height,
 
     m_lastKeyPress = getTimeMs();
 
+    std::cout << "Loading default font..." << std::endl;
     m_font = std::make_shared<bmfont::Font>();
-    m_font->loadFromFile("res/font/myfont.fnt");
+    if(!m_font->loadFromFile("res/font/myfont.fnt")){
+      std::cout << "FAILED!" <<std::endl;
+      return false;
+    }
 
-    if (!m_inputHandler->initialize()) return false;
+    std::cout << "Initialize input handler..." << std::endl;
+    if (!m_inputHandler->initialize()){
+      std::cout << "FAILED!" <<std::endl;
+      return false;
+    }
 
+    m_playerCnt = getMaxPlayerCount();
+    std::cout << "Supported players with this input device: " << m_playerCnt << std::endl;
+
+
+    std::cout << "Initialize SDL audio system..." << std::endl;
     if (SDL_InitSubSystem(SDL_INIT_AUDIO) != 0)
     {
-        std::cerr << "SDL_INIT_AUDIO Error: " << SDL_GetError() << std::endl;
-        SDL_Quit();
-        return false;
+      std::cout << "FAILED!" <<std::endl;
+      std::cerr << "SDL_INIT_AUDIO Error: " << SDL_GetError() << std::endl;
+      SDL_Quit();
+      return false;
+    }else{
+      initAudio();
     }
-    initAudio();
     return true;
 }
 
@@ -70,11 +83,13 @@ void BaseController::addApplication(std::shared_ptr<BaseApplication>app, bool qu
     if (!queuedInsert) {
         addApplicationDirect(app);
     } else {
+        std::cout << "Adding application \"" << app->getName() << "\" delayed to start of next iteration!" << std::endl;
         m_queuedApplications.push_back(app);
     }
 }
 
 void BaseController::addApplicationDirect(std::shared_ptr<BaseApplication>app) {
+    std::cout << "Adding application \"" << app->getName() <<  "\" to stack." << std::endl;
     if (m_applicationStack.size() > 0) {
         m_applicationStack.top()->pauseApp();
     }

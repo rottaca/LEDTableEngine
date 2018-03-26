@@ -26,6 +26,9 @@ public:
     void draw(led::Image& frame);
     void continueApp();
 
+    const std::string getName() const{
+      return "Slide Show";
+    }
 private:
 
     std::shared_ptr<led::Image>loadImage(std::string path);

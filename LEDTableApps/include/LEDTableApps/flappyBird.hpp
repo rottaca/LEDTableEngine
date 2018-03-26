@@ -32,6 +32,11 @@ public:
     void processInput(const led::BaseInput::InputEvents& events,
                       led::TimeUnit deltaTime);
     void draw(led::Image& frame);
+
+
+    const std::string getName() const{
+      return "Flappy Bird";
+    }
 };
 
 

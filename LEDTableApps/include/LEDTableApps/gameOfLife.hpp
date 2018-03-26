@@ -47,6 +47,10 @@ public:
     void draw(led::Image& frame);
     void continueApp();
 
+    const std::string getName() const{
+      return "Game of Life";
+    }
+
 private:
 
     uint8_t checkNeighbours(led::Image& gameField,

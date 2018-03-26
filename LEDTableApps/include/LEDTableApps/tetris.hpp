@@ -82,6 +82,9 @@ public:
                       led::TimeUnit deltaTime);
     void draw(led::Image& frame);
 
+    const std::string getName() const{
+      return "Tetris";
+    }
 private:
 
     void newShape();

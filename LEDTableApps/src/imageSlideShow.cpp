@@ -6,23 +6,7 @@
 
 using namespace led;
 ImageSlideShowApp::ImageSlideShowApp() {
-    DIR *dir;
-    struct dirent *ent;
 
-    if ((dir = opendir("res/ImageSlideShowApp/")) != NULL) {
-        /* print all the files and directories within directory */
-        while ((ent = readdir(dir)) != NULL) {
-            if (strstr(ent->d_name, ".bmp") != 0) {
-                std::cout << "Found image file for slideshow: " << ent->d_name <<
-                    std::endl;
-                m_imageFilePaths.push_back(ent->d_name);
-            }
-        }
-        closedir(dir);
-    } else {
-        /* could not open directory */
-        std::cerr << "Couldn't open directory with slide show images!" << std::endl;
-    }
 }
 
 ImageSlideShowApp::~ImageSlideShowApp() {
@@ -38,6 +22,26 @@ void ImageSlideShowApp::initialize(BaseController *ctrl) {
     m_currImageIdx    = 0;
     m_lastImageChange = m_ctrl->getTimeMs();
 
+    std::cout << "Searching for slide show images..." << std::endl;
+    DIR *dir;
+    struct dirent *ent;
+    if ((dir = opendir("res/ImageSlideShowApp/")) != NULL) {
+        /* print all the files and directories within directory */
+        while ((ent = readdir(dir)) != NULL) {
+            if (strstr(ent->d_name, ".bmp") != 0) {
+                std::cout << "Found image file for slideshow: " << ent->d_name <<
+                    std::endl;
+                m_imageFilePaths.push_back(ent->d_name);
+            }
+        }
+        closedir(dir);
+    } else {
+        /* could not open directory */
+        std::cerr << "Couldn't open directory with slide show images!" << std::endl;
+    }
+
+    std::cout << m_imageFilePaths.size() << " image files found!" << std::endl;
+    std::cout << "Loading images..." << std::endl;
     for (std::string f : m_imageFilePaths) {
         auto img = loadImage("res/ImageSlideShowApp/" + f);
 
@@ -56,6 +60,7 @@ void ImageSlideShowApp::initialize(BaseController *ctrl) {
             m_images.push_back(img);
         }
     }
+    std::cout << m_images.size() << " images loaded!" << std::endl;
 }
 
 void ImageSlideShowApp::continueApp() {

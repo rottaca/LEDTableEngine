@@ -30,6 +30,9 @@ public:
 
     void initialize(led::BaseController *ctrl);
 
+    const std::string getName() const{
+      return "Animations";
+    }
 protected:
 
     void renderPixel(led::TimeUnit tm,

@@ -17,6 +17,9 @@ public:
     void initialize(led::BaseController *ctrl);
     void draw(led::Image& frame);
 
+    const std::string getName() const{
+      return "Board Games";
+    }
 protected:
 
     void renderPixel(led::TimeUnit tm,

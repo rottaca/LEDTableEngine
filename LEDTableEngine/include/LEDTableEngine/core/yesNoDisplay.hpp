@@ -42,6 +42,10 @@ public:
      * ENTER instead of exit.
      */
     bool exitedWithYes();
+
+    const std::string getName()  const{
+      return m_text;
+    }
 };
 }
 

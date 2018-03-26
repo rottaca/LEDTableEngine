@@ -69,6 +69,49 @@
 // End adress for the device scan
 #define I2C_CTRL_ADR_END 0x27
 
+// ////////////////////////////////////
+// Key-Mappings
+// ////////////////////////////////////
+
+// Helper macro to convert index into binary
+#define BIN_FROM_IDX(I) (1 << I)
+
+// Keymappings for Game-Controllers (I2C)
+// The value of each symbol corresponds
+// to the pin on the i2c port extender.
+// Each value should only occur once!
+
+// Keymappings (for all players)
+#define I2C_CTRL_KEYMAP_A BIN_FROM_IDX(0)
+#define I2C_CTRL_KEYMAP_B BIN_FROM_IDX(1)
+#define I2C_CTRL_KEYMAP_EXIT BIN_FROM_IDX(2)
+#define I2C_CTRL_KEYMAP_ENTER BIN_FROM_IDX(3)
+#define I2C_CTRL_KEYMAP_DOWN BIN_FROM_IDX(4)
+#define I2C_CTRL_KEYMAP_UP BIN_FROM_IDX(5)
+#define I2C_CTRL_KEYMAP_LEFT BIN_FROM_IDX(6)
+#define I2C_CTRL_KEYMAP_RIGHT BIN_FROM_IDX(7)
+
+// Keymappings for Keyboard
+// Player 0
+#define KEYBOARD_CTRL_0_KEYMAP_A (KEY_R)
+#define KEYBOARD_CTRL_0_KEYMAP_B (KEY_F)
+#define KEYBOARD_CTRL_0_KEYMAP_EXIT (KEY_Q)
+#define KEYBOARD_CTRL_0_KEYMAP_ENTER (KEY_E)
+#define KEYBOARD_CTRL_0_KEYMAP_DOWN (KEY_S)
+#define KEYBOARD_CTRL_0_KEYMAP_UP (KEY_W)
+#define KEYBOARD_CTR_0_KEYMAP_LEFT (KEY_A)
+#define KEYBOARD_CTRL_0_KEYMAP_RIGHT (KEY_D)
+// Player 1
+#define KEYBOARD_CTRL_1_KEYMAP_A (KEY_O)
+#define KEYBOARD_CTRL_1_KEYMAP_B (KEY_L)
+#define KEYBOARD_CTRL_1_KEYMAP_EXIT (KEY_BACKSPACE)
+#define KEYBOARD_CTRL_1_KEYMAP_ENTER (KEY_ENTER)
+#define KEYBOARD_CTRL_1_KEYMAP_DOWN (KEY_DOWN)
+#define KEYBOARD_CTRL_1_KEYMAP_UP (KEY_UP)
+#define KEYBOARD_CTRL_1_KEYMAP_LEFT (KEY_LEFT)
+#define KEYBOARD_CTRL_1_KEYMAP_RIGHT (KEY_RIGHT)
+
+
 ////////////////////////////////////////////////////////////////////////////////
 /////////////////////// Parameter Validation ///////////////////////////////////
 // ////////////////////////////////////

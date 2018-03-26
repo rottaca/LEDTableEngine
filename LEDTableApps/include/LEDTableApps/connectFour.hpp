@@ -19,6 +19,9 @@ public:
     void continueApp();
     void pauseApp();
 
+    const std::string getName() const{
+      return "Connect Four";
+    }
 protected:
 
     std::vector<led::Pointi>checkForWin(led::Pointi insertedPoint);
@@ -28,7 +31,7 @@ protected:
 private:
 
     led::Image m_gameField;
-    size_t m_currPlayerId;
+    led::BaseInput::PlayerID m_currPlayerId;
     bool m_chipIsFalling;
     bool m_playerWon;
     led::Pointi m_currFallingChipPos;

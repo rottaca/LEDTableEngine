@@ -37,6 +37,10 @@ public:
      * Set the actual text that should be displayed.
      */
     void setText(std::string text);
+
+    const std::string getName() const{
+      return m_text;
+    }
 };
 
 }
