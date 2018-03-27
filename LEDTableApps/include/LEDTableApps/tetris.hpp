@@ -4,6 +4,7 @@
 
 #include <LEDTableEngine/core/baseApplication.hpp>
 
+namespace ledApps{
 class Tetris : public led::BaseApplication {
 public:
 
@@ -90,5 +91,5 @@ private:
     void newShape();
 };
 
-
+}
 #endif // ifndef _H_SNAKE_APP_

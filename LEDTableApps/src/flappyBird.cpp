@@ -4,6 +4,7 @@
 #include <LEDTableEngine/core/messageDisplay.hpp>
 
 using namespace led;
+namespace ledApps{
 FlappyBird::FlappyBird() {
 }
 
@@ -120,4 +121,5 @@ void FlappyBird::draw(Image& frame) {
     }
 
     frame.data[m_birdX + (int)round(m_birdY) * frame.width] = 1;
+}
 }

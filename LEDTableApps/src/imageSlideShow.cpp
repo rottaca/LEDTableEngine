@@ -5,6 +5,7 @@
 #include <LEDTableEngine/core/baseController.hpp>
 
 using namespace led;
+namespace ledApps{
 ImageSlideShowApp::ImageSlideShowApp() {
 
 }
@@ -128,4 +129,5 @@ std::shared_ptr<Image>ImageSlideShowApp::loadImage(std::string path)
     // memcpy(img->data, surf->pixels,img->size);
     SDL_FreeSurface(surf);
     return img;
+}
 }

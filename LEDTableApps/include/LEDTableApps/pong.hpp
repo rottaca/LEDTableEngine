@@ -3,6 +3,7 @@
 
 #include <LEDTableEngine/core/baseApplication.hpp>
 
+namespace ledApps{
 class Pong : public led::BaseApplication {
 protected:
 
@@ -40,6 +41,6 @@ private:
 
     void resetRound();
 };
-
+}
 
 #endif // ifndef _H_PONG_APP_

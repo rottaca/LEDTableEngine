@@ -1,6 +1,7 @@
 #include <LEDTableApps/fractal.hpp>
 #include <LEDTableEngine/core/baseController.hpp>
 using namespace led;
+namespace ledApps{
 FractalApp::FractalApp() {
 }
 
@@ -108,4 +109,5 @@ void FractalApp::draw_Mandelbrot(Image      & frame,
             *p++ = 255 * iterations / max_iterations;
         }
     }
+}
 }

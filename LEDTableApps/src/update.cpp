@@ -6,6 +6,7 @@
 #include <fcntl.h> // library for fcntl function
 using namespace led;
 
+namespace ledApps{
 UpdateApp::UpdateApp() {
 }
 
@@ -160,4 +161,5 @@ void UpdateApp::draw(Image& frame) {
     m_requiresRedraw = false;
     m_ctrl->clearFrame(0);
     m_scrollText.draw(frame);
+}
 }

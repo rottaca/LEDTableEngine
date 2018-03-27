@@ -8,6 +8,11 @@
 namespace led {
 class BaseController;
 
+/**
+ * @brief Base class for applications. This class provides a general
+ * interface for controlling the lifecycle of an application
+ * as well as drawing the output image and processing input data.
+ */
 class BaseApplication {
 protected:
 

@@ -4,6 +4,7 @@
 #include <LEDTableEngine/core/shaderApplication.hpp>
 #include <LEDTableEngine/core/types.hpp>
 
+namespace ledApps{
 class AnimationApp : public led::ShaderApplication {
 protected:
 
@@ -70,6 +71,6 @@ private:
                    uint8_t     & g,
                    uint8_t     & b);
 };
-
+}
 
 #endif // ifndef _H_ANIMATION_APP_

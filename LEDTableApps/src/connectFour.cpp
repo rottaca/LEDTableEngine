@@ -4,6 +4,7 @@
 
 using namespace led;
 
+namespace ledApps{
 ConnectFour::ConnectFour() {
     // Do some initialize that should only happen once!
 }
@@ -166,4 +167,5 @@ void ConnectFour::draw(Image& frame) {
             frame(p.y,p.x,0) = 4;
         }
     }
+}
 }

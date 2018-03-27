@@ -4,6 +4,7 @@
 #include <LEDTableEngine/core/shaderApplication.hpp>
 #include <LEDTableEngine/core/rasterizer.hpp>
 
+namespace ledApps{
 class BoardGameApp : public led::ShaderApplication {
 protected:
 
@@ -42,6 +43,6 @@ private:
  */
     void MADN(led::Image& img);
 };
-
+}
 
 #endif // ifndef _H_BOARD_GAME_SHADER_APP_

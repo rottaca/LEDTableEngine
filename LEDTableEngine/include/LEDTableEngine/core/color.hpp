@@ -1,13 +1,14 @@
 #ifndef _H_COLOR_
 #define _H_COLOR_
+/** @file */
 
 #include "types.hpp"
 
 namespace led {
-// Datatype for an RGB color
+/** Datatype for an RGB color */
 typedef std::array<uint8_t, 3>ColorRGB;
 
-// Datatype for a Palette (vector of RGB colors)
+/** Datatype for a Palette (vector of RGB colors) */
 typedef std::vector<ColorRGB>Palette;
 
 /**

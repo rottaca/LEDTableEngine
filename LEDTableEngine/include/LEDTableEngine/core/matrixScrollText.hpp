@@ -5,13 +5,13 @@
 #include "font.hpp"
 
 namespace led {
-  /**
-   * This class provides a simple interface to display
-   * a scrolling text on a matrix display.
-   * Specify the used font and the movement speed of the text
-   * in the init function.
-   * Use the update function to update the text state.
-   */
+/**
+ * @brief This class provides a simple interface to display
+ * a scrolling text on a matrix display.
+ * Specify the used font and the movement speed of the text
+ * in the init function.
+ * Use the update function to update the text state.
+ */
 class MatrixScrollText {
 private:
 

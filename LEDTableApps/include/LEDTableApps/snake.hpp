@@ -3,6 +3,7 @@
 
 #include <LEDTableEngine/core/baseApplication.hpp>
 
+namespace ledApps{
 class Snake : public led::BaseApplication {
 protected:
 
@@ -35,6 +36,6 @@ public:
       return "Snake";
     }
 };
-
+}
 
 #endif // ifndef _H_SNAKE_APP_

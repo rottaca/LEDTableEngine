@@ -32,6 +32,7 @@ extern char *optarg;
 extern int optind, opterr, optopt;
 
 using namespace led;
+using namespace ledApps;
 
 
 class SettingsMenuHandler : public MenuEntryHandler {

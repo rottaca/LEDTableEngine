@@ -6,6 +6,7 @@
 namespace led{
   class YesNoDisplay;
 }
+namespace ledApps{
 
 class ShutdownApp : public led::BaseApplication {
 public:
@@ -37,6 +38,6 @@ private:
   };
   State m_state;
 };
-
+}
 
 #endif // ifndef _H_SHUTDOWNAPP_

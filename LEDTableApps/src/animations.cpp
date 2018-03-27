@@ -6,6 +6,8 @@
 #define RAND_FLOAT(A, B) (A + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / B)))
 
 using namespace led;
+
+namespace ledApps{
 AnimationApp::AnimationApp() {
 }
 
@@ -153,4 +155,5 @@ void AnimationApp::rainDrops(TimeUnit tm, size_t x, size_t y, uint8_t& r, uint8_
     r = tr * 255;
     g = tg * 255;
     b = tb * 255;
+}
 }

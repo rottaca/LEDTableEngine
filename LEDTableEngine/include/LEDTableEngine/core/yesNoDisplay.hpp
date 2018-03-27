@@ -9,7 +9,7 @@ namespace led {
 class MenuEntryHandler;
 class BaseController;
 /**
- * This class provides a simple interface to display a
+ * @brief This class provides a simple interface to display a
  * moving text ontop of a running application.
  * It can be used to display status messages with very little effort.
  * Pressing ENTER or EXIT leaves the application.

@@ -6,6 +6,11 @@
 #include <LEDTableEngine/core/baseApplication.hpp>
 
 namespace led {
+/**
+ * @brief Base class for applications that do pixelwise rendering (similar
+ * to shaders). Input is handeled automatically (iterating through all shader types
+ * in the implementation). Drawing is simpilfied to a pe-pixel render function.
+ */
 class ShaderApplication : public led::BaseApplication {
 protected:
 
@@ -16,14 +21,19 @@ public:
 
     ShaderApplication();
     virtual ~ShaderApplication();
-
+    /**
+     * Initialize application.
+     * @param ctrl
+     * @param shaderCnt Specify the number of available shaders. Used for
+     * looping through all shaders if the user presses a key.
+     */
     virtual void initialize(led::BaseController *ctrl,
                             size_t shaderCnt);
 
     virtual void processInput(const led::BaseInput::InputEvents& events,
                               led::TimeUnit deltaTime);
     virtual void draw(led::Image& frame);
-    
+
 protected:
 
 /**

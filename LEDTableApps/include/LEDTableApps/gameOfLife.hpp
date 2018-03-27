@@ -3,6 +3,7 @@
 
 #include <LEDTableEngine/core/baseApplication.hpp>
 
+namespace ledApps{
 class GameOfLife : public led::BaseApplication {
 protected:
 
@@ -57,6 +58,6 @@ private:
                             led::Pointi p);
     void    randomInitField();
 };
-
+}
 
 #endif // ifndef _H_GAME_OF_LIFE_APP_

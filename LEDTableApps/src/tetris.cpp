@@ -6,6 +6,7 @@
 #include <LEDTableEngine/core/baseController.hpp>
 
 using namespace led;
+namespace ledApps{
 
 const std::vector<Tetris::ShapeDef> shapes = {
     {
@@ -268,4 +269,5 @@ void Tetris::newShape() {
 
     m_fallingShape.update(shapes[shapeIdx], colIdx);
     m_fallingShape.translate(posX, -3);
+}
 }

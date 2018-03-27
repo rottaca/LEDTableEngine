@@ -7,6 +7,7 @@
 #include <LEDTableEngine/core/messageDisplay.hpp>
 
 using namespace led;
+namespace ledApps{
 Snake::Snake() {
 }
 
@@ -186,4 +187,5 @@ void Snake::draw(Image& frame) {
             frame.data[p.x + p.y * frame.width] = i + 4;
         }
     }
+}
 }

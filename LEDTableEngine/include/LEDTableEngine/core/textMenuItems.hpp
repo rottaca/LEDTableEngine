@@ -9,27 +9,41 @@ class MenuEntryHandler;
 class AppLauncher;
 class TextMenu;
 
+/**
+ * @brief A menu entry, that is displayed inside a menu.
+ */
 class MenuEntry {
+
 private:
     std::string m_name;
     std::shared_ptr<MenuEntryHandler>m_handler;
 public:
+    /**
+     * Create a menu entry with the specified name and a
+     * menu entry handler attached.
+     */
     MenuEntry(std::string name,
               std::shared_ptr<MenuEntryHandler>h);
+    /**
+     * Create a menu entry that acts a an application launcher.
+     * This constructor takes the menu name from the app launcher.
+     */
     MenuEntry(std::shared_ptr<AppLauncher> h);
 
     std::string getName(){
       return m_name;
     }
+
     void setName(std::string name){
       m_name = name;
     }
+
     std::shared_ptr<MenuEntryHandler> getHandler(){
       return m_handler;
     }
 };
 /**
- * The MenuEntryHandler is used, to specify the
+ * @brief The MenuEntryHandler is used, to specify the
  * behaviour after selecting a menu entry.
  * It is a general interface with a single
  * function.
@@ -53,7 +67,7 @@ public:
 };
 
 /**
- * General implementation of the menu entry handler interface
+ * @brief General implementation of the menu entry handler interface
  * for launching applications by selecting a menu item.
  */
 class AppLauncher : public MenuEntryHandler {

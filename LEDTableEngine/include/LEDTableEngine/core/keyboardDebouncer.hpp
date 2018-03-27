@@ -4,9 +4,11 @@
 #include "baseInput.hpp"
 
 namespace led {
+/**
+ * @brief Converts continuously hold keys from KEY_PRESSED to KEY_HOLD.
+ */
 class KeyboardDebouncer {
 private:
-
     BaseInput::InputEvents m_events;
 
 public:

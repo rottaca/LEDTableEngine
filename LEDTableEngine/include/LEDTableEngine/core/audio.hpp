@@ -31,9 +31,8 @@
 #include <SDL2/SDL.h>
 
 namespace led {
-/*
- * Queue structure for all loaded sounds
- *
+/**
+ * @brief Queue structure for all loaded sounds
  */
 struct Audio
 {
@@ -51,7 +50,7 @@ struct Audio
     Audio *next;
 };
 
-/*
+/**
  * Create a Audio object
  *
  * @param filename      Filename for the WAVE file to load
@@ -67,7 +66,7 @@ Audio* createAudio(const char *filename,
                    int loop,
                    int volume);
 
-/*
+/**
  * Frees as many chained Audios as given
  *
  * @param audio     Chain of sounds to free
@@ -75,7 +74,7 @@ Audio* createAudio(const char *filename,
  */
 void freeAudio(Audio *audio);
 
-/*
+/**
  * Play a wave file currently must be S16LE format 2 channel stereo
  *
  * @param filename      Filename to open, use getAbsolutePath
@@ -86,7 +85,7 @@ void freeAudio(Audio *audio);
 void playSound(const char *filename,
                int volume);
 
-/*
+/**
  * Plays a new music, only 1 at a time plays
  *
  * @param filename      Filename of the WAVE file to load
@@ -96,7 +95,7 @@ void playSound(const char *filename,
 void playMusic(const char *filename,
                int volume);
 
-/*
+/**
  * Plays a sound from a createAudio object (clones), only 1 at a time plays
  * Advantage to this method is no more disk reads, only once, data is stored and
  * constantly reused
@@ -108,7 +107,7 @@ void playMusic(const char *filename,
 void playSoundFromMemory(Audio *audio,
                          int volume);
 
-/*
+/**
  * Plays a music from a createAudio object (clones), only 1 at a time plays
  * Advantage to this method is no more disk reads, only once, data is stored and
  * constantly reused
@@ -120,7 +119,7 @@ void playSoundFromMemory(Audio *audio,
 void playMusicFromMemory(Audio *audio,
                          int volume);
 
-/*
+/**
  * Free all audio related variables
  * Note, this needs to be run even if initAudio fails, because it frees the
  * global audio device
@@ -128,19 +127,19 @@ void playMusicFromMemory(Audio *audio,
  */
 void endAudio(void);
 
-/*
+/**
  * Initialize Audio Variable
  *
  */
 void initAudio(void);
 
-/*
+/**
  * Pause audio from playing
  *
  */
 void pauseAudio(void);
 
-/*
+/**
  * Unpause audio from playing
  *
  */

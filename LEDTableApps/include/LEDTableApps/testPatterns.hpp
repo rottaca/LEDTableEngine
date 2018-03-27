@@ -4,6 +4,7 @@
 #include <LEDTableEngine/core/baseApplication.hpp>
 #include <LEDTableEngine/core/font.hpp>
 
+namespace ledApps{
 class TestPatternApp : public led::BaseApplication {
 protected:
 
@@ -37,6 +38,6 @@ public:
       return "Test Patterns";
     }
 };
-
+}
 
 #endif // ifndef _H_TESTPATTERN_APP_

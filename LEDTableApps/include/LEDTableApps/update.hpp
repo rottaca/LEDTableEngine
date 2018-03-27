@@ -5,6 +5,7 @@
 #include <LEDTableEngine/core/font.hpp>
 #include <LEDTableEngine/core/matrixScrollText.hpp>
 
+namespace ledApps{
 class UpdateApp : public led::BaseApplication {
 protected:
 
@@ -36,6 +37,6 @@ public:
       return "Update";
     }
 };
-
+}
 
 #endif // ifndef _H_UPDATE_APP_

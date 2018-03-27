@@ -2,6 +2,7 @@
 #include <LEDTableEngine/core/baseController.hpp>
 
 using namespace led;
+namespace ledApps{
 BoardGameApp::BoardGameApp() {
 }
 
@@ -132,4 +133,5 @@ void BoardGameApp::MADN(led::Image& img)
     m_rasterizer.setColor({255,255,0});
     m_rasterizer.drawLine(img, Pointi(padXL+tilesPerDim/2.0,padYU + tilesPerDim -2), Pointi(padXL+tilesPerDim/2.0,padYU + tilesPerDim-5));
 
+}
 }

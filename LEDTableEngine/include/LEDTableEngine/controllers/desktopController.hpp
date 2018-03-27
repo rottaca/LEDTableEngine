@@ -8,7 +8,11 @@
 #endif // ifdef WIN32
 
 #include <LEDTableEngine/core/baseController.hpp>
-
+/**
+ * @brief Desktop controller implementation, that renders the image
+ * onto a window on the desktop. The actual matrix is upscaled in order to be
+ * useful as a simulation environment.
+ */
 class DesktopController : public led::BaseController {
 public:
 

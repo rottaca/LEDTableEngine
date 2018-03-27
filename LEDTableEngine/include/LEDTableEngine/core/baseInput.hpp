@@ -6,6 +6,10 @@
 namespace led {
 class BaseController;
 
+/**
+ * @brief Base class for input devices. Provides the interface for gathering
+ * events from an input device.
+ */
 class BaseInput {
 public:
 
@@ -61,7 +65,7 @@ public:
    };
 
 /**
- * Stores the state, player id and name of a key event
+ * @brief Stores the state, player id and name of a key event
  */
     struct InputEvent {
         InputEventState state;

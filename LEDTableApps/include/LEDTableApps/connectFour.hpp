@@ -3,6 +3,7 @@
 
 #include <LEDTableEngine/core/baseApplication.hpp>
 
+namespace ledApps{
 class ConnectFour : public led::BaseApplication {
 public:
 
@@ -38,6 +39,6 @@ private:
     led::TimeUnit m_lastFallTime;
     std::vector<led::Pointi> m_winPoints;
 };
-
+}
 
 #endif // ifndef _H_CONNECTFOUR_

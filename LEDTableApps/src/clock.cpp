@@ -4,6 +4,7 @@
 #include <LEDTableEngine/core/messageDisplay.hpp>
 
 using namespace led;
+namespace ledApps{
 ClockApp::ClockApp() {
 }
 
@@ -72,4 +73,5 @@ void ClockApp::draw(Image& frame) {
     p.y   = c.y + (radius - 1) * sin(angle);
     m_rasterizer.setColor(2);
     m_rasterizer.drawLine(frame, c, p);
+}
 }

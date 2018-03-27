@@ -5,10 +5,9 @@
 
 namespace led {
 /**
- * This class can be used to raster geometric primitives
+ * @brief This class can be used to raster geometric primitives
  * onto an RGB or palette image buffer.
  */
-
 class Rasterizer {
 public:
 

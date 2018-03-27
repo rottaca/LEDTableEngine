@@ -3,6 +3,7 @@
 
 #include <LEDTableEngine/core/baseApplication.hpp>
 
+namespace ledApps{
 class MineSweeper : public led::BaseApplication {
 protected:
 
@@ -59,6 +60,6 @@ private:
 
     bool gameWon();
 };
-
+}
 
 #endif // ifndef _H_MineSweeper_APP_

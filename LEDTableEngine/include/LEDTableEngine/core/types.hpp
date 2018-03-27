@@ -24,7 +24,7 @@ namespace led {
 typedef int64_t TimeUnit;
 
 /**
- * BufferColorMode describes the content of the frame buffer
+ * @brief BufferColorMode describes the content of the frame buffer
  */
 enum BufferColorMode {
     // RGB-Buffer requires the App to handle the framebuffer with 3 color
@@ -37,7 +37,7 @@ enum BufferColorMode {
 };
 
 /**
- * A simple template point data strucutre.
+ * @brief A simple template point data strucutre.
  */
 template<typename T>struct Point {
     T x, y;
@@ -66,7 +66,7 @@ typedef Point<int>  Pointi;
 typedef Point<float>Pointf;
 
 /**
- * A very simple image class implementation
+ * @brief A very simple image class implementation
  */
 struct Image {
     uint8_t *data;

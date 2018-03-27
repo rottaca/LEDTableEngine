@@ -4,6 +4,10 @@
 #include <LEDTableEngine/core/baseController.hpp>
 #include <LEDTableEngine/controllers/TPM2.hpp>
 
+/**
+ * @brief Matrix controller implementation that renders the generated image
+ * onto the LED matrix hardware.
+ */
 class MatrixController : public led::BaseController {
 public:
 

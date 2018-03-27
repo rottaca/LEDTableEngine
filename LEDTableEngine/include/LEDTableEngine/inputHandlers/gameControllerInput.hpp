@@ -10,6 +10,10 @@
 #include <LEDTableEngine/core/baseInput.hpp>
 
 namespace led{
+/**
+ * @brief Input handler implementation that takes input from i2c gaming controllers
+ * attached to the computer.
+ */
 class GameControllerInput : public BaseInput {
 private:
 

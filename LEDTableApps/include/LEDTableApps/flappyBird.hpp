@@ -3,6 +3,7 @@
 
 #include <LEDTableEngine/core/baseApplication.hpp>
 
+namespace ledApps{
 class FlappyBird : public led::BaseApplication {
 protected:
 
@@ -38,6 +39,6 @@ public:
       return "Flappy Bird";
     }
 };
-
+}
 
 #endif // ifndef _H_FlappyBird_APP_

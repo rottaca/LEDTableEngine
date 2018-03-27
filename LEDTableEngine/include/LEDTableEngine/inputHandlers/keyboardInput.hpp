@@ -10,6 +10,10 @@
 #include <LEDTableEngine/inputHandlers/keyboard.hpp>
 
 namespace led{
+  /**
+   * @brief Input handler implementation that takes the input from a keyboard.
+   * Keyboard events are directly parsed from the keyboard event file.
+   */
 class KeyboardInput : public BaseInput {
 public:
 

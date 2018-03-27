@@ -4,6 +4,7 @@
 #include <LEDTableEngine/core/baseApplication.hpp>
 #include <LEDTableEngine/core/rasterizer.hpp>
 
+namespace ledApps{
 class ClockApp : public led::BaseApplication {
 protected:
 
@@ -24,6 +25,6 @@ public:
       return "Clock";
     }
 };
-
+}
 
 #endif // ifndef _H_CLOCK_APP

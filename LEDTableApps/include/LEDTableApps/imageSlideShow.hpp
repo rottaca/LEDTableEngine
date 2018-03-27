@@ -4,6 +4,7 @@
 #include <LEDTableEngine/core/baseApplication.hpp>
 #include <LEDTableEngine/core/font.hpp>
 
+namespace ledApps{
 class ImageSlideShowApp : public led::BaseApplication {
 protected:
 
@@ -33,6 +34,6 @@ private:
 
     std::shared_ptr<led::Image>loadImage(std::string path);
 };
-
+}
 
 #endif // ifndef _H_IMAGE_SLIDE_SHOW_APP_

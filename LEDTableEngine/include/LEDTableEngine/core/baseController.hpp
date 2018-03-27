@@ -12,6 +12,10 @@
 namespace led {
 class BaseInput;
 
+/**
+ * @brief Abstract base class for controller implementations.
+ * Contains the actual control loop and application management.
+ */
 class BaseController {
 protected:
 

@@ -7,6 +7,7 @@
 #include <LEDTableEngine/core/baseController.hpp>
 
 using namespace led;
+namespace ledApps{
 
 #define PAD_X (1)
 #define NEIGHBOR_CNT 8
@@ -258,4 +259,5 @@ void MineSweeper::draw(Image& frame) {
     if (m_cursorVisible) {
         frame.data[m_cursorPos.x + PAD_X + m_cursorPos.y * frame.width] = COL_IDX_CURSOR;
     }
+}
 }

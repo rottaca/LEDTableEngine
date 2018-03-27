@@ -2,6 +2,7 @@
 #include <LEDTableEngine/core/baseController.hpp>
 #include <algorithm>
 using namespace led;
+namespace ledApps{
 template<typename T>int sgn(T val) {
     return (T(0) < val) - (val < T(0));
 }
@@ -166,4 +167,5 @@ void Pong::draw(Image& frame) {
             frame.data[idx] = 2 + j;
         }
     }
+}
 }

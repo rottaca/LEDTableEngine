@@ -5,6 +5,7 @@
 
 #include <LEDTableEngine/core/baseApplication.hpp>
 
+namespace ledApps{
 class FractalApp : public led::BaseApplication {
 protected:
 
@@ -64,6 +65,6 @@ private:
                       uint8_t& g,
                       uint8_t& b);
 };
-
+}
 
 #endif // ifndef _H_FRACTAL_APP_

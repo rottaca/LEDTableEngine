@@ -8,6 +8,7 @@
 #include <fcntl.h> // library for fcntl function
 
 using namespace led;
+namespace ledApps{
 
 ShutdownApp::ShutdownApp() {
     // Do some initialize that should only happen once!
@@ -85,4 +86,5 @@ void ShutdownApp::draw(Image& frame) {
       default:
         m_ctrl->clearFrame({ 0, 0, 0 });
     }
+}
 }

@@ -2,6 +2,7 @@
 #include <LEDTableEngine/core/baseController.hpp>
 
 using namespace led;
+namespace ledApps{
 
 TestPatternApp::TestPatternApp() {
 
@@ -109,4 +110,5 @@ void TestPatternApp::draw(Image& frame) {
         break;
     }
     }
+}
 }

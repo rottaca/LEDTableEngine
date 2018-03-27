@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cstring>
 using namespace led;
+namespace ledApps{
 GameOfLife::GameOfLife() {
 }
 
@@ -140,4 +141,5 @@ uint8_t GameOfLife::checkNeighbours(Image& gameField, Pointi p) {
         }
     }
     return neighbours;
+}
 }
