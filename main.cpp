@@ -35,13 +35,7 @@ using namespace led;
 using namespace ledApps;
 
 
-class SettingsMenuHandler : public MenuEntryHandler {
-private:
-    std::shared_ptr<led::BaseController> m_ctrl;
-public:
-    SettingsMenuHandler(std::shared_ptr<led::BaseController>ctrl);
-    bool onSelectMenuItem(TextMenu* menu,  MenuEntry& menuEntry, size_t idx);
-};
+
 
 void help(char* appName){
   std::cout << "Usage:" << std::endl;
@@ -167,17 +161,12 @@ int main(int argc, char **argv)
     // Settings
     auto settings        = std::make_shared<TextMenu>("Settings");
     auto settingsHandler = std::make_shared<SettingsMenuHandler>(c);
-
-    std::stringstream stream;
-    stream << "Brightness: ";
-    stream << std::fixed << std::setprecision(1) << 100*c->getBrightness() << "%";
-
-    settings->setMenuItems({
-        MenuEntry(stream.str(), settingsHandler),
-        MenuEntry(std::string("Players: ")+std::to_string(c->getPlayerCount()), settingsHandler),
-        MenuEntry(std::make_shared<AppLauncher>(c, std::make_shared<UpdateApp>())),
-        MenuEntry(std::make_shared<AppLauncher>(c, std::make_shared<ShutdownApp>()))
-    });
+    std::vector<MenuEntry> settingsMenuEntries = settingsHandler->createSettingsMenu();
+    settingsMenuEntries.push_back(
+      MenuEntry(std::make_shared<AppLauncher>(c, std::make_shared<UpdateApp>())));
+    settingsMenuEntries.push_back(
+      MenuEntry(std::make_shared<AppLauncher>(c, std::make_shared<ShutdownApp>())));
+    settings->setMenuItems(settingsMenuEntries);
 
     // Main Menu
     auto a = std::make_shared<TextMenu>("Main Menu", false);
@@ -192,50 +181,4 @@ int main(int argc, char **argv)
     std::cout << "Starting main loop..." << std::endl;
     c->run(UPDATE_RATE);
     return 0;
-}
-
-
-SettingsMenuHandler::SettingsMenuHandler(std::shared_ptr<led::BaseController>ctrl) {
-    m_ctrl = ctrl;
-}
-bool SettingsMenuHandler::onSelectMenuItem(TextMenu            *menu,
-                      MenuEntry&           menuEntry,
-                      size_t idx) {
-    switch (idx) {
-    // Brightness
-    case 0: {
-        float brightness = m_ctrl->getBrightness();
-        brightness += 0.2;
-
-        if (brightness > 1) {
-            brightness = 0.2;
-        }
-        m_ctrl->setBrightness(brightness);
-        std::stringstream stream;
-        stream << "Brightness: ";
-        stream << std::fixed << std::setprecision(1) << brightness*100 << "%";
-        menuEntry.setName(stream.str());
-        break;
-    }
-
-    // Player Count
-    case 1: {
-        size_t p = m_ctrl->getPlayerCount();
-        p = (p + 1) % (m_ctrl->getMaxPlayerCount()+1);
-        if(p == 0) p++;
-        m_ctrl->setPlayerCount(p);
-        std::stringstream stream;
-        stream << "Players: ";
-        stream << p;
-        menuEntry.setName(stream.str());
-        break;
-    }
-
-    default:
-        return false;
-
-        break;
-    }
-    menu->updateTextData();
-    return false;
 }

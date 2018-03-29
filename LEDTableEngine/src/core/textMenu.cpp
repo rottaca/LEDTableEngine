@@ -68,10 +68,14 @@ void TextMenu::processInput(const BaseInput::InputEvents &events,
                 updateTextData();
             }
         }
+        case BaseInput::InputEventName::LEFT:
+        case BaseInput::InputEventName::RIGHT: {
+            m_menuEntries[m_menuEntryIdx].getHandler()->onSelectMenuItem(this, m_menuEntries[m_menuEntryIdx], m_menuEntryIdx,e);
+        }
         break;
         case BaseInput::InputEventName::ENTER: {
             if(m_menuEntries[m_menuEntryIdx].getHandler()) {
-                if(m_menuEntries[m_menuEntryIdx].getHandler()->onSelectMenuItem(this, m_menuEntries[m_menuEntryIdx], m_menuEntryIdx) && m_isClosable)
+                if(m_menuEntries[m_menuEntryIdx].getHandler()->onSelectMenuItem(this, m_menuEntries[m_menuEntryIdx], m_menuEntryIdx,e) && m_isClosable)
                     m_hasFinished = true;
             }else if(m_isClosable) {
                 m_hasFinished = true;

@@ -42,9 +42,6 @@ protected:
 // May be RGB or indexed image (with palette).
     BufferColorMode m_bufferMode;
 
-// Brightness of display. RGB Colors are multiplied by this value.
-// Ranges from 0 to 1
-    float m_brightness;
 
 // Number of currently active players
     size_t m_playerCnt;
@@ -52,6 +49,14 @@ protected:
 // Time since the last input / keypress
     TimeUnit m_lastKeyPress;
 
+    // Brightness of display. RGB Colors are multiplied by this value.
+    // Ranges from 0 to 1
+    float m_brightness;
+
+    // Stretch color components between min and max to full range (0-255)
+    ColorRGB m_stretch_col_min;
+    // Stretch color components between min and max to full range (0-255)
+    ColorRGB m_stretch_col_max;
 private:
 
 // Shared pointer to the input handler
@@ -69,6 +74,7 @@ private:
 
 // The actual framebuffer that holds the current image (RGB or indexed)
     Image m_frameBuffer;
+    Image m_postProcessingBuffer;
 
 // The debouncer is used to detect hold keys
     KeyboardDebouncer m_kdb;
@@ -141,6 +147,33 @@ public:
  */
     float getBrightness() {
         return m_brightness;
+    }
+
+/**
+ * Returns the currently set minimum color, used for stretching.
+ */
+    ColorRGB getStretchMin() {
+        return m_stretch_col_min;
+    }
+
+/**
+ * Returns the currently set maximum color, used for stretching.
+ */
+    ColorRGB getStretchMax() {
+        return m_stretch_col_max;
+    }
+/**
+ * Returns the currently set brightness.
+ */
+    void setStretchMin(ColorRGB min) {
+        m_stretch_col_min = min;
+    }
+
+/**
+ * Returns the currently set brightness.
+ */
+    void setStretchMax(ColorRGB max) {
+        m_stretch_col_max = max;
     }
 
 /**
@@ -229,6 +262,14 @@ protected:
  * color mode.
  */
     void                   updateBufferColorMode();
+
+/**
+ * Converts the input image to RGB and applie postprocessing effects
+ * to account for different LED qualities
+ * @param  inputImg  RGB/Palette image
+ * @param  outputImg RGB output image
+ */
+    void                   applyPostProcessing(const Image& inputImg, Image& outputImg);
 
 private:
 

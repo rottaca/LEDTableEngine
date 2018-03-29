@@ -31,9 +31,11 @@ bool BaseController::initialize(size_t width, size_t height,
     m_isStandby  = false;
     m_bufferMode = BufferColorMode::PALETTE;
     m_brightness = 1;
+    m_stretch_col_min = {0,0,0};
+    m_stretch_col_max = {255,255,255};
+
     auto now = std::chrono::high_resolution_clock::now();
-    m_refTimeStartUs =
-        std::chrono::duration_cast<std::chrono::microseconds>(now.time_since_epoch()).count();
+    m_refTimeStartUs = std::chrono::duration_cast<std::chrono::microseconds>(now.time_since_epoch()).count();
 
     while (!m_applicationStack.empty()) m_applicationStack.pop();
 
@@ -165,9 +167,10 @@ void BaseController::run(size_t fps) {
             if (m_applicationStack.top()->requiresRedraw()) {
                 // Draw application to frame
                 m_applicationStack.top()->draw(m_frameBuffer);
-
+                // Apply post processing effects
+                applyPostProcessing(m_frameBuffer, m_postProcessingBuffer);
                 // Render the frame to the render target
-                showFrame(m_frameBuffer);
+                showFrame(m_postProcessingBuffer);
 
                 // And compute a few update rates
                 avgDispUpdateTime =
@@ -240,8 +243,10 @@ void BaseController::run(size_t fps) {
                     clearFrame(0);
                 }
 
+                // Apply post processing effects
+                applyPostProcessing(m_frameBuffer, m_postProcessingBuffer);
                 // Render the frame to the render target
-                showFrame(m_frameBuffer);
+                showFrame(m_postProcessingBuffer);
             }
             m_isStandby = true;
         }
@@ -299,6 +304,7 @@ void BaseController::createFrame() {
         m_frameBuffer.resize(m_height, m_width, 1);
         break;
     }
+    m_postProcessingBuffer.resize(m_height, m_width, 3);
 }
 
 void BaseController::clearFrame(ColorRGB color) {
@@ -325,8 +331,6 @@ void BaseController::updateBufferColorMode() {
     if (m_bufferMode != mode) {
         m_bufferMode = mode;
         createFrame();
-    } else {
-        m_bufferMode = mode;
     }
 }
 
@@ -339,5 +343,38 @@ TimeUnit BaseController::getTimeMs() {
     auto micros = std::chrono::duration_cast<std::chrono::microseconds>(now.time_since_epoch()).count();
 
     return (micros - m_refTimeStartUs) / 1000.0;
+}
+void BaseController::applyPostProcessing(const Image& inputImg, Image& outputImg){
+  assert(inputImg.width == outputImg.width);
+  assert(inputImg.height == outputImg.height);
+
+  const led::Palette& palette = getCurrentPalette();
+
+  size_t inputIdx = 0;
+  size_t outputIdx = 0;
+  led::ColorRGB c;
+
+  for (size_t j = 0; j < inputImg.width*inputImg.height; j++) {
+      // Palette mode
+      if (m_bufferMode == led::BufferColorMode::PALETTE) {
+          int p = inputImg.data[inputIdx];
+          c = palette[p];
+      }
+      // RGB Mode
+      else {
+          for (size_t i = 0; i < inputImg.channels; i++) {
+            c[i] = inputImg.data[inputIdx+i];
+          }
+      }
+
+      // Apply postprocessing effects to each pixel
+      for (size_t i = 0; i < outputImg.channels; i++) {
+        outputImg.data[outputIdx+i] = std::min(255,255*std::max(0,c[i] - m_stretch_col_min[i]) /
+                                   (m_stretch_col_max[i] - m_stretch_col_min[i])) * m_brightness;
+      }
+
+      inputIdx += inputImg.channels;
+      outputIdx += outputImg.channels;
+  }
 }
 }

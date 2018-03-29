@@ -71,20 +71,9 @@ void MatrixController::copyImageToBuffer(const led::Image& frame) {
           }
           #endif
 
-          // Palette mode
-          if (m_bufferMode == led::BufferColorMode::PALETTE) {
-              c = palette[frame.data[inputIdx++]];
-          }
-          // RGB Mode
-          else {
-              c[0] = frame.data[inputIdx++];
-              c[1] = frame.data[inputIdx++];
-              c[2] = frame.data[inputIdx++];
-          }
-
-          outputPtr[outputIdx+0] = c[0] * m_brightness;
-          outputPtr[outputIdx+1] = c[1] * m_brightness;
-          outputPtr[outputIdx+2] = c[2] * m_brightness;
+          outputPtr[outputIdx+0] = frame.data[inputIdx++];
+          outputPtr[outputIdx+1] = frame.data[inputIdx++];
+          outputPtr[outputIdx+2] = frame.data[inputIdx++];
 
           #ifdef LED_MATRIX_FLIP_X
             x_matrix--;
