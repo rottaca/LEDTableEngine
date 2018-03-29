@@ -69,30 +69,16 @@ void DesktopController::copyImageToBuffer(const led::Image& frame) {
 
     int rowstride               = m_imageSurf->pitch;
     unsigned char *pixels       = (unsigned char *)m_imageSurf->pixels;
-    const led::Palette& palette = getCurrentPalette();
 
     size_t idx = 0;
     led::ColorRGB c;
 
     for (size_t y = 0; y < m_height; y++) {
         unsigned char *p = pixels + y * rowstride;
-
         for (size_t x = 0; x < m_width; x++) {
-            // Palette mode
-            if (m_bufferMode == led::BufferColorMode::PALETTE) {
-                int p = frame.data[idx++];
-                c = palette[p];
-            }
-
-            // RGB Mode
-            else {
-                c[0] = frame.data[idx++];
-                c[1] = frame.data[idx++];
-                c[2] = frame.data[idx++];
-            }
-            *p++ = c[0] * m_brightness;
-            *p++ = c[1] * m_brightness;
-            *p++ = c[2] * m_brightness;
+            *p++ = frame.data[idx++];
+            *p++ = frame.data[idx++];
+            *p++ = frame.data[idx++];
             *p++ = 255;
         }
     }

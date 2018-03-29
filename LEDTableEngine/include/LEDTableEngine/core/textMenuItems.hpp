@@ -58,12 +58,14 @@ public:
  * @param  menuEntry A reference to the selected menu item.
  * @param  idx       Index of this menu item inside the current menu
  * application.
+ * @param  event     Input event, that occured (only LEFT, RIGHT, ENTER)
  * @return           Returns true, if the menu should be closed after
- * executing this handler.
+ * executing this handler (only if pressed ENTER).
  */
     virtual bool onSelectMenuItem(TextMenu            *menu,
                                   MenuEntry& menuEntry,
-                                  size_t idx) = 0;
+                                  size_t idx,
+                                  const BaseInput::InputEvent& event) = 0;
 };
 
 /**
@@ -90,10 +92,31 @@ public:
 
     bool onSelectMenuItem(TextMenu            *menu,
                           MenuEntry& menuEntry,
-                          size_t idx);
+                          size_t idx,
+                          const BaseInput::InputEvent& event);
 
     const std::string getName() const;
 };
+
+/**
+ * @brief MenuHandler implementation, that acts as settings menu
+ */
+class SettingsMenuHandler : public MenuEntryHandler,
+                            public std::enable_shared_from_this<SettingsMenuHandler> {
+private:
+    std::shared_ptr<led::BaseController> m_ctrl;
+public:
+    SettingsMenuHandler(std::shared_ptr<led::BaseController>ctrl);
+    bool onSelectMenuItem(TextMenu* menu,
+                          MenuEntry& menuEntry,
+                          size_t idx,
+                          const BaseInput::InputEvent& event);
+    /**
+     * Creates the settings menu that can be used to adjust general options.
+     */
+    std::vector<MenuEntry> createSettingsMenu();
+};
+
 }
 
 #endif // ifndef _H_TEXT_MENU_ITEMS_
