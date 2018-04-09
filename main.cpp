@@ -27,6 +27,7 @@
 #include "LEDTableApps/clock.hpp"
 #include "LEDTableApps/connectFour.hpp"
 #include "LEDTableApps/shutdownApp.hpp"
+#include "LEDTableApps/tMP2FilePlayer.hpp"
 
 extern char *optarg;
 extern int optind, opterr, optopt;
@@ -155,7 +156,8 @@ int main(int argc, char **argv)
         MenuEntry(std::make_shared<AppLauncher>(c, std::make_shared<FractalApp>())),
         MenuEntry(std::make_shared<AppLauncher>(c, std::make_shared<BoardGameApp>())),
         MenuEntry(std::make_shared<AppLauncher>(c, std::make_shared<AnimationApp>())),
-        MenuEntry(std::make_shared<AppLauncher>(c, std::make_shared<ClockApp>()))
+        MenuEntry(std::make_shared<AppLauncher>(c, std::make_shared<ClockApp>())),
+        MenuEntry(std::make_shared<AppLauncher>(c, std::make_shared<TMP2FilePlayer>()))
     });
 
     // Settings
