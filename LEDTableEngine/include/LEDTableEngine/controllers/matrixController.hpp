@@ -2,7 +2,7 @@
 #define _H_MATRIX_CONTROLLER_
 
 #include <LEDTableEngine/core/baseController.hpp>
-#include <LEDTableEngine/controllers/TPM2.hpp>
+#include <LEDTableEngine/controllers/TMP2.hpp>
 
 /**
  * @brief Matrix controller implementation that renders the generated image
@@ -25,8 +25,8 @@ private:
     void shutdown();
     void copyImageToBuffer(const led::Image& frame);
 
-    TPM2::Packet m_frameDataPacket;
-    std::shared_ptr<TPM2> m_tpm2;
+    TMP2::Packet m_frameDataPacket;
+    std::shared_ptr<TMP2> m_TMP2;
 };
 
 

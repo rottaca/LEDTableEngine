@@ -1,15 +1,15 @@
-#include <LEDTableEngine/controllers/TPM2.hpp>
+#include <LEDTableEngine/controllers/TMP2.hpp>
 #include <iostream>
 
-TPM2::TPM2(){
+TMP2::TMP2(){
 }
-TPM2::~TPM2(){
+TMP2::~TMP2(){
 }
 
-void TPM2::disconnect(){
+void TMP2::disconnect(){
     close(m_deviceFile);
 }
-bool TPM2::connect(const std::string &device)
+bool TMP2::connect(const std::string &device)
 {
     m_deviceFile = open(device.c_str(), O_RDWR | O_NOCTTY | O_NDELAY);
     if(m_deviceFile == -1) {
@@ -27,7 +27,7 @@ bool TPM2::connect(const std::string &device)
     }
     return true;
 }
-bool TPM2::sendPacket(const Packet& p){
+bool TMP2::sendPacket(const Packet& p){
     // Wait for all previous data to be written
     // This allows the transmition of the previous frame until now!
     tcdrain(m_deviceFile);
@@ -35,7 +35,7 @@ bool TPM2::sendPacket(const Packet& p){
     return sz == p.dataSize+5;
 }
 
-TPM2::Packet TPM2::createTPM2DataPacket(size_t dataSz){
+TMP2::Packet TMP2::createTMP2DataPacket(size_t dataSz){
     Packet p;
     size_t packetSize = 4 + dataSz + 1;
     p.dataSize = dataSz;
@@ -55,7 +55,7 @@ TPM2::Packet TPM2::createTPM2DataPacket(size_t dataSz){
     return p;
 }
 
-bool TPM2::configureSerial(){
+bool TMP2::configureSerial(){
     //
     // Check if the file descriptor is pointing to a TTY device or not.
     //
@@ -137,4 +137,67 @@ bool TPM2::configureSerial(){
     }
 
     return true;
+}
+TMP2File::TMP2File(){
+  m_file.close();
+}
+
+bool TMP2File::loadTMP2File(const std::string& fileName, bool loop){
+  m_file.close();
+  m_file.open(fileName);
+  m_loop = loop;
+  if(!m_file.is_open()){
+    std::cout << "Can't open tmp2 file " << fileName << std::endl;
+  }
+  return m_file.is_open();
+}
+
+bool TMP2File::getNextImage(led::Image &imgBuffer){
+  if(!m_file) return false;
+
+  while (true) {
+    int c = m_file.get();
+    // Restart file if requested
+    if(c < 0 && m_loop){
+      m_file.clear();
+      m_file.seekg (0, m_file.beg);
+      c = m_file.get();
+    }
+
+    if(c < 0 || c != TMP2::kStartByte){
+      std::cerr << "Invalid byte read from tmp2 file (expected kStartByte): " << c << std::endl;
+      return false;
+    }
+    // Get type
+    int t = m_file.get();
+    switch (t) {
+      case TMP2::BlockTypes::DATA:
+      case TMP2::BlockTypes::CMD:
+      case TMP2::BlockTypes::ACK:
+      case TMP2::BlockTypes::ACKDATA:{
+        int s1 = 0,s2 = 0;
+        if( (s2 = m_file.get())<0 || (s1 = m_file.get())<0 ){
+          std::cerr << "Invalid byte read from tmp2 file (expected size bytes): " << s1  << s2 << std::endl;
+          return false;
+        }
+        size_t sz = (s2 << 8) | s1;
+        if (t != TMP2::BlockTypes::DATA){
+          m_file.seekg (m_file.tellg()+sz+1);
+        }else{
+          if(imgBuffer.size != sz){
+            std::cerr << "Invalid data size read from tmp2 file: " << sz << std::endl;
+            return false;
+          }
+          m_file.read((char*)imgBuffer.data,sz);
+          m_file.seekg (m_file.tellg()+1);
+          return m_file.good();
+        }
+        break;
+      }
+      default:
+        std::cerr << "Invalid byte read from tmp2 file (expected BlockType): " << c << std::endl;
+        return false;
+    }
+  }
+  return true;
 }

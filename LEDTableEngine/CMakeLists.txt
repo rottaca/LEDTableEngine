@@ -28,7 +28,7 @@ SET(ENGINE_SRC
 SET(CTRL_SRC
   src/controllers/desktopController.cpp
   src/controllers/matrixController.cpp
-  src/controllers/TPM2.cpp
+  src/controllers/TMP2.cpp
 )
 
 SET(INPUT_HANDLER_SRC
